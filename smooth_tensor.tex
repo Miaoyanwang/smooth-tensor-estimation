@@ -33,7 +33,7 @@
 
 
 \theoremstyle{plain}
-\newtheorem{thm}{Claim}[section]
+\newtheorem{thm}{Theorem}[section]
 \newtheorem{lem}{Lemma}
 \newtheorem{prop}{Proposition}
 \newtheorem{pro}{Property}
@@ -98,15 +98,17 @@ Miaoyan Wang, April 26, 2020
 \end{center}
 \section{Model}
 
-Let $\tY=\entry{y_{i_1,\ldots,i_K}}\in\{0,1\}^{d \times \cdots \times d}$ be an order-$K$, $(d,\ldots,d)$-dimensional binary tensor. Assume that the entries of $\tY$ are independent Bernoulli random variables with success probabilities
+Let $\tY=\entry{y_{i_1,\ldots,i_K}}\in\{0,1\}^{d \times \cdots \times d}$ be an order-$K$, $(d,\ldots,d)$-dimensional binary tensor. Let $\mxi^{(k)}=(\xi^{(k)}_1,\ldots,\xi^{(k)}_d)\in[0,1]^d$ be random vectors following (unknown) distributions $\mathbb{P}^{(k)}$ for all $k\in[K]$, and $\mxi^{(k)}$ and $\mxi^{(k')}$ are mutually independent for $k\neq k' \in[K]$. Assume that the entries of $\tY$ are independent sub-Gaussian random variables conditional on $\{\mxi^{(k)}\}$.
 \[
-\mathbb{P}\left(y_{i_1,\ldots,i_K}=1\right)=f\left(\xi^{(1)}_{i_1},\ldots,\xi^{(K)}_{i_K}\right),\quad \text{for all } (i_1,\ldots,i_K)\in[d]\times \cdots \times [d],
+\mathbb{E}\left(y_{i_1,\ldots,i_K}|\{\mxi^{(k)}\}\right)=f\left(\xi^{(1)}_{i_1},\ldots,\xi^{(K)}_{i_K}\right),\quad \text{for all } (i_1,\ldots,i_K)\in[d]\times \cdots \times [d],
 \]
-where $f\colon [0,1]^K\mapsto [0,1]$ is an unknown multivariate function belonging to a function class $f\in \tF_\alpha(M)$, and $\mxi^{(k)}=(\xi^{(k)}_1,\ldots,\xi^{(k)}_d)\in[0,1]^d$ are mutually independent random vectors following  (unknown) distributions $\mathbb{P}_{\mxi^{(k)}}$ for all $k\in[K]$. Furthermore, we define the function class
+where $f\colon [0,1]^K\mapsto [0,1]$ is an unknown multivariate function belonging to a function class $f\in \tF_\alpha(M)$. Specifically, the function class is defined as
  \[ 
-\tF_\alpha(M)=\{f\colon \text{Im}(f)\in[0,1]\ \text{and}\ \Hnorm{f}\leq M\},
+\tF_\alpha(R)=\{f\colon \text{Im}(f)\in[0,1]\ \text{and}\ \Hnorm{f}\leq R\},
 \]
-where $\alpha>0$ is the smoothness parameter and $M>0$ is the upper bound of H\"{o}lder norm $\Hnorm{\cdot}$. Specifically, 
+where $\alpha>0$ is the smoothness parameter and $R>0$ is the H\"{o}lder norm bound for the functions in the class. 
+
+Recall that the function H\"{o}lder norm $\Hnorm{f}$ is defined as
 \[
 \Hnorm{f}\stackrel{\text{def}}{=}\max_{|\mi|\leq \lfloor \alpha \rfloor}\sup_{\mx \in \tD} |\nabla_{\mi} f(\mx)|+\max_{|\mi| =\lfloor \alpha \rfloor}\sup_{\mx\neq \mx' \in \tD} {\nabla_{\mi} |f(\mx)-\nabla_{\mi} f(\mx')|\over \onenorm{\mx-\mx'}^{\alpha-\lfloor \alpha \rfloor}},
 \]
@@ -114,7 +116,33 @@ where we have used the short-hand notion
 \[
  \nabla_{\mi} f(\mx) ={\partial^{i_1+\cdots+i_K}\over \partial x^{i_1}_1\cdots \partial x^{i_K}_K} f(x_1,\ldots,x_k),
 \]
-for multi-indices $\mi=(i_1,\ldots,i_K)$ with $|\mi|=i_1+\cdots+i_K$, and $\mx=(x_1,\ldots,x_K)$ in the domain.
+for multi-indices $\mi=(i_1,\ldots,i_K)$ with $|\mi|=i_1+\cdots+i_K$, and $\mx=(x_1,\ldots,x_K)$ in the function domain.
+
+\section{Estimation}
+Define the objective function
+\begin{align}
+L(\tC, \{\mM_k\}) &= \FnormSize{}{ \tY-\tC\times_1\mM_1\times \cdots \times_K \mM_K}^2.
+\end{align}
+Denote $\Theta =  \tC\times_1\mM_1\times \cdots \times_K \mM_K$ and $\mr=(r_1,\ldots,r_K)$. Then the feasible domain is
+\begin{align}
+\tP(\mr)=& \left\{  \Theta\in\mathbb{R}^{d_1\times \cdots \times d_K} \colon \Theta =  \tC\times_1\mM_1\times \cdots \times_K \mM_K, \text{ where $\tC\in\mathbb{R}^{r_1\times \cdots \times r_K}$ and }\right.\\
+& \left.\hspace{1.2in}\mM_k\in\{0,1\}^{d_k\times r_k} \text{ are membership matrices for all $k\in[K]$}\right\}.
+\end{align}
+We propose an adaptive smooth (?) estimation, 
+\begin{align}
+\hat \Theta&=\argmin_{\Theta \in\tP(\mr*)} L(\Theta), \quad \text{with}\quad \mr^*=(r^*_1,\ldots,r^*_K),\\
+\text{and}\quad &r^*_k=\lceil d_k^{1/( \alpha\wedge 1+1)}\rceil \ \text{for all $k\in[K]$}.
+\end{align}
+
+\begin{thm} Consider a function class $\tF_\alpha(R)$ with $\alpha>0$ and $M>0$. We have
+\[
+\sup_{f \in \tF_\alpha(R)}\sup_{\mxi^{(k)} \sim \mathbb{P}^{(k)}, k\in[K]}{1\over d^K} \mathbb{E}\left(\FnormSize{}{\hat \Theta-f(\xi^{(1)}_{i_1},\ldots,\xi^{(K)}_{i_K})}^2\right) \leq 
+C\left(d^{-K\alpha /( \alpha+1)}+{\log d \over d^{K-1}}\right),
+\]
+where the constant $C>0$ epends only on $R$, and the expectation is taken jointly over $\tY$, $\{\mxi^{(k)}\}$ for all $k\in[K]$.
+\end{thm}
+
+{\color{red}Phase transition at $\alpha=1$ only for $K\geq 3$??}
 \bibliographystyle{unsrt}
 \bibliography{tensor_wang}
 
