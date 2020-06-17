@@ -1,10 +1,10 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2016.5.22)  13 JUN 2020 00:30
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2016.5.22)  3 JUN 2020 17:29
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
  %&-line parsing enabled.
-**smooth_tensor.tex
-(./smooth_tensor.tex
+**kernel_SVM.tex
+(./kernel_SVM.tex
 LaTeX2e <2016/03/31>
 Babel <3.9r> and hyphenation patterns for 83 language(s) loaded.
 (/usr/local/texlive/2016/texmf-dist/tex/latex/base/article.cls
@@ -790,8 +790,8 @@ Package: stmaryrd 1994/03/03 St Mary's Road symbol package
 LaTeX Font Info:    Overwriting symbol font `stmry' in version `bold'
 (Font)                  U/stmry/m/n --> U/stmry/b/n on input line 89.
 ))
-(./smooth_tensor.aux)
-\openout1 = `smooth_tensor.aux'.
+No file kernel_SVM.aux.
+\openout1 = `kernel_SVM.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 110.
 LaTeX Font Info:    ... okay on input line 110.
@@ -807,7 +807,6 @@ LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 110.
 LaTeX Font Info:    ... okay on input line 110.
 LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 110.
 LaTeX Font Info:    ... okay on input line 110.
-
 (/usr/local/texlive/2016/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count199
@@ -916,10 +915,8 @@ Package: gettitlestring 2016/05/16 v1.5 Cleanup title references (HO)
 LaTeX Info: Redefining \ref on input line 110.
 LaTeX Info: Redefining \pageref on input line 110.
 LaTeX Info: Redefining \nameref on input line 110.
-
-(./smooth_tensor.out) (./smooth_tensor.out)
 \@outlinefile=\write4
-\openout4 = `smooth_tensor.out'.
+\openout4 = `kernel_SVM.out'.
 
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: End \AtBeginDocument code.
@@ -940,137 +937,113 @@ LaTeX Font Info:    Try loading font information for U+stmry on input line 110.
 (/usr/local/texlive/2016/texmf-dist/tex/latex/stmaryrd/Ustmry.fd)
 \c__siunitx_mathtt_int=\count273
 
+Excluding 'comment' comment.
 
 Package amsmath Warning: Foreign command \over;
 (amsmath)                \frac or \genfrac should be used instead
-(amsmath)                 on input line 133.
+(amsmath)                 on input line 812.
 
 [1
 
 {/usr/local/texlive/2016/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
-Overfull \hbox (25.22516pt too wide) in paragraph at lines 184--185
-\OT1/cmr/m/n/10.95 Special cases: low-rank model, additive-multiplicative model
- (in the lit-er-a-ture of non-parametric...) 
- []
+./kernel_SVM.tex:865: Missing delimiter (. inserted).
+<to be read again> 
+                   0
+l.865 &{\Big 0
+              }&&h(y_1)&\ldots&h(y_m)\\
+? 
+./kernel_SVM.tex:869: Missing delimiter (. inserted).
+<to be read again> 
+                   0
+l.869 h(x_1)&\ldots&h(x_n)&&{\Big 0
+                                   }&\\
+? 
+
+LaTeX Warning: Reference `eq:2' on page 2 undefined on input line 899.
+
+
+LaTeX Warning: Reference `eq:1' on page 2 undefined on input line 899.
 
 [2]
-LaTeX Font Info:    Try loading font information for U+dsrom on input line 218.
-
- (/usr/local/texlive/2016/texmf-dist/tex/latex/doublestroke/Udsrom.fd
-File: Udsrom.fd 1995/08/01 v0.1 Double stroke roman font definitions
-)
-[3] [4]
-Overfull \hbox (2.3362pt too wide) in paragraph at lines 309--310
-[][]\OT1/cmr/bx/n/10.95 Definition 2 \OT1/cmr/m/n/10.95 ($\OMS/cmsy/m/n/10.95 F
-\OT1/cmr/m/n/10.95 (\OML/cmm/m/it/10.95 ; L\OT1/cmr/m/n/10.95 )$, []smooth fun
-c-tions)\OT1/cmr/bx/n/10.95 . []\OT1/cmr/m/n/10.95 Let $\OML/cmm/m/it/10.95  \
-OMS/cmsy/m/n/10.95 2 \OT1/cmr/m/n/10.95 (0\OML/cmm/m/it/10.95 ; \OT1/cmr/m/n/10
-.95 1]$ and $\OML/cmm/m/it/10.95 L > \OT1/cmr/m/n/10.95 0$. A func-tion $\OML/c
-mm/m/it/10.95 f [] [] \OT1/cmr/m/n/10.95 [0\OML/cmm/m/it/10.95 ; \OT1/cmr/m/n/1
-0.95 1][] \OMS/cmsy/m/n/10.95 7!
- []
-
-[5] [6]
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 399.
-
- (/usr/local/texlive/2016/texmf-dist/tex/latex/base/omscmr.fd
-File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
-)
-LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10.95> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 399.
- [7]
-[8] [9]
-Overfull \hbox (13.04858pt too wide) in paragraph at lines 498--501
-\OT1/cmr/m/n/10.95 For each $\OML/cmm/m/it/10.95 k \OMS/cmsy/m/n/10.95 2 \OT1/c
-mr/m/n/10.95 [\OML/cmm/m/it/10.95 K\OT1/cmr/m/n/10.95 ]$, de-fine the em-pir-i-
-cal cu-mu-la-tive pro-por-tion of cat-e-gories among the set $\OMS/cmsy/m/n/10.
-95 f\OML/cmm/m/it/10.95 ^^X[]; [] ; ^^X[]\OMS/cmsy/m/n/10.95 g$ 
- []
-
-[10] [11] [12] [13] [14] [15]
-
-./smooth_tensor.tex:733: LaTeX Error: Command \end{proof} invalid in math mode.
-
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.733 \end{proof}
+./kernel_SVM.tex:931: Double superscript.
+<argument> ...gle B^*_2,A^T\rangle +\langle B^*_3^
+                                                  T,A\rangle \\ &\hspace {3....
+l.931 \end{align}
                  
 ? 
-
-./smooth_tensor.tex:733: LaTeX Error: Something's wrong--perhaps a missing \ite
-m.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.733 \end{proof}
+./kernel_SVM.tex:931: Double superscript.
+<argument> ...ngle B^*_1, D\rangle +\langle B^*_2^
+                                                  T+B^*_3, A \rangle , 
+l.931 \end{align}
                  
 ? 
-
-./smooth_tensor.tex:733: LaTeX Error: Something's wrong--perhaps a missing \ite
-m.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.733 \end{proof}
+./kernel_SVM.tex:931: Double superscript.
+<argument> ...gle B^*_2,A^T\rangle +\langle B^*_3^
+                                                  T,A\rangle \\ &\hspace {3....
+l.931 \end{align}
                  
 ? 
-./smooth_tensor.tex:733: Missing $ inserted.
-<inserted text> 
-                $
-l.733 \end{proof}
+./kernel_SVM.tex:931: Double superscript.
+<argument> ...ngle B^*_1, D\rangle +\langle B^*_2^
+                                                  T+B^*_3, A \rangle , 
+l.931 \end{align}
                  
 ? 
-[16] [17]
-No file smooth_tensor.bbl.
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 797.
-[18]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 797.
- (./smooth_tensor.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 797.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 797.
-Package rerunfilecheck Info: File `smooth_tensor.out' has not changed.
-(rerunfilecheck)             Checksum: 7D5DC90ABE8982FF85827CB27777533A;329.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 797.
+./kernel_SVM.tex:938: Double superscript.
+l.938 ...tion to (P1) is achieved at $B^*_2=B^*_3^
+                                                  T$ because
+? 
+No file kernel_SVM.bbl.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 957.
+[3]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 957.
+ (./kernel_SVM.aux)
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 957.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 957.
+
+
+Package rerunfilecheck Warning: File `kernel_SVM.out' has changed.
+(rerunfilecheck)                Rerun to get outlines right
+(rerunfilecheck)                or use package `bookmark'.
+
+Package rerunfilecheck Info: Checksums for `kernel_SVM.out':
+(rerunfilecheck)             Before: <no file>
+(rerunfilecheck)             After:  D41D8CD98F00B204E9800998ECF8427E;0.
+
+LaTeX Warning: There were undefined references.
+
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 957.
  ) 
 Here is how much of TeX's memory you used:
- 19605 strings out of 493014
- 364965 string characters out of 6133351
- 426954 words of memory out of 5000000
- 22836 multiletter control sequences out of 15000+600000
- 17953 words of font info for 70 fonts, out of 8000000 for 9000
+ 19458 strings out of 493014
+ 363247 string characters out of 6133351
+ 429343 words of memory out of 5000000
+ 22772 multiletter control sequences out of 15000+600000
+ 13732 words of font info for 52 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 36i,14n,42p,10385b,895s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 36i,13n,42p,10382b,799s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
 ></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb>
 </usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb><
 /usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></
-usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></us
-r/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/
-local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmmib10.pfb></usr/
-local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cmextra/cmmib6.pfb></
-usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cmextra/cmmib8.pf
-b></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb>
-</usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></u
-sr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/
-local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/l
-ocal/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/loc
-al/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local
-/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/
-texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmti8.pfb></usr/local/te
-xlive/2016/texmf-dist/fonts/type1/public/doublestroke/dsrom10.pfb></usr/local/t
-exlive/2016/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/loc
-al/texlive/2016/texmf-dist/fonts/type1/public/stmaryrd/stmary10.pfb>
-Output written on smooth_tensor.pdf (18 pages, 282082 bytes).
+usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></us
+r/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmmib10.pfb></us
+r/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cmextra/cmmib8.pfb>
+</usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></
+usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr
+/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/lo
+cal/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/loc
+al/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/local
+/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/t
+exlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/te
+xlive/2016/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
+Output written on kernel_SVM.pdf (3 pages, 158335 bytes).
 PDF statistics:
- 253 PDF objects out of 1000 (max. 8388607)
- 210 compressed objects within 3 object streams
- 65 named destinations out of 1000 (max. 500000)
- 49 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 83 PDF objects out of 1000 (max. 8388607)
+ 62 compressed objects within 1 object stream
+ 6 named destinations out of 1000 (max. 500000)
+ 1 words of extra memory for PDF output out of 10000 (max. 10000000)
 
