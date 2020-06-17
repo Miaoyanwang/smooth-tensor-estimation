@@ -1,0 +1,121 @@
+\documentclass[final,12pt]{colt2020} % Anonymized submission
+% \documentclass[12pt]{colt2020} % Include author names
+
+% The following packages will be automatically loaded:
+% amsmath, amssymb, natbib, graphicx, url, algorithm2e
+
+
+\usepackage[utf8]{inputenc} % allow utf-8 input
+\usepackage[T1]{fontenc}    % use 8-bit T1 fonts
+\usepackage{hyperref}       % hyperlinks
+\usepackage{url}            % simple URL typesetting
+\usepackage{booktabs}       % professional-quality tables
+\usepackage{amsfonts}       % blackboard math symbols
+\usepackage{amsmath}
+\usepackage{bm}
+\usepackage{algorithm}
+\usepackage{appendix}
+\usepackage[english]{babel}
+
+
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{lem}{Lemma}
+\newtheorem{prop}{Proposition}
+\newtheorem{pro}{Property}
+\newtheorem{cor}{Corollary}
+\newtheorem{ass}{Assumption}
+\newtheorem{defn}{Definition}
+\newtheorem{exmp}{Example}
+\newtheorem{rmk}{Remark}
+
+
+\input macros.tex
+
+
+\usepackage{dsfont}
+
+\usepackage{multirow}
+\usepackage{algpseudocode,algorithm}
+\algnewcommand\algorithmicinput{\textbf{Input:}}
+\algnewcommand\algorithmicoutput{\textbf{Output:}}
+\algnewcommand\INPUT{\item[\algorithmicinput]}
+\algnewcommand\OUTPUT{\item[\algorithmicoutput]}
+
+\DeclareMathOperator*{\minimize}{minimize}
+
+
+
+\usepackage{mathtools}
+\mathtoolsset{showonlyrefs}
+\newcommand*{\KeepStyleUnderBrace}[1]{%f
+  \mathop{%
+    \mathchoice 
+    {\underbrace{\displaystyle#1}}%
+    {\underbrace{\textstyle#1}}%
+    {\underbrace{\scriptstyle#1}}%
+    {\underbrace{\scriptscriptstyle#1}}%
+  }\limits
+}
+
+
+\title[Short Title]{Nonparametric Tensor Estimation and Completion \\ via Hypergraphon Learning}
+\usepackage{times}
+
+\coltauthor{%
+ \Name{Miaoyan Wang} \Email{miaoyan.wang@wisc.edu}\\
+ \addr  University of Wisconsin-Madison
+ }
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}%
+We consider the problem of tensor estimation from noisy observations with possibly missing entries. A nonparametric approach to tensor estimation is developed based on $K$-uniform hypergraphons. The hypergraphon model captures the key features of conditional independence arising in the generative process of multiway tensor data. The nonparametric hypergraphon representation of tensors encompasses many existing tensor models---such as CP models, Tucker models, shape constrained tensor models---as special examples. We develop a rate-optimal nonparametric tensor estimator using the stochastic blockmodel approximation to the underlying hypergraphon. A surprising distinction between the hypergraphon-based tensor estimation and high-dimensional nonparametric regression is revealed. Furthermore, we establish the integrated risk bound for the hypergraphon estimation in specially structured functional classes. The result uncovers the joint contribution of the statistical bias-variance error and the agnostic discretization error. Numerical results demonstrate the robustness of our proposal over previous tensor methods and the attractive performance as the tensor order increases.\\
+\end{abstract}
+
+\begin{keywords}
+Tensor estimation, completion, nonparametric estimation, hypergraphon, stochastic blockmodel
+\end{keywords}
+
+
+\section{Introduction}
+\section{Nonparametric Tensor Model via Hypergraphons}
+Let $\tY=\entry{y_{i_1,\ldots,i_K}}\in\mathbb{R}^{d_1\times \cdots \times d_K}$ be an order-$K$ $(d_1,\ldots,d_K)$-dimensional data tensor. We propose the following generative process for the tensor entries $y_{i_1,\ldots,i_K}$. First 
+
+
+conditionally independent tensor model:
+\begin{align}
+Y_{i_1,\ldots,i_K} |\mxi_{i_1,\ldots,i_K} &\sim \text{Bernoulli}(\theta_\omega),\\
+\theta_{i_1,\ldots,i_K} &=f(\xi^{(1)}_{i_1},\ldots,\xi^{(K)}_{i_K}),
+\end{align}
+where $f\colon [0,1]^K\mapsto [0,1]$ is an unknown multivariate function of interest, and $\mxi \colon [d_1]\times \cdots \times [d_K] \mapsto [0,1]^K$ is the latent design variables at position $(i_1,\ldots,i_K)$. 
+
+Furthermore, we assume that the collection of latent variables at the $k$-th coordinate, $(\xi^{(k)}_1,\ldots,\xi^{(k)}_{d_K})$, follow a $d_k$-dimensional distribution $\mathbb{P}^{(k)}$, and the distributions $\mathbb{P}^{(k)}$ and $\mathbb{P}^{(k')}$ are mutually independent for $k\neq k' \in[K]$.
+
+\begin{defn}[Uniform random design] A uniform random design over the index set $[d]$ is a stochastic process $\{\xi_i\colon i\in[d]\}$, where $\xi_i$ are i.i.d.\ sampled from $\textup{Uniform}[0,1]$ for all $i\in[d]$.
+\end{defn}
+
+\begin{defn}[Cartesian product of random designs] An order-$K$ uniform design over the index set $[d_1]\times \cdots \times [d_K]$ is defined as a cartesian product of uniform random designs over each marginal index set $[d_k]$ for $k\in[K]$. Specifically, the order-$K$ uniform design is a collection of i.i.d\ random vectors $\{(\xi^{(1)}_{i_1},\ldots,\xi^{(K)}_{i_K})\}$, where $\xi^{(k)}_{i_k}$ are i.i.d.\ sampled from $\textup{Uniform}[0,1]$, for all $i_k\in[d_k]$ and $k\in[K]$.
+\end{defn}
+
+\begin{defn}[Hypergraphon] A $K$-uniform hypergraphon is a measureable function $f\colon [0,1]^K\mapsto [0,1]$. 
+\end{defn}
+The function can be seen as a kernel functions for random tensor models. 
+
+% Acknowledgments---Will not appear in anonymized version
+\acks{We thank a bunch of people.}
+
+\bibliography{yourbibfile}
+
+\appendix
+
+\section{My Proof of Theorem 1}
+
+This is a boring technical proof.
+
+\section{My Proof of Theorem 2}
+
+This is a complete version of a proof sketched in the main text.
+
+\end{document}
