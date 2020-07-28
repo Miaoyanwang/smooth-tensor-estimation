@@ -1,0 +1,300 @@
+\documentclass[12pt]{article}
+\usepackage{amsbsy, bm}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts,amscd,xspace,pifont}
+\usepackage{epsfig, amsfonts,color,soul}
+
+
+\usepackage{latexsym}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\textheight 9.0 in \textwidth 6.6 in \topmargin -0.6 in
+\oddsidemargin 0.0in
+
+\parskip=.01in
+\makeatletter \setcounter{page}{1}
+\renewcommand{\baselinestretch} {1.0}
+
+% --------- My packages --------------------
+
+ \usepackage{amsmath}
+ \usepackage{amsfonts, bm, hyperref}
+\usepackage{pdfpages, subfigure}
+\usepackage{graphicx,graphics,color}
+%\usepackage{myformat}
+\usepackage{enumerate}
+\usepackage{ifthen}
+%\newcommand{\full}{1}  
+\newcommand{\full}{2} % show SOLUTIONS
+
+
+% --------- Page setup ---------------------
+\renewcommand{\baselinestretch}{1.3}
+\setlength{\textheight}{9in}
+\setlength{\textwidth}{6.5in}
+\setlength{\oddsidemargin}{-.2in}
+\setlength{\evensidemargin}{-.2in} \topmargin -.7in
+
+
+
+% --------- My commands --------------------
+ \newcommand{\scr}{\mathscr}
+ \newcommand{\vsp}{\vspace{1.5in}}
+ \newcommand{\hsp}{\hspace{5cm} }
+ \newcommand{\vspt}{\vspace{2.0cm}}
+\setlength{\parindent}{0.2in}
+
+
+
+%%%%%% Notations defined by Miaoyan 
+\usepackage{dsfont}
+\def\ma{\mathbf{a}}
+\def\mx{\mathbf{x}}
+\def\my{\mathbf{y}}
+\def\mz{\mathbf{z}}
+\def\mc{\mathbf{c}}
+\def\mX{\mathbf{X}}
+\def\mI{\mathbf{I}}
+\def\mJ{\mathbf{J}}
+\def\bbeta{{\boldsymbol{\beta}}}
+\def\estbeta{{\boldsymbol{\hat \beta}}}
+\def\bepsilon{\boldsymbol{\varepsilon}}
+\def\mhatx{\mathbf{\hat x}}
+\def\mhaty{\mathbf{\hat y}}
+\def\tI{\mathcal{I}}
+\def\tN{\mathcal{N}}
+\DeclareMathOperator*{\argmin}{arg\,min}
+
+
+\newcommand{\normSize}[2]{#1\lVert#2#1\rVert}
+
+\newcommand*{\KeepStyleUnderBrace}[1]{%f
+  \mathop{%
+    \mathchoice
+    {\underbrace{\displaystyle#1}}%
+    {\underbrace{\textstyle#1}}%
+    {\underbrace{\scriptstyle#1}}%
+    {\underbrace{\scriptscriptstyle#1}}%
+  }\limits
+}
+%%%%%%%%%%%%%%%%
+
+\begin{document}
+\vspace*{3cm}
+
+ \Large
+\begin{center}
+Department of Statistics \\
+University of Wisconsin, Madison\\
+PhD Qualifying Exam Option B\\
+12:30-4:30pm, Room 133 SMI \\
+\end{center}
+
+\normalsize
+
+\begin{itemize}
+\item There are a total of FOUR (4) problems in this exam. Please do
+all FOUR (4) problems.
+
+\item Each problem must be done in a separate exam book.
+
+\item Please turn in FOUR (4) exam books.
+
+\item Please write your code name and \textbf{NOT} your real name on
+each exam book.
+
+\end{itemize}
+
+\clearpage
+
+
+%%%%%%%%%%%%%%%%%%%%%%%
+\begin{enumerate}
+\setcounter{enumi}{0}
+
+\item This problem investigates fixed design linear regressions in high-dimensional settings.
+Consider a study of human heritability where the goal is to estimate the contribution of many genetic variants (e.g.,\ single nucleotide polymorphisms) to a quantitative phenotypic trait (e.g.,\ height). Suppose that the study sample consists of $n$ individuals. For each individual $i\in\{1,\ldots,n\}$, we observe a pair of measurements $(\mx_i, y_i)$, where $\mx_i\in\mathbb{R}^{d}$ denotes the genotype vector across $d$ genetic variants, and $y_i\in\mathbb{R}$ denotes the scalar-valued phenotype. 
+
+Let $\mX=[\mx_1,\ldots,\mx_n]^T\in\mathbb{R}^{n\times d}$ denote the design matrix and $\my=(y_1,\ldots,y_n)^T\in\mathbb{R}^n$ be the response vector. 
+Consider a linear model with i.i.d.\ mean-zero Gaussian noise
+\begin{equation}\label{eq:model}
+\my=\mX\bbeta+\bepsilon, \quad \bepsilon\sim \mathcal{N}({\bf 0}, \mI_{n\times n}),
+\end{equation}
+where $\bbeta\in\mathbb{R}^d$ is the unknown coefficient and $\mI_{n\times n}$ is an $n$-by-$n$ identity matrix. Modern genomic dataset is often high-dimensional; that is, the number of features $d$ is comparable, or even larger than, the sample size $n$. For simplicity, we assume $d=n$ and $\mX$ has orthonormal columns. Consider the regularized estimator for $\bbeta$, 
+\begin{equation}\label{eq:est}
+\hat \bbeta =\argmin_{\bbeta}\left\{ {1\over 2}\normSize{}{\my-\mX\bbeta}_2^2+{\lambda \over p} \normSize{}{\bbeta}_p\right\},
+\end{equation}
+where $\normSize{}{\cdot}_p$ denotes the vector $p$-norm; i.e.,\ $\normSize{}{\ma}_p=\left(\sum_{j=1}^d {|a_j|^p}\right)^{1/p}$ for a vector $\ma=(a_1,\ldots,a_d)^T\in\mathbb{R}^d$. 
+
+ The following questions consider $p=1$ or $2$ and $\lambda \geq 0$. 
+\begin{enumerate}
+\item Let $\lambda = 0$.
+\begin{enumerate}
+\item Give the distribution for $\hat \bbeta$, the solution to the least-squares optimization~\eqref{eq:est}.
+\item Consider the prediction error for a new observation of the form $y_{\text{new}}=\mx_{\text{new}}^T\bbeta+\varepsilon$, for an arbitrary, fixed vector $\mx_{\text{new}}\in\mathbb{R}^d$ and independent noise $\varepsilon\sim \tN(0,1)$. Find the expected squared prediction error, $\mathbb{E}(y_{\text{new}}-\mx_{\text{new}}^T\hat \bbeta)^2$.
+\end{enumerate}
+
+{\color{red}Solution: \\
+i. The least-squares estimator $\hat \bbeta = (\mX^{T}\mX)^{-1}(\mX^T\my) = \mX^T\my$, where we have used the fact that $\mX^{T}\mX=\mI$ for orthogonal matrices. Plugging the model~\eqref{eq:model} into the estimator yields
+\[
+\hat \bbeta  \sim \mathcal{N}(\bbeta,\ \mI_{n\times n}). 
+\]
+
+ii. The expected squared prediction error is
+\begin{align}
+\mathbb{E}(y_{\text{new}}-\mx_{\text{new}}^T\hat \bbeta)^2 &= \mathbb{E}\left( \mx_{\text{new}}^T\bbeta+\varepsilon-\mx_{\text{new}}^T \hat \bbeta \right)^2\notag\\
+&=\mathbb{E} \varepsilon^2+\mathbb{E}\left(\mx_{\text{new}}^T\hat \bbeta -\mx_{\text{new}}^T\bbeta\right)^2\notag\\
+&=1+\text{Var}(\mx_{\text{new}}^T\hat \bbeta)\notag\\
+&=1+\normSize{}{\mx_{\text{new}}}^2_2\notag.
+\end{align}
+}
+
+\item Let $p=2$ and $\lambda>0$.
+\begin{enumerate}
+\item Give an expression for $\hat \bbeta^{\text{ridge}}$, the solution to the penalized least-squares optimization~\eqref{eq:est} in this case. 
+\item Consider the prediction error for a new observation of the form $y_{\text{new}}=\mx_{\text{new}}^T\bbeta+\varepsilon$, for an arbitrary, fixed vector $\mx_{\text{new}}\in\mathbb{R}^d$ and independent noise $\varepsilon\sim \tN(0,1)$. Find the expected squared prediction error, $\mathbb{E}(y_{\text{new}}-\mx_{\text{new}}^T\hat \bbeta^{\text{ridge}})^2$. Compare the result to part (a). 
+\end{enumerate}
+{\color{red}
+Solution: \\
+i. The solution to the penalized least-squares optimization is
+\begin{equation}\label{eq:ridge}
+\hat \bbeta^{\text{ridge}} = {1\over 1+\lambda} \mX^T\my.
+\end{equation}
+In the special case when $\lambda=0$, the solution reduces to the MLE in part (a).
+
+ii. Following the calculation in part a(ii), we have
+\begin{equation}\label{eq:decomp}
+\mathbb{E}(y_{\text{new}}-\mx_{\text{new}}^T\hat \bbeta^{\text{ridge}})^2 = 1+\mathbb{E}\left(\mx_{\text{new}}^T\hat \bbeta^{\text{ridge}}-\mx_{\text{new}}^T\bbeta\right)^2.
+\end{equation}
+Now, the estimator~\eqref{eq:ridge} implies that
+\[
+\hat \bbeta^{\text{ridge}}\sim \mathcal{N}\left({1\over 1+\lambda} \bbeta,\ {1\over (1+\lambda)^2} \mI\right).
+\]
+Hence,
+\begin{equation}\label{eq:MSE}
+\mx_{\text{new}}^T\hat \bbeta^{\text{ridge}} \sim \mathcal{N}\left({1\over 1+\lambda}\mx_{\text{new}}^T\bbeta,\  {1\over (1+\lambda)^2}\normSize{}{\mx_{\text{new}}}_2^2\right).
+\end{equation}
+Plugging~\eqref{eq:MSE} into~\eqref{eq:decomp} gives
+\begin{align}
+\mathbb{E}(y_{\text{new}}-\mx_{\text{new}}^T\hat \bbeta^{\text{ridge}})^2&=1+\KeepStyleUnderBrace{\left[\mathbb{E}(\mx_{\text{new}}^T\hat \bbeta^{\text{ridge}})- \mx_{\text{new}}^T \bbeta \right]^2}_{\text{Bias}^2}+\KeepStyleUnderBrace{\text{Var}(\mx_{\text{new}}^T\hat \bbeta^{\text{ridge}})}_{\text{Variance}}\notag \\
+&=1+\left({\lambda \over 1+\lambda}\right)^2(\mx_{\text{new}}^T \bbeta)^2+{1\over (1+\lambda)^2}\normSize{}{\mx_{\text{new}}}_2^2.\notag
+\end{align}
+In the special case when $\lambda=0$, the expected squared prediction error $\mathbb{E}(y_{\text{new}}-\mx_{\text{new}}^T\hat \bbeta^{\text{ridge}})^2$ reduces to $1+\normSize{}{\mx_{\text{new}}}_2^2$, the same expression as in part a(ii). 
+}
+
+
+\item This part does not rely on $p$ or $\lambda$. 
+
+
+Suppose that a prior distribution $\bbeta^{\text{prior}}\sim \mathcal{N}({\bf 0},\sigma^2\Phi)$ is imposed to the model~\eqref{eq:model}, where $\sigma^2$ is an unknown variance parameter, and $\Phi$ is a known positive definite matrix. Furthermore, assume $\bbeta^{\text{prior}}$ and $\bepsilon$ are independent. 
+
+\begin{enumerate}
+\item Find the marginal distribution of $\my$.
+\item Propose an estimator for $\sigma^2$.
+\end{enumerate}
+
+{\color{red} Solution: We compute the joint distribution of $(\my,\bbeta^{\text{prior}})$. Note that
+\begin{equation}\label{eq:linear}
+\begin{bmatrix}
+\my\\ \bbeta^{\text{prior}}
+\end{bmatrix}
+=
+\KeepStyleUnderBrace{\begin{bmatrix}
+\mX & \mI\\
+\mI&{\bf 0} \\
+\end{bmatrix}
+}_{\text{fixed}}
+\KeepStyleUnderBrace{
+\begin{bmatrix}
+\bbeta^{\text{prior}}\\
+\bepsilon
+\end{bmatrix}
+}_{\text{random}},
+\quad \text{where}\
+\begin{bmatrix}
+\bbeta^{\text{prior}}\\
+\bepsilon
+\end{bmatrix} \sim \mathcal{N}
+\left(
+\begin{bmatrix}
+{\bf 0}\\
+{\bf 0}
+\end{bmatrix},\
+\begin{bmatrix}
+\sigma^2 \Phi& {\bf 0}\\
+{\bf 0}&\mI
+\end{bmatrix}
+\right).
+\end{equation}
+Since linear combinations of normal distribution are still normal distribution, \eqref{eq:linear} implies that
+\[
+\begin{bmatrix}
+\my\\ \bbeta^{\text{prior}}
+\end{bmatrix} 
+\sim \mathcal{N}\left( 
+\begin{bmatrix}
+{\bf 0}\\
+{\bf 0}
+\end{bmatrix},\
+\begin{bmatrix}
+\sigma^2\mX\Phi\mX^T+\mI &\sigma^2\mX\Phi \\
+\sigma^2\Phi \mX^T & \sigma^2\Phi
+\end{bmatrix}
+\right).
+\]
+Therefore, 
+\[
+\my\sim \mathcal{N}({\bf 0},\ \sigma^2\mX\Phi\mX^T+\mI).
+\]
+ii.
+Answer 1. Maximum-likelihood estimator:
+\[
+\hat \sigma^2=\arg\max_{\sigma^2} \left\{-{1\over 2}\log\text{det}(\sigma^2\mX\Phi\mX^T+\mI) -{1\over 2}\my^T(\sigma^2\mX\Phi\mX^T+\mI )^{-1}\my\right\}.
+\]
+
+Answer 2. Method-of-moment estimator:
+\[
+\hat\sigma^2 \text{trace}(\mX\Phi\mX^T)+n = \sum_i y_i^2 \Rightarrow \hat \sigma^2= { \sum_{i}y_i^2  - n \over \text{trace}(\mX\Phi\mX^T)}.
+\]
+}
+\item Let $p=1$ and $\lambda>0$. What value of $\lambda$ would you suggest for this case and why?
+
+Hint: you may use the following results. 
+
+\begin{enumerate}
+\item The solution to the optimization~\eqref{eq:est} in this case is $\hat \bbeta^{\text{lasso}}=(\hat \beta^{\text{lasso}}_1,\ldots,\hat \beta^{\text{lasso}}_d)^T$ with
+\[
+\hat \beta^{\text{lasso}}_j=\text{sign}(\hat \beta_j)\max(|\hat \beta_j|-\lambda,\ 0),\quad \text{for all } j=1,\ldots,d,
+\]
+where $\hat \bbeta=(\hat \beta_1, \ldots,\hat \beta_d)^T$ denotes the least-squares estimator in Part (a), and $\text{sign}(x)=-1, 0$ or $1$ according to $x<0$, $x=0$ or $x>0$, respectively.
+
+\item Let $\{\varepsilon_i\}_{i=1,\ldots,n}$ be an i.i.d.\ sequence of $\tN(0,1)$ noise. Then as $n\to \infty$, $\mathbb{P}(\max_{i=1,\ldots,n} \varepsilon_i \geq \sqrt{2.01\times \log n}) \to 0$. Roughly speaking, the following approximation holds
+\[
+\max_{i=1,\ldots,n} \varepsilon_i \approx \sqrt{2.01\times \log n},\quad \text{as}\quad n\to\infty.
+\]
+\end{enumerate}
+
+{\color{red} Solution:
+I would suggest $\lambda=\sqrt{2.01\times \log n}$. Under this choice of $\lambda$, we have vanishing family-wise type I error,
+\begin{align}
+\mathbb{P}\left( \normSize{}{\hat \bbeta^{\text{lasso}}}_{\infty}> 0 \ \big|\ \bbeta={\bf 0} \right) &=\mathbb{P}\left( \normSize{}{\hat \bbeta}_{\infty} > \lambda \ \big|\ \bbeta={\bf 0} \right) \notag \\
+&=\mathbb{P}\left( \normSize{}{\mX\bepsilon}_{\infty}>\lambda \right)\notag \\
+&=\mathbb{P}\left( \normSize{}{\bepsilon}_{\infty}> \lambda \right)\to 0\notag,
+\end{align}
+where the second line follows from the rotation invariance of multivariate normal distribution $\bepsilon\sim \mathcal{N}(0,\mI)$.
+On the other hand, if all the features are important, 
+\begin{align}
+\mathbb{P}\left( \normSize{}{\hat \bbeta^{\text{lasso}}}_{\infty}> 0 \ \big|\text{none of $\beta_j$ is zero}\right) &=\mathbb{P}\left( \normSize{}{\hat \bbeta}_{\infty} > \lambda \ \big|\ \text{none of $\beta_j$ is zero}\right) \notag \\
+&=\mathbb{P}\left( \normSize{}{\bbeta+\mX\bepsilon}_{\infty}>\lambda \ \big|\ \text{none of $\beta_j$ is zero} \right)\notag \\
+&=\mathbb{P}\left( \normSize{}{\bbeta+\bepsilon}_{\infty}> \lambda \ \big|\ \text{none of $\beta_j$ is zero}\right)\to 1\notag .
+\end{align}
+Therefore, the lasso estimator achieves (weak) feature selection. 
+}
+\end{enumerate}
+\end{enumerate}
+\clearpage
+
+%%%%%%%%%%%%%%%
+
+\end{document}
