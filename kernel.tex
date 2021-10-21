@@ -1,0 +1,182 @@
+\documentclass[11pt]{article}
+\usepackage{lscape}
+\usepackage{amsmath,amssymb}
+\usepackage{amsthm}
+\usepackage{float}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{comment}
+\usepackage{bm}
+\usepackage{gensymb}
+\allowdisplaybreaks[4]
+\usepackage{geometry}
+\geometry{margin=1in}
+\usepackage{setspace}
+\usepackage{siunitx}
+\usepackage{enumitem}
+\usepackage{dsfont}
+\usepackage{arydshln}
+
+\newcommand*{\vertbar}{\rule[-1ex]{0.5pt}{2.5ex}}
+\newcommand*{\horzbar}{\rule[.5ex]{2.5ex}{0.5pt}}
+
+
+\usepackage{graphics}
+\allowdisplaybreaks
+
+\usepackage[utf8x]{inputenc}
+\usepackage{bm}
+
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    citecolor = blue,
+    linkcolor=blue,
+    filecolor=magenta,           
+    urlcolor=cyan,
+}
+
+
+\theoremstyle{plain}
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{lem}{Lemma}
+\newtheorem{pro}{Property}
+\newtheorem{cor}{Corollary}
+\newtheorem{ass}{Assumption}
+
+\theoremstyle{definition}
+\newtheorem{prob}{Problem}
+\newtheorem{prop}{Proposition}
+\newtheorem{defn}{Definition}
+\newtheorem{exmp}{Example}
+\newtheorem{rmk}{Remark}
+
+\usepackage{algpseudocode,algorithm}
+\algnewcommand\algorithmicinput{\textbf{Input:}}
+\algnewcommand\algorithmicoutput{\textbf{Output:}}
+\algnewcommand\INPUT{\item[\algorithmicinput]}
+\algnewcommand\OUTPUT{\item[\algorithmicoutput]}
+
+
+
+\usepackage[labelfont=bf]{caption}
+
+\setcounter{table}{1}
+\usepackage{multirow}
+\usepackage{tabularx}
+
+\def\fixme#1#2{\textbf{[FIXME (#1): #2]}}
+
+\def\Holder{\text{H\"{o}lder }}
+
+\newcommand*{\KeepStyleUnderBrace}[1]{%f
+  \mathop{%
+    \mathchoice
+    {\underbrace{\displaystyle#1}}%
+    {\underbrace{\textstyle#1}}%
+    {\underbrace{\scriptstyle#1}}%
+    {\underbrace{\scriptscriptstyle#1}}%
+  }\limits
+}
+\usepackage{mathtools}
+\mathtoolsset{showonlyrefs=true}
+
+\begingroup
+\makeatletter
+\@for\theoremstyle:=definition,remark,plain\do{%
+\expandafter\g@addto@macro\csname th@\theoremstyle\endcsname{%
+\addtolength\thm@preskip\parskip
+}%
+}
+\endgroup
+
+
+\usepackage{hyperref}
+\hypersetup{colorlinks=true}
+\usepackage[parfill]{parskip}
+\usepackage{bm}
+\onehalfspacing
+
+\newcommand{\maxnorm}[1]{\left\lVert#1\right\rVert_{\infty}}
+\newcommand{\Hnorm}[1]{\left\lVert#1\right\rVert_{\tH_\alpha}}
+\newcommand{\nullnorm}[1]{\left\lVert#1\right\rVert}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%             Math Symbols
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%               Bold Math
+\input macros.tex
+\def\refer#1{\emph{\color{blue}#1}}
+\begin{document}
+
+\begin{center}
+{\bf \Large An equivalent formulation of matrix kernels}\\
+Miaoyan Wang, July 30, 2020\\
+\end{center}
+
+For ease of notation, we assume the feature matrices are symmetric in that $\mX=\mX^T$ and $d_1=d_2=d$. The adaptation to non-symmetric matrices are easy to derive. 
+\begin{itemize}
+\item Let $\text{Sym}_d(\mathbb{R})=\{\mX\ \big|\ \mX=\entry{x_{ij}},\ x_{ij}=x_{ji}\in\mathbb{R},\ \text{for all }(i,j)\in[d]\times d\}$ denote the collection of $d$-by-$d$ symmetric matrices with each entry taking values in $\mathbb{R}$. 
+\item Let $\tH$ denote a possibly infinite dimensional Hilbert space.
+\item Let $\tH^{d\times d}=\{\mX\ \big| \ \mX=\entry{x_{ij}},x_{ij}\in\tH,\ \text{for all }(i,j)\in[d]\times d\}$ denote the collection of $d$-by-$d$ matrices with each entry taking value in $\tH$. Similarly, $\text{Sym}_d(\tH)$ denotes the collection of $d$-by-$d$ symmetric matrices defined over $\tH$.
+\end{itemize}
+
+Matrix algebraic operations are carried over from $\mathbb{R}^{d\times d}$ to $\tH^{d\times d}$. The main difference is that the multiplication in $\mathbb{R}$ is replaced by inner product in $\tH$. 
+
+\begin{prop} Let $\mB=\entry{b_{ij}}$ and $\mB'=\entry{b'_{ij}}$ be two matrices in $\tH^{d\times d}$.  Let $\mP=\entry{p_{ij}}\in\mathbb{R}^{d\times r}$ be a real-valued matrix.
+\begin{enumerate}
+\item Sum: $\mB+\mB'=\entry{b_{ij}+b'_{ij}}\in\tH^{d\times d}$.
+\item Inner product: $\langle \mB,\mB'\rangle=\sum_{ij}\langle b_{ij},\ b'_{ij}\rangle \in\mathbb{R}$.
+\item Linear combination: $\mB\mP=\entry{c_{ij}}\in\tH^{d\times r}$, where $c_{ij}=\sum_{s\in[d]}b_{is}p_{sj} \in \tH^2$ for all $(i,j)\in[d]\times[r]$.
+\item Matrix product: $\mB\mB'=\entry{c_{ij}} \in \mathbb{R}^{d\times d}$, where $c_{ij}=\sum_{s\in[d]}\langle b_{is},\ b'_{sj}\rangle$. 
+\end{enumerate}
+\end{prop}
+
+Now we are ready to present the matrix kernel and associated feature mapping. 
+
+{\bf First viewpoint: feature mapping}
+
+Let $\phi\colon \mathbb{R}^d \to \tH$ be a feature mapping associated with a classical kernel $K\colon \mathbb{R}^d\times \mathbb{R}^d\to \mathbb{R}$. Define a feature mapping $\Phi$ over the matrix space
+\begin{align}
+\Phi: \text{Sym}_d(\mathbb{R})&\to \text{Sym}_d(\tH^2)\\
+\mX&\mapsto \Phi(\mX)=\entry{\Phi(\mX)_{ij}},
+\end{align}
+where each element of $\Phi(\mX)$ is a pair of possibly infinite dimensional features.
+\[
+[\Phi(\mX)]_{ij}\stackrel{\text{def}}{=}\begin{cases}(\phi(\mX_{i:}),\ \phi(\mX_{j:})), &\quad \text{if } i\geq j,\\
+[\Phi(\mX)]_{ji}, & \quad \text{if }i< j.
+\end{cases}
+\]
+Note that the entry $f_{ij}$ takes value in $\tH^2$ for all $(i,j)\in[d]\times [d]$. Furthermore, $\Phi(\mX)$ is a symmetric matrix in the sense that $[\Phi(\mX)]_{ij}=[\Phi(\mX)]_{ji}$ for all $(i,j)\in[d]\times [d]$. 
+We propose to consider decision functions $f\colon \text{Sym}_d(\mathbb{R}) \to \mathbb{R}$ using the linear functions with respect to $\Phi(\mX)\in\text{Sym}_d(\tH^2)$,
+\begin{equation}\label{eq:function}
+f(\mX)\stackrel{\text{def}}{=}\langle \mB,\ \Phi(\mX)\rangle, \ \text{where } \mB \in  \text{Sym}_d(\tH^2) \ \text{and } \text{rank}(\mB)\leq r.
+\end{equation}
+Here the parameter matrix $\mB=\entry{b_{ij}}$ is a $d$-by-$d$ symmetric matrix with entries defined in $\tH^2$. Suppose $\mB$ admits low-rank decomposition, $\mB=\mP^T\mC\mP$. The class of functions~\eqref{eq:function} induced by all possible low-rank $\mB$ is
+\begin{align}
+\tF&=\left\{f\colon \mX\mapsto \langle \mC,\ \mP^T\Phi(\mX)\mP \rangle\ \big| \mP\mP^T=\mI,\ \mP\in\mathbb{R}^{d\times r},\ \mC\in \text{Sym}_d(\tH^2)  \right\}\\
+&=\left\{ f\in\text{RKHS generated by $\tK(\mP)$}\ \big|\ \mP\mP^T=\mI,\ \mP\in\mathbb{R}^{d\times r} \right\}\\
+&=\left\{ f\in\text{RKHS generated by $\tK(\mW)$}\ \big|\ \mW \succeq 0,\ \text{rank}(\mW)\leq r\right\},
+\end{align}
+where $\mW=\mP^T\Lambda^2\mP$ for some positive definite diagonal matrix $\Lambda\in\mathbb{R}^{r\times r}$ (see below). 
+
+{\bf Second viewpoint: matrix kernel}
+
+\begin{defn}[Kernel defined in matrix space] Let $K(\cdot,\ \cdot)$ be a classical kernel defined in vector space $\mathbb{R}^d$, and $\mW=\entry{w_{ij}}\in\mathbb{R}^{d\times d}$ be a rank-$r$ semi-positive definite matrix. Then $\mK$ and $\mW$ induce a matrix kernel $\tK$:
+\begin{align}
+\tK \colon\text{Sym}_d(\mathbb{R})\times \text{Sym}_d(\mathbb{R}) &\mapsto \mathbb{R},\\
+(\mX,\mX')&\mapsto\tK(\mX,\mX')= \sum_{i,j\in[d]}w_{ij}K(\mx_i,\mx'_j),
+\end{align}
+where $\mx_i, \mx'_j$ denote the $i$-th and $j$-th columns of $\mX$, $\mX'$, respectively. 
+\end{defn}
+
+Oftentime, the generator kernel $K$ is specified by users, whereas the projection kernel $\mW$ is learned by our algorithm. In particular $\mW\propto \mI_{d\times d}$ corresponds to the classical SVM. We use $\tK=\tK(\mW)$ to denote the reproducing kernel hilbert space (RKHS) induced by $\mW$. 
+
+{\bf Connection to our learning algorithm}
+
+We consider the optimization over the union of RKHS induced by low rank $\mW$: 
+\[
+\max_{f\in\tF(r)}L(f) = \max_{\substack{ \text{rank}(\mW)\leq r,\\ \mW \succeq 0}}\max_{f\in \text{RKHS}(\tK(\mW))}L(f).
+\]
+
+\end{document}

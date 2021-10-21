@@ -1,0 +1,345 @@
+\documentclass[11pt]{article}
+\usepackage{lscape}
+\usepackage{amsmath,amssymb}
+\usepackage{amsthm}
+\usepackage{float}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{comment}
+\usepackage{bm}
+\usepackage{gensymb}
+\allowdisplaybreaks[4]
+\usepackage{geometry}
+\geometry{margin=1in}
+\usepackage{setspace}
+\usepackage{siunitx}
+\usepackage{enumitem}
+\usepackage{dsfont}
+\usepackage{arydshln}
+\usepackage{listings}
+\usepackage[svgnames]{xcolor}
+\definecolor{lbcolor}{rgb}{0.9,0.9,0.9}  
+\lstset{language=R,
+   backgroundcolor = \color{lbcolor},
+    basicstyle=\small\ttfamily,
+    stringstyle=\color{DarkGreen},
+    otherkeywords={0,1,2,3,4,5,6,7,8,9},
+    morekeywords={TRUE,FALSE},
+    deletekeywords={data,frame,length,as,character},
+    keywordstyle=\color{blue},
+    commentstyle=\color{DarkGreen},
+}
+
+\newcommand*{\vertbar}{\rule[-1ex]{0.5pt}{2.5ex}}
+\newcommand*{\horzbar}{\rule[.5ex]{2.5ex}{0.5pt}}
+
+
+\usepackage{graphics}
+\allowdisplaybreaks
+
+\usepackage[utf8x]{inputenc}
+\usepackage{bm}
+
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    citecolor = blue,
+    linkcolor=blue,
+    filecolor=magenta,           
+    urlcolor=cyan,
+}
+
+
+\theoremstyle{plain}
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{lem}{Lemma}
+\newtheorem{pro}{Property}
+\newtheorem{cor}{Corollary}
+\newtheorem{ass}{Assumption}
+
+\theoremstyle{definition}
+\newtheorem{prob}{Problem}
+\newtheorem{prop}{Proposition}
+\newtheorem{defn}{Definition}
+\newtheorem{exmp}{Example}
+\newtheorem{rmk}{Remark}
+\newtheorem{con}{Conjecture}
+
+\usepackage{algpseudocode,algorithm}
+\algnewcommand\algorithmicinput{\textbf{Input:}}
+\algnewcommand\algorithmicoutput{\textbf{Output:}}
+\algnewcommand\INPUT{\item[\algorithmicinput]}
+\algnewcommand\OUTPUT{\item[\algorithmicoutput]}
+
+
+
+\usepackage[labelfont=bf]{caption}
+
+\setcounter{table}{1}
+\usepackage{multirow}
+\usepackage{tabularx}
+
+\def\fixme#1#2{\textbf{[FIXME (#1): #2]}}
+
+\def\Holder{\text{H\"{o}lder }}
+
+\newcommand*{\KeepStyleUnderBrace}[1]{%f
+  \mathop{%
+    \mathchoice
+    {\underbrace{\displaystyle#1}}%
+    {\underbrace{\textstyle#1}}%
+    {\underbrace{\scriptstyle#1}}%
+    {\underbrace{\scriptscriptstyle#1}}%
+  }\limits
+}
+\usepackage{mathtools}
+\mathtoolsset{showonlyrefs=true}
+
+\begingroup
+\makeatletter
+\@for\theoremstyle:=definition,remark,plain\do{%
+\expandafter\g@addto@macro\csname th@\theoremstyle\endcsname{%
+\addtolength\thm@preskip\parskip
+}%
+}
+\endgroup
+
+
+\usepackage{hyperref}
+\hypersetup{colorlinks=true}
+\usepackage[parfill]{parskip}
+\usepackage{bm}
+\onehalfspacing
+
+\newcommand{\maxnorm}[1]{\left\lVert#1\right\rVert_{\infty}}
+\newcommand{\Hnorm}[1]{\left\lVert#1\right\rVert_{\tH_\alpha}}
+\newcommand{\nullnorm}[1]{\left\lVert#1\right\rVert}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%             Math Symbols
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%               Bold Math
+\input macros.tex
+\def\refer#1{\emph{\color{blue}#1}}
+\begin{document}
+
+\begin{center}
+{\bf \Large Algorithm for bilinear maps}\\
+Miaoyan Wang, Aug 21, 2020\\
+\end{center}
+\section{Notation} 
+\begin{enumerate}
+\item $\mathbb{O}(d,r):=\{\mP\in\mathbb{R}^{d\times r}\colon \mP^T\mP=\mI_r\}$, the collection of $d$-by-$r$ matrices whose columns are orthonormal. When no confusion arises, I use the term ``projection matrix'' to denote either the matrix $\mP\mP^T\in\mathbb{R}^{d\times d}$ or the matrix $\mP\in\mathbb{R}^{d\times r}$.
+\item $\tK^{\text{row}}(i,j,\mX,\mX') : =\langle \Phi(\mX_{i:}),\ \Phi(\mX'_{j:}) \rangle $ denotes the value of row kernel evaluated at the vector pair, ($i$-th row of matrix $\mX$, $j$-th row of matrix $\mX'$). 
+\item I sometimes use the shorthand $\tK^{\text{row}}(i,j)$ to denote $\tK^{\text{row}}(i,j,\mX,\mX')$, when the feature pair $(\mX, \mX')$ is clear given the contexts. Note that $\tK^{\text{row}}(i,j)$ can be calcualted without explicit feature mapping. Similar convention for $\tK^{\text{col}}(i,j,\mX,\mX')$.
+\item Let $\mW^{\text{row}}=\mP_r\mP^T_r=\entry{w^{\text{row}}_{ij}}\in\mathbb{R}^{d_1\times d_1}$ and $\mW^{\text{col}}=\mP_c\mP^T_c=\entry{w^{\text{col}}_{ij}}\in\mathbb{R}^{d_2\times d_2}$ denote the row- and column-wise projection matrices, respectively.
+\end{enumerate}
+
+\section{Algorithm based on bilinear maps}
+Consider the bilinear mapping,
+\begin{align}
+\Phi\colon \mathbb{R}^{d_1\times d_2}& \to (\tH_r\times \tH_c)^{d_1\times d_2}\\
+\mX& \mapsto [\Phi(\mX)_{ij}],\quad \text{where}\ \Phi(\mX)_{ij}\stackrel{\text{def}}{=}(\phi_c(\mX_{i:}),\ \phi_r(\mX_{:j})).
+\end{align}
+
+Primal problem:
+\begin{equation}
+\boxed{
+\begin{aligned}\label{eq:opt}
+\min_{\mP_r, \mP_c}\min_{\mC}&\quad {1\over 2}\FnormSize{}{\mC}^2 + c\sum_{i=1}^ n \xi_i,\\
+\text{subject to }&\quad y_i\langle \mP_r\mC\mP_c^T,\ \Phi(\mX_i)\rangle \leq 1-\xi_i \text{ and}\ \xi_i\geq 0,\ i=1,\ldots,n.
+\end{aligned}
+}
+\end{equation}
+Parameters in the primal problem: $(\mP_r, \mP_c, \mC)$, where $\mP_r\in\mathbb{O}(d_1,r_1)$, $\mP_c\in\mathbb{O}(d_2,r_2)$, and $\mC=\entry{(\mc^{\text{row}}_i,\ \mc^{\text{col}}_j)} \in (\tH_r\times \tH_c)^{r_1\times r_2}$ is the ``core matrix'' consisting of linear coefficients. 
+
+
+\begin{enumerate}
+\item Update $\mC$, given $(\mP_r, \mP_c)$. 
+
+\[
+\boxed{
+\text{implicit update }\mC\leftarrow \sum_{i}\alpha_iy_i\mP^T_r\Phi(\mX_i)\mP_c.
+}
+\]
+\begin{itemize}
+\item Saved quantities: dual variables $\boldsymbol{\alpha}\in\mathbb{R}^n$.
+\item Auxiliary  quantities: kernel $\tK(\mX,\mX')$ specified below.
+\item Objective value: objective value for the dual problem. 
+\end{itemize}
+
+Details:  We use kernel trick to solve for $\boldsymbol{\alpha}$ without explicit feature mapping. Given the projections $(\mP_r, \mP_c)$, the optimization~\eqref{eq:opt} is a standard SVM with kernel
+\begin{align}\label{eq:kernel}
+\tK(\mX,\mX')&=\langle \mP^T_r\Phi(\mX)\mP_c,\ \mP^T_r\Phi(\mX')\mP_c\rangle\notag\\
+&= (\sum_{i,j}w^{\text{col}}_{ij})( \sum_{i,j} w^{\text{row}}_{ij}K^{\text{row}}(i,j))+(\sum_{i,j}w^{\text{row}}_{ij})( \sum_{i,j} w^{\text{col}}_{ij}K^{\text{col}}(i,j)).
+\end{align}
+for all feature pairs $(\mX,\mX')$. Here I have used the shorthand $K^{\text{row}}(i,j)$ to denote the value of row kernel evaluated on the $i$-th row of $\mX$ and $j$-th row of $\mX'$. 
+
+\begin{rmk}[Computational consideration]
+We can compute the summations in~\eqref{eq:kernel} without explicit loop. In particular, both identities hold: $\sum_{i,j}w^{\text{col}}_{ij}=\vnormSize{}{\mathbf{1}^T\mP_c}^2$ and $\sum_{i,j} w^{\text{row}}_{ij}K^{\text{row}}(i,j)=\text{trace}(\mW^T\mK)$, where $\mK\leftarrow \entry{K^{\text{row}}(i,j,\mX,\mX')}$ is a pre-stored matrix (or array, if we go through all possible feature pairs $(\mX,\mX')$).
+\end{rmk}
+
+\item Update $\mP^{\text{new}}_r$, given $(\mC, \mP_c)$. 
+\[
+\boxed{
+\begin{aligned}
+\text{explicit update }\tilde \mP^{\text{new}}_r&\leftarrow \sum_{i}\beta_iy_i \Phi(\mX_i)\mP_c\mC^T=\sum_{i,j}\beta_i\alpha_jy_i y_j \KeepStyleUnderBrace{\color{red}\Phi(\mX_i)\mP_c\mP^T_c\Phi^T(\mX_j)}_{\text{$d_1$-by-$d_1$ matrix over $\mathbb{R}$}}\mP_r\\
+\text{normalize } \mP^{\text{new}}_r &\leftarrow \text{QR decomposition of $\tilde \mP^{\text{new}}_r$}.
+\end{aligned}
+}
+\]
+\begin{itemize}
+\item Saved quantities: $\mP^{\text{new}}\in\mathbb{O}(d_1,r_1)$.
+\item Auxiliary quantities: matrix $\Phi(\mX_i)\mP_c\mP^T_c\Phi^T(\mX_j)$, dual variables $\boldsymbol{\beta}\in\mathbb{R}^n$.
+\item Objective value: objective value for the dual problem. 
+\end{itemize}
+
+Details: for each feature pair $(i,j)\in[n]^2$, we compute the matrix $\Phi(\mX_i)\mP_c\mP^T_c\Phi^T(\mX_j)$ without explicit feature mapping,
+\begin{align}\label{eq:identity}
+\KeepStyleUnderBrace{\color{red}\Phi(\mX_i)\mP_c\mP^T_c\Phi^T(\mX_j)}_{=:\mM}&=( \sum_{s,s'}w^{\text{col}}_{ss'}) 
+\begin{bmatrix}
+K^{\text{row}}(1,1,\mX_i,\mX_j)&\cdots&K^{\text{row}}(1,d_1,\mX_i,\mX_j)\\
+\vdots&\vdots&\vdots\\
+K^{\text{row}}(d_1,1,\mX_i,\mX_j)&\cdots&K^{\text{row}}(d_1,d_1,\mX_i,\mX_j)
+\end{bmatrix}
++\notag \\
+& \quad \quad \left(\sum_{s,s'}w^{\text{col}}_{ss'}K^{\text{col}}(s,s',\mX_i,\mX_j)\right)
+\begin{bmatrix}
+1&1&\cdots&1\\
+\vdots&\vdots&\vdots&\vdots\\
+1&1&\cdots&1
+\end{bmatrix},
+\end{align}
+where $K^{\text{row}}(s,s',\mX_i,\mX_j)$ denotes the value of row kernel value evaluated on the $s$-th row  of $\mX_i$ and $s'$-th row of $\mX_j$, and likewise for $K^{\text{col}}(s,s',\mX_i,\mX_j)$.
+
+The coefficient $\boldsymbol{\beta}$ is obtained from a standard SVM with kernel
+\begin{align}
+\tK(\mX,\mX')&=\text{trace}(\KeepStyleUnderBrace{\Phi(\mX)\mP_c\mC^T}_{=:\mA}(\KeepStyleUnderBrace{\mC\mC^T}_{=:\mB})^{-1}\KeepStyleUnderBrace{\mC\mP^T_c\Phi^T(\mX')}_{=:\mA^T}), 
+\end{align}
+for feature pair $(\mX,\mX')$, where
+\begin{align}
+\mB&=\mC\mC^T=\sum_{i,j}\alpha_i\alpha_jy_iy_j\mP^T_r{\color{red}\Phi(\mX_i)\mP_c\mP^T_c\Phi^T(\mX_j)}\mP_r,\\
+\mA&=\Phi(\mX)\mP_c\mC^T=\sum_i \alpha_iy_i{\color{red}\Phi(\mX)\mP_c\mP^T_c\Phi^T(\mX_i)}\mP_r.
+\end{align}
+are calculated using~\eqref{eq:identity}.
+
+\item Update $\mC^{\text{new}}$, given $(\mP^{\text{new}}_r, \mP_c)$.
+
+\item Update $\mP_c$, given $(\mC^{\text{new}},\mP^{\text{new}}_r)$; denoted by $(\mC,\mP_r)$ in the following formula.
+\[
+\boxed{
+\begin{aligned}
+\text{explicitle update }\mP^{\text{new}}_c&\leftarrow \sum_{i}\gamma_iy_i \Phi^T(\mX_i)\mP_r\mC=\sum_{i,j}\gamma_i\alpha_jy_i y_j \KeepStyleUnderBrace{\color{red}\Phi^T(\mX_i)\mP_r\mP^T_r\Phi(\mX_j)}_{\text{$d_2$-by-$d_2$ matrix over $\mathbb{R}$}}\mP_c\\
+\text{normalize } \mP^{\text{new}}_c &\leftarrow \text{QR decomposition of $\tilde \mP^{\text{new}}_c$}.
+\end{aligned}
+}
+\]
+The auxiliary quantities, $\Phi^T(\mX_i)\mP_r\mP^T_r\Phi(\mX_j)$ and $\boldsymbol{\gamma}$, are calculated similarly as in step 2. 
+
+\end{enumerate}
+
+
+
+
+
+
+\section{Outputs}
+\begin{enumerate}
+\item Convergence criterum? Objective value in the dual problem.
+
+\item How to read off the decision function from the algorithm?
+\begin{align}\label{eq:function}
+f(\mX_{\text{new}}) &=\langle  \mP^T_r\Phi(\mX_{\text{new}})\mP_c, \ \sum_i\alpha_iy_i\mP^T_r\Phi(\mX_i)\mP_c\rangle \notag \\
+%&=\langle \Phi(\mX_{\text{new}}),\  \mP_r\KeepStyleUnderBrace{\mP^T_r \left(\sum_i \alpha_iy_i\Phi(\mX_i)\right) \mP_c}_{\text{core tensor $\mC$ in the primal problem}}\mP^T_c  \rangle\notag \\
+&=\sum_i \alpha_i y_i \left\{ \left(\sum_{s,s'}w^{\text{col}}_{ss'}\right)\left(\sum_{s,s'}w^{\text{row}}_{ss'}K^{\text{row}}(s,s',\mX_i,\mX_{\text{new}})\right)+\right.\notag \\
+&\quad\quad\quad\quad\quad\ \left. \left(\sum_{s,s'}w^{\text{row}}_{ss'}\right)\left(\sum_{s,s'}w^{\text{col}}_{ss'}K^{\text{col}}(s,s',\mX_i,\mX_{\text{new}})\right)\right\}.
+\end{align}
+
+\item How to estimate the intercept in the primal problem?
+\[
+\hat b_0=\argmin_{b_0\in\mathbb{R}}\left\{\sum_{i=1}^n(1-y_if(\mX_i)-y_ib_0)_{+}\right\}.
+\]
+
+\item Penalty in the primal problem?
+\[
+\FnormSize{}{\mC}^2=\sum_{i,j}\alpha_i\alpha_jy_iy_j\text{trace}(\Phi(\mX_i)\mP_c\mP^T_c\Phi^T(\mX_j)\mP_r\mP^T_r) = 
+(\boldsymbol{\alpha}\circ \my)^T\entry{\tK(\mX_i,\mX_j)}(\boldsymbol{\alpha}\circ \my),
+\]
+where $\entry{\tK(\mX_i,\mX_j)}\in\mathbb{R}^{n\times n}$ is defined in~\eqref{eq:kernel} and $\boldsymbol{\alpha}\in\mathbb{R}^n$ is the dual parameter in step 1 or 3. We omit the explicit expression of $\FnormSize{}{\mC}^2$ because it is not needed in our algorithm. 
+
+%\item Rank selection? Row rank $\equiv$ column rank for finite-dimensional Hilbert space. For infinite-dimensional Hilbert space (e.g.\ Gaussian kernel), not necessarily equal
+\end{enumerate}
+
+\section{Sanity check}
+\begin{enumerate}
+\item Monotonic decreasing in objective value? Yes. 
+
+\item Consistent with earlier linear kernel algorithm, smmk(....)? Yes.
+
+\item Consistent with one-way linear mapping? Yes.
+
+\begin{lstlisting}[language=R]
+## generate data with linear kernel
+source("SMMfunctions.R")
+set.seed(1818)
+m = 3; n = 3; r = 1; N = 100; b0 = 0.1
+result = gendat(m,n,r,N,b0)
+X = result$X; y = result$y; dat = result$dat;B = result$B
+X_t=X ## transform
+y_true=rep(0,N)
+for(i in 1:N){
+X_t[[i]]=t(X[[i]])
+y_true[i]=sum(B*X[[i]])
+}
+svd(B)$v[,1] ## true col projection
+svd(B)$u[,1] ## true row projection
+
+
+## Algorithm 1: earlier algorithm
+source("SMMKfunctions.R")
+old= smmk(X,y,r=1,kernel = "linear");
+old$V ## est col projection
+old_t= smmk(X_t,y,r=1,kernel = "linear");
+old_t$V ## est row projection
+
+## Algorithm 2: one-way map. Separate row/column projection.
+source("SMMKfunctions_bilinear.R")
+new = smmk_new(X,y,kernel_row="const",kernel_col="linear",
+r=c(1,1),cost=10/3); 
+new$P_col ## est col projection; similar to earlier old$V
+new = smmk_new(X,y,kernel_row="linear",kernel_col="const",
+r=c(1,1),cost=10/3);
+new$P_row ## est row projection; similar to earlier old_t$V
+
+
+### Algorithm 2: two-way map. Simultaneous row/column projections.
+new_double = smmk_new(X,y,kernel_row="linear",kernel_col="linear",
+r=c(1,1),cost=10,rep=1); 
+plot(new_double$obj)
+new_double$P_col  ## est col projection
+new_double$P_row ## est row projection
+plot(new_double$fitted,y_true)
+
+### Algorithm 2: two-way map + transform. Results should be consistent. 
+new_double  = smmk_new(X_t,y,kernel_row="linear",kernel_col="linear",
+r=c(1,1),cost=10,rep=1); 
+new_double$P_row ## est col projection
+new_double$P_col ## est row projeciotn
+plot(new_double$fitted,y_true)
+
+\end{lstlisting}
+
+Sanity check under linear kernel, $d=3$,  $r=1$, $N=100$.
+
+\begin{tabular}{c|ccc}
+Parameters & Truth & Symmetric trick (SMMK) & Bilinear map\\
+\hline
+col projection & $(0.63,0.33,0.70)$ & $(0.66,0.33,0.67)$ & $(0.70, 0.39,0.58)$\\
+&&&$(0.64, 0.53,0.55)$\\
+\hline
+row projection & $(-0.54,0.83,0.08)$ & $(-0.55, 0.83, 0.06)$&$(-0.48,0.87,0.09)$\\
+&&&$(-0.53,0.84,0.07)$\\
+\end{tabular}
+
+\end{enumerate}
+\end{document}

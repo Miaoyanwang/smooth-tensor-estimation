@@ -1,0 +1,158 @@
+\documentclass[11pt]{article}
+\usepackage{lscape}
+\usepackage{amsmath,amssymb}
+\usepackage{amsthm}
+\usepackage{float}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{comment}
+\usepackage{bm}
+\usepackage{gensymb}
+\allowdisplaybreaks[4]
+\usepackage{geometry}
+\geometry{margin=1in}
+\usepackage{setspace}
+\usepackage{siunitx}
+\usepackage{enumitem}
+\usepackage{dsfont}
+\usepackage{arydshln}
+
+\newcommand*{\vertbar}{\rule[-1ex]{0.5pt}{2.5ex}}
+\newcommand*{\horzbar}{\rule[.5ex]{2.5ex}{0.5pt}}
+
+
+\usepackage{graphics}
+\allowdisplaybreaks
+
+\usepackage[utf8x]{inputenc}
+\usepackage{bm}
+
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    citecolor = blue,
+    linkcolor=blue,
+    filecolor=magenta,           
+    urlcolor=cyan,
+}
+
+
+\usepackage{amsthm}
+\theoremstyle{definition}
+\newtheorem{thm}{Theorem}
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{pro}[thm]{Property}
+\newtheorem{cor}[thm]{Corollary}
+\newtheorem{ass}{Assumption}
+\newtheorem{prob}{Problem}
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem{defn}{Definition}
+\newtheorem{exmp}{Example}
+\newtheorem{rmk}{Remark}
+
+\usepackage{algpseudocode,algorithm}
+\algnewcommand\algorithmicinput{\textbf{Input:}}
+\algnewcommand\algorithmicoutput{\textbf{Output:}}
+\algnewcommand\INPUT{\item[\algorithmicinput]}
+\algnewcommand\OUTPUT{\item[\algorithmicoutput]}
+
+
+\def\sign{\textup{sgn}}
+\def\srank{\textup{srank}}
+\def\rank{\textup{rank}}
+\def\caliP{\mathscr{P}_{\textup{sgn}}}
+\def\risk{\textup{Risk}}
+
+\usepackage[labelfont=bf]{caption}
+
+\setcounter{table}{1}
+\usepackage{multirow}
+\usepackage{tabularx}
+
+\def\fixme#1#2{\textbf{[FIXME (#1): #2]}}
+
+\def\Holder{\text{H\"{o}lder }}
+
+\newcommand*{\KeepStyleUnderBrace}[1]{%f
+  \mathop{%
+    \mathchoice
+    {\underbrace{\displaystyle#1}}%
+    {\underbrace{\textstyle#1}}%
+    {\underbrace{\scriptstyle#1}}%
+    {\underbrace{\scriptscriptstyle#1}}%
+  }\limits
+}
+\usepackage{mathtools}
+\mathtoolsset{showonlyrefs=true}
+
+\begingroup
+\makeatletter
+\@for\theoremstyle:=definition,remark,plain\do{%
+\expandafter\g@addto@macro\csname th@\theoremstyle\endcsname{%
+\addtolength\thm@preskip\parskip
+}%
+}
+\endgroup
+
+
+\usepackage{hyperref}
+\hypersetup{colorlinks=true}
+\usepackage[parfill]{parskip}
+\usepackage{bm}
+\onehalfspacing
+
+\newcommand{\maxnorm}[1]{\left\lVert#1\right\rVert_{\infty}}
+\newcommand{\Hnorm}[1]{\left\lVert#1\right\rVert_{\tH_\alpha}}
+\newcommand{\nullnorm}[1]{\left\lVert#1\right\rVert}
+\def\trueB{\mB^{\text{true}}}
+\def\newX{\mX_{\textup{new}}}
+\def\newy{y_{\textup{new}}}
+\def\sign{\textup{sign}}
+\def\bayesf{f_{\textup{bayes}}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%             Math Symbols
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%               Bold Math
+\input macros.tex
+\def\refer#1{\emph{\color{blue}#1}}
+\begin{document}
+Define the gap that quantifies the difference for clustering $k$-th layer into cluster $a$ to cluster $b$.
+Define the precision matrix $\Omega_k$
+\[
+\Omega_k(a)=\Theta_0+u_k\Theta_a
+\]
+\[
+\Delta_k(a,b):=\Omega_k(a)-\Omega_k(b)=u_k(\Theta_a-\Theta_b),\quad \Delta_{\min}=\min_{k\in[d]}\min_{a\neq b\in[R]}\FnormSize{}{\Delta_{k}(a,b)}.
+\]
+\[
+(\hat \mu^{\text{oracle}}, \hat \Theta^{\text{oracle}})=\min_{\mOmega\in\tP(r)}Q(\Omega; z^{\text{true}})+\lambda\text{Pen}(\Theta)
+\]
+\[
+\text{Err}_{\text{oracle}}}(\delta)=\sum_{k\in[d]}\sum_{b\in[r]/z_k}\FnormSize{}{\Delta_k(z_k,b)}^2\mathds{1}\left\{\FnormSize{}{\Delta_k(z_k,b)}^2\leq -(1+\delta)\big\langle \varepsilon_k,\ \hat \Delta^{\text{oracle}}_k(z_k,b)\big\rangle \right\}
+\]
+The following lemma shows that, once the true clustering is provided, the oracle gap statistics has weak correlation with the noise. 
+\begin{lem} For any $\delta$ sufficiently small. Under the exclusive events, with probability $1-\exp(-\Delta_{\min})$,
+\[
+\text{Err}_{\text{oracle}}}(\delta)\lesssim d\exp(-(1-\delta)\Delta^2_{\min}).
+\]
+\end{lem}
+\begin{proof}
+\begin{align}
+&\mathbb{P}\left\{\big\langle \varepsilon_k,\ \hat \Delta^{\text{oracle}}_k(z_k,b)\big\rangle \leq-(1-\delta)\FnormSize{}{\Delta_k(z_k,b)}^2 \right\}\\
+\leq\ &\KeepStyleUnderBrace{\mathbb{P}\left\{\big\langle \varepsilon_k,\ \Delta_k(z_k,b)\big\rangle \leq -(1-2\delta)\FnormSize{}{\Delta_k(z_k,b)}^2\right\}}_{:=I}+ \KeepStyleUnderBrace{\mathbb{P}\left\{\big\langle \varepsilon_k,\ \hat \Delta^{\text{oracle}}_k(z_k,b)-\Delta_k(z_k,b)\big\rangle \leq- \delta \FnormSize{}{\Delta_k(z_k,b)}^2 \right\}}_{:=II}.
+\end{align}
+For the first term, based on the uniform concentration of sample covariance, we have
+\begin{align}
+I\leq \mathbb{P}\left\{\mnormSize{}{\varepsilon_k}\geq {1-2\delta\over p}\FnormSize{}{\Delta_k(a,b)} \right\}\lesssim \exp\left({n(1-2\delta)^2\over p^2}\FnormSize{}{\Delta_k(a,b)}^2\right).
+\end{align}
+For the second term, 
+\[
+
+\]
+\end{proof}
+
+\bibliographystyle{unsrt}
+\bibliography{tensor_wang}
+
+\end{document}

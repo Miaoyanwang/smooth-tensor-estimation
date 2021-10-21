@@ -18,21 +18,21 @@
 
 \LoadClass[pmlr]{jmlr}
 
-\jmlrvolume{vol 125}
-\jmlryear{2020}
-\jmlrproceedings{PMLR}{Manuscript}
+\jmlrvolume{}
+\jmlryear{}
+\jmlrproceedings{PMLR}{}
 
 \ifanonsubmission
  \newcommand{\coltauthor}[1]{}
  \author{author names withheld}
  \editor{Under Review for COLT 2020}
- \jmlrworkshop{Manuscript}
+ \jmlrworkshop{33rd Annual Conference on Learning Theory}
  \renewcommand{\acks}[1]{}
 \else
  \newcommand{\coltauthor}[1]{\author{#1}}
  \iffinalsubmission
   \editors{}
-  \jmlrworkshop{Manuscript}
+  \jmlrworkshop{}
  \fi
 \fi
 

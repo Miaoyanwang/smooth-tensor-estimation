@@ -1,0 +1,264 @@
+\documentclass[11pt]{article}
+\usepackage{setspace}
+\usepackage{amsmath,amssymb}
+\usepackage{amsthm}
+\usepackage{fancybox}
+\usepackage{url}
+\usepackage{enumitem}
+\usepackage{multirow}
+\usepackage{color}
+\usepackage{graphicx}
+\usepackage{setspace}
+\usepackage{comment}
+\usepackage{bm}
+\usepackage{mathtools}
+\mathtoolsset{showonlyrefs=true}
+
+\usepackage{natbib}
+\usepackage{xr}
+
+\usepackage{setspace}
+\usepackage{lscape}
+\usepackage{amsmath,amssymb}
+\usepackage{amsthm}
+\usepackage{float}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{comment}
+\usepackage{bm}
+\usepackage{gensymb}
+\allowdisplaybreaks[4]
+\usepackage{geometry}
+\geometry{margin=1in}
+\usepackage{setspace}
+\usepackage{siunitx}
+\usepackage{enumitem}
+\usepackage{dsfont}
+
+\usepackage{graphics}
+
+
+\usepackage[utf8x]{inputenc}
+\usepackage{bm}
+
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    citecolor = blue,
+    linkcolor=blue,
+    filecolor=magenta,           
+    urlcolor=cyan,
+}
+
+
+\theoremstyle{plain}
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{lem}{Lemma}
+\newtheorem{conjecture}{Conjecture}
+\newtheorem{prop}{Proposition}
+\newtheorem{pro}{Property}
+\newtheorem{cor}{Corollary}
+\newtheorem{ass}{Assumption}
+
+\theoremstyle{definition}
+\newtheorem{defn}{Definition}
+\newtheorem{exmp}{Example}
+\newtheorem{rmk}{Remark}
+
+\usepackage{algpseudocode,algorithm}
+\algnewcommand\algorithmicinput{\textbf{Input:}}
+\algnewcommand\algorithmicoutput{\textbf{Output:}}
+\algnewcommand\INPUT{\item[\algorithmicinput]}
+\algnewcommand\OUTPUT{\item[\algorithmicoutput]}
+
+
+
+%\usepackage[labelfont=bf]{caption}
+
+\setcounter{table}{1}
+\usepackage{multirow}
+\usepackage{tabularx}
+
+\def\fixme#1#2{\textbf{[FIXME (#1): #2]}}
+
+ 
+
+\newcommand*{\KeepStyleUnderBrace}[1]{%f
+  \mathop{%
+    \mathchoice
+    {\underbrace{\displaystyle#1}}%
+    {\underbrace{\textstyle#1}}%
+    {\underbrace{\scriptstyle#1}}%
+    {\underbrace{\scriptscriptstyle#1}}%
+  }\limits
+}
+\usepackage{mathtools}
+\mathtoolsset{showonlyrefs=true}
+
+
+\usepackage{hyperref}
+\hypersetup{colorlinks=true}
+\usepackage[parfill]{parskip}
+\usepackage{bm}
+\onehalfspacing
+
+
+\usepackage{stmaryrd}
+\newtheorem{Example}{Example}  
+\newtheorem{Definition}{Definition}
+\newtheorem{Theorem}{Theorem}
+\newtheorem{Assumption}{Assumption}
+\newtheorem{Proposition}{Proposition}
+\newtheorem{Conjecture}{Conjecture}
+
+\newtheorem{Lemma}{Lemma}
+\newtheorem{Remark}{Remark}
+\newtheorem{Corollary}{Corollary}
+
+
+\def\entry#1{\llbracket #1 \rrbracket}
+\newcommand{\subscript}[2]{$#1 _ #2$}
+\newcommand{\cC}{\mathcal{C}}
+\newcommand{\cD}{\mathcal{D}}
+\newcommand{\cS}{\mathcal{S}}
+\newcommand{\cT}{\mathcal{T}}
+\newcommand{\cO}{\mathcal{O}}
+\newcommand{\cP}{\mathcal{P}}
+\newcommand{\cU}{\mathcal{U}}
+\newcommand{\cV}{\mathcal{V}}
+\newcommand{\Ra}{{\mathcal{R}}}
+\newcommand{\Null}{{\mathcal{N}}}
+\newcommand{\Range}{{\mathcal{R}}}
+\newcommand{\cI}{{\mathcal{I}}}
+\newcommand{\cJ}{{\mathcal{J}}}
+\renewcommand{\cU}{{\mathcal{U}}}
+\renewcommand{\cV}{{\mathcal{V}}}
+\newcommand{\cA}{{\mathcal{A}}}
+\newcommand{\cB}{{\mathcal{B}}}
+\newcommand{\cE}{{\mathcal{E}}}
+\newcommand{\cF}{{\mathcal{F}}}
+\newcommand{\cG}{{\mathcal{G}}}
+\newcommand{\cW}{{\mathcal{W}}}
+\newcommand{\cX}{{\mathcal{X}}}
+\newcommand{\cY}{{\mathcal{Y}}}
+\newcommand{\cZ}{{\mathcal{Z}}}
+\newcommand{\tF}{\textrm{F}}
+
+\newcommand{\br}{{\mathbf{r}}}
+\newcommand{\bp}{{\mathbf{p}}}
+\newcommand{\bs}{{\mathbf{s}}}
+
+\newcommand{\0}{{\mathbf{0}}}
+\newcommand{\1}{{\mathbf{1}}}
+\renewcommand{\a}{{\mathbf{a}}}
+\renewcommand{\b}{{\mathbf{b}}}
+\newcommand{\e}{{\mathbf{e}}}
+\newcommand{\f}{{\mathbf{f}}}
+\renewcommand{\u}{{\mathbf{u}}}
+\renewcommand{\v}{{\mathbf{v}}}
+\renewcommand{\r}{{\boldsymbol{r}}}
+\newcommand{\p}{{\boldsymbol{p}}}
+\newcommand{\x}{{\mathbf{x}}}
+\newcommand{\y}{{\mathbf{y}}}
+\newcommand{\z}{{\mathbf{z}}}
+\newcommand{\X}{{\mathbf{X}}}
+\newcommand{\B}{{\mathbf{B}}}
+\newcommand{\C}{{\mathbf{C}}}
+\newcommand{\D}{{\mathbf{D}}}
+\newcommand{\I}{{\mathbf{I}}}
+\newcommand{\M}{{\mathbf{M}}}
+\newcommand{\N}{{\mathbf{N}}}
+\newcommand{\E}{{\mathbf{E}}}
+\renewcommand{\P}{{\mathbf{P}}}
+\newcommand{\Q}{{\mathbf{Q}}}
+\newcommand{\R}{{\mathbf{R}}}
+\renewcommand{\S}{{\mathbf{S}}}
+\newcommand{\U}{{\mathbf{U}}}
+\newcommand{\V}{{\mathbf{V}}}
+\newcommand{\Var}{{\rm Var}}
+\newcommand{\Corr}{{\rm Corr}}
+\newcommand{\Cov}{{\rm Cov}}
+\newcommand{\W}{{\mathbf{W}}}
+\newcommand{\A}{{\mathbf{A}}}
+\newcommand{\Y}{{\mathbf{Y}}}
+\newcommand{\Z}{{\mathbf{Z}}}
+
+\newcommand{\todo}[1]{{\textcolor{red}{[#1]}}}
+\newcommand{\RH}[1]{{\textcolor{blue}{[RH: #1]}}}
+
+\newcommand{\tX}{{\mathbf{\tilde{X}}}}
+\newcommand{\tu}{{\mathbf{\tilde{u}}}}
+\newcommand{\tv}{{\mathbf{\tilde{v}}}}
+
+\newcommand{\Proj}{{\mathbb{P}}}
+\newcommand{\Poisson}{{\rm Poisson}}
+
+\newcommand{\bX}{{\mathbf{\bar{X}}}}
+\newcommand{\by}{{\mathbf{\bar{y}}}}
+
+\newcommand{\cR}{{\cal R}}
+\newcommand{\cN}{{\cal N}}
+
+\newcommand{\bbeta}{\boldsymbol{\beta}}
+\newcommand{\bvarepsilon}{\boldsymbol{\varepsilon}}
+\newcommand{\bOmega}{\boldsymbol{\Omega}}
+\newcommand{\bDelta}{\boldsymbol{\Delta}}
+\newcommand{\Bphi}{\boldsymbol{\phi}}
+\newcommand{\Bpsi}{\boldsymbol{\psi}}
+\newcommand{\Bdelta}{\boldsymbol{\delta}}
+
+\newcommand{\mean}{{\rm mean}}
+\newcommand{\rank}{{\rm rank}}
+\newcommand{\var}{{\rm var}}
+\newcommand{\SSigma}{\boldsymbol{\Sigma}}
+\newcommand{\tr}{{\rm tr}}
+\newcommand{\CV}{\operatorname{\rm CV}}
+\newcommand{\GCV}{\operatorname{\rm GCV}}
+\newcommand{\diag}{{\rm diag}}
+\newcommand{\poly}{{\rm poly}}
+\newcommand{\Trun}{{\rm Trun}}
+\newcommand{\SVD}{{\rm SVD}}
+\newcommand{\VEC}{{\rm Vec}}
+\newcommand{\Logit}{{\rm Logit}}
+
+\newcommand{\pnorm}[1]{{[\![}#1{]\!]}}
+\newcommand{\plangle}{{\langle\!\langle}}
+\newcommand{\prangle}{{\rangle\!\rangle}}
+\newcommand{\bbR}{\mathbb{R}}
+\newcommand{\bbI}{\mathbb{I}}
+\newcommand{\bbN}{\mathbb{N}}
+\newcommand{\bbO}{\mathbb{O}}
+\newcommand{\bbP}{\mathbb{P}}
+\newcommand{\bbE}{\mathbb{E}}
+\newcommand{\cM}{\mathcal{M}}
+\newcommand{\supp}{{\rm supp}}
+
+
+\newcommand{\Hnorm}[1]{\left\lVert#1\right\rVert_{\tH_\alpha}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%             Math Symbols
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%               Bold Math
+\input macros.tex
+\def\refer#1{\emph{\color{blue}#1}}
+
+\begin{document}
+
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=.9\textwidth]{figure/figure1.pdf}
+\end{center}
+\caption{Illustration of high-order clustering problem. High-order clustering takes an noisy tensor $\tY$ as an input and outputs the estimation for block means $\hat \tS$ along with membership matrices $\{\hat \mM_k\}$ on each of the modes.}
+\end{figure}
+
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=.7\textwidth]{figure/figure2.pdf}
+\end{center}
+\caption{\small Statistical and computational properties for (i) biclustering and (ii) high-order clustering with an order-$d$ $(p,\ldots,p)$-dimensional tensor. The signal-to-noise ratio (SNR) is divided into three regions according to different performance behaviors. Region (A): statistically and computationally easy, where the problem is solvable in polynomial time. Region (B): statistically hard, where no consistent estimator exists even with unbounded computational resources. Region (C): statistically easy but computationally hard, where we conjecture that no polynomial algorithm exists for the problem. Remarkably, a statistical-computational gap (i.e., region C) arises only for tensors of order 3 or greater. }
+\end{figure}
+
+\end{document}

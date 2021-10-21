@@ -1,0 +1,407 @@
+\documentclass[10pt]{article}
+\usepackage{setspace}
+\usepackage{amsmath,amssymb}
+\usepackage{amsthm}
+\usepackage{fancybox}
+\usepackage{algorithm, algpseudocode}
+\usepackage{url}
+
+\usepackage{multirow}
+\usepackage{color}
+\usepackage{graphicx}
+\usepackage{setspace}
+\usepackage{comment}
+\usepackage{bm}
+\usepackage{enumitem}
+\usepackage[breakable, theorems, skins]{tcolorbox}
+\DeclareRobustCommand{\mybox}[2][gray!20]{%
+\begin{tcolorbox}[   %% Adjust the following parameters at will.
+        breakable,
+        left=0pt,
+        right=0pt,
+        top=0pt,
+        bottom=0pt,
+        colback=#1,
+        colframe=#1,
+        width=\dimexpr\textwidth\relax, 
+        enlarge left by=0mm,
+        boxsep=5pt,
+        arc=0pt,outer arc=0pt,
+        ]
+        #2
+\end{tcolorbox}
+}
+
+
+\newcommand*{\KeepStyleUnderBrace}[1]{%f
+  \mathop{%
+    \mathchoice
+    {\underbrace{\displaystyle#1}}%
+    {\underbrace{\textstyle#1}}%
+    {\underbrace{\scriptstyle#1}}%
+    {\underbrace{\scriptscriptstyle#1}}%
+  }\limits
+}
+
+
+\usepackage[margin=1in]{geometry}
+ 
+\allowdisplaybreaks[4]
+\usepackage{bbm}
+
+
+\usepackage{amsrefs}
+\usepackage{mathtools}
+\mathtoolsset{showonlyrefs=true}
+
+
+\usepackage[utf8]{inputenc}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    citecolor = blue,
+    linkcolor=blue,
+    filecolor=magenta,           
+    urlcolor=black,
+}
+
+\usepackage[breakable, theorems, skins]{tcolorbox}
+\DeclareRobustCommand{\mybox}[2][gray!20]{%
+\begin{tcolorbox}[   %% Adjust the following parameters at will.
+        breakable,
+        left=0pt,
+        right=0pt,
+        top=0pt,
+        bottom=0pt,
+        colback=#1,
+        colframe=#1,
+        width=\dimexpr\textwidth\relax, 
+        enlarge left by=0mm,
+        boxsep=5pt,
+        arc=0pt,outer arc=0pt,
+        ]
+        #2
+\end{tcolorbox}
+}
+
+\theoremstyle{definition}
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{model}{Model}
+\newtheorem{lem}{Lemma}
+\newtheorem{prop}{Proposition}
+\newtheorem{pro}{Property}
+\newtheorem{cor}{Corollary}[section]
+
+\theoremstyle{definition}
+\newtheorem{assumption}{Assumption}
+\newtheorem{defn}{Definition}
+\newtheorem{example}{Example}
+\newtheorem{rmk}{Remark}
+\usepackage{dsfont}
+\def\rank{\text{Rank}}
+\def\Mat{\text{Mat}}
+
+\newcommand{\hdeg}{\widehat{\textup{deg}}}
+
+
+\theoremstyle{definition}
+\newtheorem{open}[]{Open problems}
+
+ \usepackage[parfill]{parskip}
+
+\usepackage[compact]{titlesec}
+
+\usepackage{sectsty}
+\sectionfont{\fontsize{11}{10}\selectfont}
+\subsectionfont{\fontsize{10.5}{10}\selectfont}
+\usepackage[compact]{titlesec}
+\titlespacing{\section}{0pt}{*0}{*0}
+\titlespacing{\subsection}{0pt}{*0}{*0}
+\titlespacing{\subsubsection}{0pt}{*0}{*0}
+
+\input macros.tex
+
+\begin{document}
+\begin{center}
+{\bf \large Another polynomial-time estimation algorithm}\\
+{Miaoyan Wang, July 3, 2021}\\
+\end{center}
+
+\section{Revisit spectral algorithm}
+\begin{thm}[Modified Theorem 1 of~\cite{xu2018rates}] Let $\tY\in\mathbb{R}^{d\times d}$ be a data matrix generated from the permuted smooth model
+\[
+\tY=\Theta+\tE,
+\] 
+where $\tE$ is a noise matrix with i.i.d.\ standard normal entries, and $\Theta$ is a permuted Lipschitz smooth matrix. Consider the truncated SVD estimator
+\begin{equation}\label{eq:1}
+\hat \Theta := \sum_{i\in[d]}\lambda_i\bmu_i\mv^T_i\mathds{1}\{\lambda_i\geq3\sqrt{d}\}.
+\end{equation}
+where $(\lambda_i,\bmu_i, \mv_i)\in\mathbb{R}\times\mathbb{R}^d\times\mathbb{R}^d$ is the $i$-th singular value and vector pairs of $\tY$. Then with very high probability
+\[
+\tR(\hat \Theta, \Theta):={1\over d^2}\FnormSize{}{\hat \Theta-\Theta}^2\leq d^{-2/3}. 
+\]
+\end{thm}
+\begin{rmk}[Intuition]
+The singular-value threshold $\sqrt{d}$ in~\eqref{eq:1} can be understood by the following heuristics on variance-bias trade-off 
+\begin{align}\label{eq:tradeoff}
+\KeepStyleUnderBrace{\snormSize{}{\tY-\Theta}}_{\text{variance}}\asymp \KeepStyleUnderBrace{\snormSize{}{\Theta-\rank(\Theta; r)}}_{\text{approximation bias}}.
+\end{align}
+The left hand side of~\eqref{eq:tradeoff} equals to $\snormSize{}{\tE}\asymp \sqrt{d}$ by the asymptotic spectral norm of Gaussian matrices. Therefore, the right hand side of~\eqref{eq:tradeoff} should choose $r=\sum_{i\in[d]}\mathds{1}\{\lambda_i(\Theta) \geq \sqrt{d}\} \approx \sum_{i\in[d]}\mathds{1}\{\lambda_i(\tY)\pm \snormSize{}{\tE} \geq \sqrt{d}\} \approx \sum_{i\in[d]}\mathds{1}\{\lambda_i(\tY) \geq \sqrt{d}\}$. 
+\end{rmk}
+
+
+\begin{rmk}[Comparison with NN algorithm] The truncated SVD yields a faster convergence rate $d^{-2/3}$ compared to NN smoothing ($d^{-1/2}$). The improvement of truncated SVD stems from the symmetric treatment of rows and columns. Similar phenomenon is observed in the context of isotonic matrix estimation, where the authors propose to sort rows and columns iteratively. See~\cite{mao2018towards}:
+\begin{quote}``... past algorithms sort the rows of the matrix (only)..., they are limited by the high standard deviation in these estimates. Our key observation is that when the columns are perfectly ordered, judiciously chosen partial row sums (which are less noisy than full row sums) also contain information that can help estimate the underlying row permutation...''
+\end{quote}
+
+In principle, symmetrizing NN smoothing can improve its current rate, at the cost of delicate analyses. %The question, however, is ``is it worth the effort (for now)?'' If SVD-type estimate yields a good rate with a cleaner analysis, then perhaps we should focus on extending SVD-style estimator~\eqref{eq:1} to tensors. 
+I would suggest trying both NN and SVD approaches for now and select the easiest one (plus sort-and-smoothing) for our first paper. We can defer the more sophistic ones to the second paper. 
+\end{rmk}
+
+\section{Square Spectral Algorithm}
+Input: an order-$4$ tensor $\tY$. Output: permuted smooth tensor estimate $\hat \Theta$. 
+\begin{itemize}
+\item Square unfolding: Let $\text{Mat}(\tY)\in\mathbb{R}^{d^2\times d^2}$ denote the square matrix obtained by unfolding of $\tY$ along two modes;
+\item Truncated SVD: $\hat \mM \leftarrow \sum_{i\in[d^2]} \hat \lambda_i \hat \mv_i\hat \mv^T_i\mathds{1}\{\hat \lambda_i\geq 3d\}$, where $(\hat \lambda_i, \hat \mv_i)\in\mathbb{R}_{\geq 0}\times\mathbb{R}^{d^2}$ is the $i$-th singular value-vector pair of $\text{Mat}(\tY)$;
+\item Folding: $\hat \Theta\leftarrow \text{UnMat}(\hat \mM)$, where $\text{UnMat}(\cdot)$ denotes the operation that reshapes the square matrix to an order-$4$ tensor. 
+\end{itemize}
+
+\begin{thm}[Estimation accuracy of square spectral algorithm] For an order-$m$ dimensional-$d$ data tensor, we perform SVD on nearly square unfolded matrix $\Mat(\tY)\in d^{\lfloor m/2\rfloor}$-by-$d^{\lceil m/2\rceil}$ with singular value truncation threshold $\hat \lambda_i \geq d^{\lceil m/4\rceil}$. %For order-$3$ tensor, this reduces to classical 1-mode unfolding. 
+Then, the algorithm output satisfies the error bound
+\begin{align}
+\tR(\Theta, \hat \Theta):={1\over d^m}\FnormSize{}{\hat \Theta- \Theta}^2\leq
+\begin{cases}
+d^{-{2m\over m+4}}, & \text{even $m$},\\
+d^{-{2(m-1)\over m+3}}, & \text{odd $m$}.
+\end{cases}
+\end{align}
+This bound is very close to gold-criteria MLE bound $d^{-{2m\over m+2}}$. For order-$3$ tensor, the square unfolding is the same as classical 1-mode unfolding. 
+\end{thm}
+For illustration, we prove the special case for order-4 tensor. The general case is similar. 
+\begin{cor}[Estimation accuracy based on square spectral algorithm]\label{thm:main}Let $\tY$ be an order-$4$ dimensional-$d$ data tensor from the permuted smooth tensor model
+\[
+\tY=\Theta+\tE,
+\]
+where $\tE$ is a noise tensor with i.i.d.\ standard normal entries. Then, the square spectral algorithm output satisfies
+\[
+\tR(\hat \Theta, \Theta):={1\over d^4}\FnormSize{}{\hat \Theta-\Theta}\leq d^{-1},
+\]
+with very high probability.
+\end{cor}
+
+
+\begin{proof}[Proof of Corollary~\ref{thm:main}] The proof extends Theorem 1 in~\cite{xu2018rates} and Lemma 4 in 062721\_Nearest.pdf.  By definition of permuted smooth tensor model, $\text{Mat}(\tY)$ is from the permuted smooth matrix model
+\[
+\Mat(\tY)=\mM+\Mat(\tE),
+\]
+where $\mM:=\text{Mat}(\Theta)\in\mathbb{R}^{d^2\times d^2}$ is the square unfolding of the signal tensor $\Theta$, and $\text{Mat}(\tE)\in\mathbb{R}^{d^2\times d^2}$ is a noise matrix with i.i.d.\ zero-mean subGaussian entries. Let $\lambda_1\geq \lambda_2\geq \cdots \geq \lambda_{d^2}$ and $\hat \lambda_1\geq \hat \lambda_2\geq \cdots \geq \hat  \lambda_{d^2}$ denote the singular values in descending order of $\mM$ and $\text{Mat}(\tY)$ , respectively. By Weyl's inequality, 
+\begin{align}\label{eq:weyl}
+\snormSize{}{\lambda_i-\hat \lambda_i}\leq \snormSize{}{\Mat(\tE)}\lesssim 2d, \quad \text{for all }i=1,\ldots,d^2. 
+\end{align}
+where the last inequality $\snormSize{}{\Mat(\tE)}\leq 2d$ follows from the asymptotic spectral norm of a $d^2$-by-$d^2$ Gaussian matrix. 
+
+Let $\ell$ count the number of singular values of $\mM$ that are above $d$, i.e.
+\begin{equation}\label{eq:l}
+\ell=\sum_{i\in[d^2]}\mathds{1}\left\{ \lambda_i\geq d \right\}.
+\end{equation}
+We consider the error decomposition
+\begin{equation}\label{eq:two}
+\FnormSize{}{\hat \mM-\mM}^2  \leq \KeepStyleUnderBrace{\FnormSize{}{\hat \mM-\rank(\mM, \ell)}^2}_{\text{variance}}+\KeepStyleUnderBrace{\FnormSize{}{\rank(\mM, \ell)-\mM}^2}_{\text{bias}},
+\end{equation}
+where $\rank(\mM, \ell)$ denotes the best rank-$\ell$ approximation of the matrix $\mM$ in least square sense. We claim that, both $\hat \mM$ and $\rank(\mM,\ell)$ have rank bounded by $\ell$. To see this, note that by Weyl's inequality~\eqref{eq:weyl} and definition of $\ell$ in~\eqref{eq:l},
+\[
+\hat \lambda_i  \leq \lambda_i+2d \leq 3d, \quad \text{for all }i=\ell+1,\ell+2,\ldots d^2, 
+\]
+Therefore, $\text{Mat}(\tY)$ has at most $\ell$ singular values above $3d$. By the construction of $\hat \mM$, $\rank(\hat \mM)\leq \ell$. 
+
+Now we bound the estimation error~\eqref{eq:two}. For the variance term
+\begin{align}
+\FnormSize{}{\hat \mM-\rank(\mM, \ell)} &\leq \sqrt{\ell}\snormSize{}{\hat \mM-\rank(\mM, \ell)}\\
+&\leq \sqrt{\ell}\left(\KeepStyleUnderBrace{\snormSize{}{\hat \mM-\Mat(\tY)}}_{\text{goodness-of-fit}}+\KeepStyleUnderBrace{\snormSize{}{\Mat(\tY-\mM)}}_{\text{noise}}+\KeepStyleUnderBrace{\snormSize{}{\mM-\rank(\mM,\ell)}}_{\text{bias}}\right)\\
+&\leq\sqrt{\ell}(\hat \lambda_{\ell+1}+2d+\lambda_\ell)\lesssim  \sqrt{\ell} d.
+\end{align}
+Therefore, \eqref{eq:two} has the upper bound
+\begin{align}\label{eq:final}
+\FnormSize{}{\hat \mM-\mM}^2 &\lesssim \ell d^2+\FnormSize{}{\rank(\mM,\ell)-\mM}^2 \notag \\
+&\leq rd^2+\FnormSize{}{\rank(\mM,r)-\mM}^2, \quad \text{for all }r=1,2,\ldots,d^2,
+%&= \sum_{i\in[d^2]}d^2\mathds{1}\{\lambda_i\geq d\}+\sum_{i\in[d^2]}\lambda^2_i\mathds{1}\left\{ \lambda_i\geq d\right\}\\
+%&\leq rd^2+\sum_{i\geq r}\lambda^2_i, \quad \text{for all }r=1,2,\ldots,d^2.
+\end{align}
+where the second line uses the fact that $\ell=\sum_{i\in[d^2]}\mathds{1}\{\lambda_i\geq d\}$ is the global optimizer of the function
+\[
+g(r)=rd^2+\sum_{i\geq r+1}\lambda^2_i.
+\]
+Finally, by Lemma 4 in 062721\_Nearst.pdf, for every integer $k$, there exists a $(k,\ldots,k)$-block tensor such that
+\[
+\FnormSize{}{\Theta-\text{Block}(\Theta;k)}^2\leq {d^4\over k^2}, 
+\]
+where $\text{Block}(\Theta;k)$ denotes the block tensor with $k$ blocks on each of the modes. Based on the relationship $\mM=\Mat(\Theta)$ and the fact that $\Mat(\text{Block}(\Theta; k))$ is of rank at most $k^2$, we conclude from~\eqref{eq:final} that
+\[
+\FnormSize{}{\hat \mM-\mM}^2  \lesssim rd^2+\FnormSize{}{\Theta-\text{Block}(\Theta;\sqrt{r})}^2 \leq rd^2 +{d^4\over r}, \quad \text{for all }r=1,\ldots,d^2. 
+\]
+Taking $r=d$ yields the desired conclusion. 
+\end{proof}
+
+
+Question: 
+\begin{itemize}
+\item An illustration figure of $\tR$ vs.\ $m$. Fill in the proof for general case. 
+\item Perform simulation to verify the accuracy. Compare with earlier stochastic block estimation, sort-and-smoothing estimation, etc.  
+\end{itemize}
+\bibliography{tensor_wang}
+\bibliographystyle{plain}
+\end{document}
+\begin{center}
+%{\bf \large High-dimensional Tensor Learning: The Good, the Bad, and the Pragmatic}\\
+{\bf \large Polynomial-time estimation of permutation equivarant tensors}\\
+
+{Miaoyan Wang, June 27, 2021}
+\end{center}
+\section{Summary}
+\begin{prop}[Deterministic bound] Let $\tY$ be an order-$m$ dimensional-$d$ tensor from the model
+\[
+\tY=\Theta + \tE,
+\]
+where $\tE$ is a noise tensor consisting of i.i.d.\ zero-mean sub-Gaussian entries, and $\Theta$ is a Lipschitz smooth tensor. Consider the estimate
+\[
+\hat \Theta=\tY\times_1(\mP\mP^T)\times\cdots \times_m (\mP\mP^T),
+\]
+where $\mP=\text{Trunc-SVD}(\text{Unfold}(\tY),d)$. Then, 
+%\[
+%\FnormSize{}{\hat \Theta-\Theta}^2\leq dk^{m-1}+{d^m\over k^2},\quad \text{ for every }k\leq d. 
+%\]\rank
+%In particular, setting $k\asymp d^{(m-1)/(m+1)}$ gives
+\[
+\tR(\hat \Theta, \Theta):={1\over d^m}\FnormSize{}{\hat \Theta-\Theta}^2\leq d^{-2(m-1)/(m+1)}. 
+\]
+\end{prop}
+
+\begin{lem} 
+Define an integer $k$ to be number of singular values of $\text{Unfold}(\tY)$ that are greater than $d$, i.e, 
+\[
+k = \max\left\{i\in[d]: s_i(\text{Unfold}(\Theta))\geq d\right\}.
+\]
+By definition of $\hat \Theta$, satisfies
+\[
+\snormSize{}{\tY-\hat \Theta} \leq d\quad \text{and}\quad\rank(\hat \Theta)\leq (k,k,k).
+\]
+Let $\rank(\Theta,k)$ denote the best Tucker rank-$(k,k,k)$ approximation of $\Theta$ in the least square sense. 
+\[
+\FnormSize{}{\Theta-\hat \Theta}^2\leq \FnormSize{}{\rank(\Theta,k)-\Theta}^2+\FnormSize{}{\hat \Theta - \rank(\Theta,k)}^2. 
+\]
+We examine the two terms separately. 
+\begin{itemize}
+\item For the first term. Notice that we can construct a block-$(k,k,k)$ tensor that approximate the smooth $\Theta$ for which
+%\[
+%\FnormSize{}{\rank(\Theta,k)-\Theta}^2 \leq \FnormSize{}{\text{Block}(\Theta, k)-\Theta}^2\leq {d^m\over k^2}. 
+%\]
+\[
+\FnormSize{}{\rank(\Theta,k)-\Theta}^2 \leq \sum_{i\geq k}s^2_i(\text{Unfold}(\Theta)) \leq {d^m\over k^2}.
+\]
+\item For the second term. Both $\hat \Theta$ and $ \rank(\Theta,k)$ have Tucker rank at most $(k,k,k)$. Therefore,
+\begin{align}
+\FnormSize{}{\hat \Theta - \rank(\Theta,k)}&\leq k^{(m-1)/2}\snormSize{}{\hat \Theta - \rank(\Theta,k)}\\
+&\leq k^{(m-1)/2}\left(\snormSize{}{\hat \Theta - \tY}+\snormSize{}{ \tY - \Theta}+\snormSize{}{ \Theta -  \rank(\Theta,k)}\right)\\
+& \leq k^{(m-1)/2}\left(d+\sqrt{d}+d\right)
+\end{align}
+\end{itemize}
+\[
+\FnormSize{}{\hat \Theta-\Theta}^2\leq k^{m-1}d^2+\sum_{i\geq k}s^2_k(\text{Unfold}(\Theta)) \leq \max_{r\in[d]}\left(r^2d^2+{d^3\over r^2}\right)\leq d^{-{1/2}}. 
+\]
+For even order $2m$:
+\[
+r^{2m-1}d^{m}+{d^{2m}\over r^2} \rightarrow \tR\leq d^{-{2m\over 2m+1}}.
+\]
+For odd order $2m+1$:
+\[
+r^{2m}d^{m+1}+{d^{2m+1}\over r^2} \rightarrow \tR\leq d^{-{2m\over 2m+2}}.
+\]
+\end{lem}
+
+\begin{thm}[Polynomial spectral algorithm]
+Consider an order-$m$, dimensional-$d$ data tensor $\tY$ from permutated Lipschitz smooth tensor model. Let $\text{Mat}(\tY)$ denote the $d^{\lceil{m/2\rceil}}$-by-$d^{\lfloor{m/2\rfloor}}$ nearly square matrix obtained by balanced unfolding of $\tY$. Define the estimate
+\[
+\hat \Theta \leftarrow \text{Tensorize}(\bar \mY), \quad \text{where}\quad \bar \mY\leftarrow \text{rank-$r$ approximation of }\text{Mat}(\tY),
+\]
+with
+\[
+r=
+\begin{cases}
+d^{m\over 2(m+1)}, & \text{even $m$},\\
+d^{m-1\over 2(m+1)}, & \text{odd $m$}.
+\end{cases}
+\]
+Then, we have the error bound
+\begin{align}
+\tR(\Theta, \hat \Theta):={1\over d^m}\FnormSize{}{\hat \Theta- \Theta}^2\leq
+\begin{cases}
+d^{-{m\over m+1}}, & \text{even $m$},\\
+d^{-{m-1\over m+1}}, & \text{odd $m$}.
+\end{cases}
+\end{align}
+\end{thm}
+
+%Assume:
+%\[
+%\FnormSize{}{\Theta-\text{Block}_k(\Theta)}^2\leq {d^m\over k^m}. 
+%\]
+\begin{itemize}
+\item Define  matricization
+\[
+\mM \leftarrow \tM(\tY)\tM(\tY)^T. 
+\]
+\item Perform truncated SVD
+\[
+\mP\leftarrow \text{Trunc-SVD}(\mM-\text{Diag}(\mM); d)
+\]
+\item Construct tensor estimation
+\[
+\hat \Theta \leftarrow \tY\times_1(\mP\mP^T)\times_2 (\mP\mP^T)\times_3(\mP\mP^T).
+\]
+\end{itemize}
+
+\begin{proof}
+We show that
+\[
+\FnormSize{}{\hat \Theta-\Theta}^2\leq r^2d+{d^3\over r^2}, \quad \text{for all }r=1,\ldots,d. 
+\]
+We consider the error decomposition
+\[
+\FnormSize{}{\hat \Theta-\Theta}^2 \leq \KeepStyleUnderBrace{\FnormSize{}{\hat \Theta-\rank(\Theta)}^2}_{\text{variance}}+\KeepStyleUnderBrace{\FnormSize{}{\rank(\Theta)-\Theta}^2}_{\text{bias}}.
+\]
+Define 
+\[
+\ell=\sum_{i\in[d]} \mathds{1}\left\{\lambda_i\left(\tM(\Theta)\right) \geq d\right\}.
+\]
+Tensor $\hat \Theta$ has rank bounded by $\ell$. Both $\hat \Theta$ and $\rank(\Theta)$ has rank bounded by $\ell$. 
+\begin{align}
+\FnormSize{}{\hat \Theta-\rank(\Theta)}&\leq \sqrt{\ell} \snormSize{}{\tM(\hat \Theta)-\rank(\tM(\Theta))}\\
+&\leq \sqrt{\ell}\left(\snormSize{}{\tM(\hat \Theta)-\tM(\tY)}+\snormSize{}{\tM(\tY)-\tM(\Theta)}+\snormSize{}{\tM(\Theta)-\rank(\tM(\Theta))} \right)\\
+&\leq \sqrt{\ell} \left(d+d+d\right)
+\end{align}
+
+Therefore, 
+\begin{align}
+\FnormSize{}{\hat \Theta-\Theta}^2&\leq \ell d^2+\sum_{i=1}^d\lambda^2_i\mathds{1}\left\{\lambda_i\leq d\right\} \\
+&= \sum_{i=1}^d d^2 \mathds{1}\left\{\lambda_i\geq d\right\} + \sum_{i=1}^d \lambda^2_i \mathds{1}\left\{\lambda_i\leq d\right\} \\
+&\leq rd^2+\sum_{i\geq r}\lambda^2_i, \quad \text{for all }r=1,2,\ldots,d
+\end{align} 
+
+Even $m$:
+\[
+\ell d^{m/2} +{d^m\over \ell^{4\over m}} \leq d^{-{2m\over m+4}}
+\]
+Odd: $m$:
+\[
+\ell d^{(m+1)/2}+{d^{m}\over \ell^{4\over m-1}} \leq d^{-{2(m-1)\over m+3}}
+\]
+Optimal
+\[
+d^{-{2m\over m+2}}
+\]
+\end{proof}
+
+\newpage
+
+
+\end{document}

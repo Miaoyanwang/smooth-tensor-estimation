@@ -1,0 +1,280 @@
+\documentclass[11pt]{article}
+\usepackage{lscape}
+\usepackage{amsmath,amssymb}
+\usepackage{amsthm}
+\usepackage{float}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{comment}
+\usepackage{bm}
+\usepackage{gensymb}
+\allowdisplaybreaks[4]
+\usepackage{geometry}
+\geometry{margin=1in}
+\usepackage{setspace}
+\usepackage{siunitx}
+\usepackage{enumitem}
+\usepackage{dsfont}
+\usepackage{arydshln}
+\usepackage{natbib}
+
+\usepackage{comment}
+\newcommand*{\vertbar}{\rule[-1ex]{0.5pt}{2.5ex}}
+\newcommand*{\horzbar}{\rule[.5ex]{2.5ex}{0.5pt}}
+
+
+\usepackage{graphics}
+\allowdisplaybreaks
+
+\usepackage[utf8x]{inputenc}
+\usepackage{bm}
+
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    citecolor = blue,
+    linkcolor=blue,
+    filecolor=magenta,           
+    urlcolor=cyan,
+}
+
+
+\theoremstyle{plain}
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{lem}{Lemma}
+\newtheorem{pro}{Property}
+\newtheorem{cor}{Corollary}
+
+\theoremstyle{definition}
+\newtheorem{assumption}{Assumption}
+\newtheorem{prob}{Problem}
+\newtheorem{prop}{Proposition}
+\newtheorem{defn}{Definition}
+\newtheorem{exmp}{Example}
+\newtheorem{rmk}{Remark}
+\newtheorem{con}{Conjecture}
+
+\usepackage{algpseudocode,algorithm}
+\algnewcommand\algorithmicinput{\textbf{Input:}}
+\algnewcommand\algorithmicoutput{\textbf{Output:}}
+\algnewcommand\INPUT{\item[\algorithmicinput]}
+\algnewcommand\OUTPUT{\item[\algorithmicoutput]}
+
+\def\marginest{\hat \Theta^{\textup{margin}}}
+\def\MLEest{\hat \Theta^{\textup{MLE}}}
+\def\sign{\textup{sign }}
+
+\usepackage[labelfont=bf]{caption}
+
+\setcounter{table}{1}
+\usepackage{multirow}
+\usepackage{tabularx}
+
+\def\fixme#1#2{\textbf{[FIXME (#1): #2]}}
+
+\def\Holder{\text{H\"{o}lder }}
+
+\newcommand*{\KeepStyleUnderBrace}[1]{%f
+  \mathop{%
+    \mathchoice
+    {\underbrace{\displaystyle#1}}%
+    {\underbrace{\textstyle#1}}%
+    {\underbrace{\scriptstyle#1}}%
+    {\underbrace{\scriptscriptstyle#1}}%
+  }\limits
+}
+\usepackage{mathtools}
+\mathtoolsset{showonlyrefs=true}
+
+\begingroup
+\makeatletter
+\@for\theoremstyle:=definition,remark,plain\do{%
+\expandafter\g@addto@macro\csname th@\theoremstyle\endcsname{%
+\addtolength\thm@preskip\parskip
+}%
+}
+\endgroup
+
+
+\usepackage{hyperref}
+\hypersetup{colorlinks=true}
+\usepackage[parfill]{parskip}
+\usepackage{bm}
+\onehalfspacing
+
+\newcommand{\maxnorm}[1]{\left\lVert#1\right\rVert_{\infty}}
+\newcommand{\Hnorm}[1]{\left\lVert#1\right\rVert_{\tH_\alpha}}
+\newcommand{\nullnorm}[1]{\left\lVert#1\right\rVert}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%             Math Symbols
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%               Bold Math
+\input macros.tex
+\def\refer#1{\emph{\color{blue}#1}}
+\begin{document}
+
+\begin{document}
+\begin{center}
+{\bf \Large A unified statement for smoothness}\\
+\vspace{.3cm}
+Miaoyan Wang, 03/31/2021\\
+\end{center}
+
+
+Let $\Theta\in[-1,1]^{d_1\times \cdots \times d_K}$ be the signal tensor, and $d_t=\prod^K_{k=1} d_k$ the total dimension. We quantify the distribution of entries in tensor $\Theta$ using a histogram with bin width $\Delta s=1/d_t$. Specifically, we divide the range $[-1,1]$ into $d_t$ equally sized bins, and let $(p_i)_{i=1,\ldots,d_t}$ denote the frequency of tensor entries in each bin; that is, $p_i\stackrel{\text{def}}{=}\mathbb{P}_{\omega\sim \Pi}(-1+(i-1)\Delta s < \Theta(\omega) \leq -1+i\Delta s)$. Let $\tN=\left\{ i \colon p_i \gg \Delta s \right\} \subset[d_t]$ to collect the indices for heavy bins whose probability mass is asymptotically larger than the bin size $\Delta s$ as $d\to \infty$,
+\begin{defn}[$\alpha$-smoothness] Fix $i \notin \tN$. Assume there exist constant $\alpha=\alpha(\pi)> 0, c=c(\pi)>0$, independent of tensor dimension, such that
+\begin{equation}\label{eq:defn}
+\max_{j=1,\ldots,\rho(i,\tN)} {p_i+\ldots+p_{i+j} \over (j\Delta s )^{\alpha}}\leq c,
+\end{equation}
+where $\rho(i,\tN)=\min_{j\in \tN}|i-j|$ denotes the distance from index $i$ to the nearest index in $\tN$. We make the conversion that $\alpha=\infty$ if the numerator in~\eqref{eq:defn} is zero, implying almost no entries of which $\Theta(\omega)$ is around the $i$-th bin. 
+\end{defn}
+
+
+Let $\mathbb{P}_{\mX}$ denote either continuous or discrete distribution over feature space $\tX$. Define a reference mass $\Delta s = 0$ if $\tX$ is uncountable, or $\Delta s = \Omega\left({1\over |\tX|}\right)$ if $\tX$ is countable. We use $\tN\subset[-1,1]$ to collect levels whose probability mass in a $\Delta s$-neighborhood is heavier than the uniform measure; i.e, 
+\begin{equation}\label{eq:N}
+\tN=[-1,1]/\left\{\pi\colon \mathbb{P}_{\mX}(|f(\mX)-\pi|\leq \Delta s) \leq C \Delta s\right\}.
+\end{equation}
+Here $C>0$ is a constant independent of feature dimension $d$.  
+
+\begin{defn}[$\alpha$-smoothness] For a given $\pi\notin\tN$, we say $f$ is $(\alpha,\pi)$-smooth if there exists $\alpha=\alpha(\pi)\geq 1, c=c(\pi)>0$, independent of feature dimension $d$, such that 
+\begin{equation}\label{eq:smooth}
+\sup_{\Delta s\leq  t<\rho(\pi,\tN)} {\mathbb{P}_{\mX}(\Delta s\leq |f(\mX)-\pi|\leq t )\over t^\alpha} \leq c,
+\end{equation}
+where $\rho(\pi,\tN)=\inf_{\pi'\in \tN}|\pi-\pi'|$ denotes the distance from $\pi$ to the nearest point in $\tN$. We make the conversion that $\alpha=\infty$ if $\rho(\pi,\tN)\leq \Delta s$.
+\end{defn}
+\begin{rmk}[Smoothness index] The largest possible $\alpha=\alpha(\pi)$ in \eqref{eq:smooth} is called the smoothness index at level $\pi$. By definition~\eqref{eq:N} and~\eqref{eq:smooth}, we always have $\alpha(\pi)\geq 1$ at levels $\pi\notin\tN$. 
+\end{rmk}
+
+\begin{thm}[Nonparametric regression via sign series]
+Assume $f$ is globally $\alpha$-smooth and $r$-sign rank representable. Denote $t_n={dr\over |\Omega|}$ for tensor completion problem, or $t_n={r(s_1+s_2)\log d \over n}$ for sparse matrix regression problem. 
+\begin{enumerate}
+\item (Sign estimation) For all $\pi\notin \tN$, 
+\[
+\onenormSize{}{\sign \hat f - \sign(f-\pi)}\leq t^{\alpha /(2+\alpha)}_n + {1\over \rho^2(\pi,\tN)}t_n. 
+\]
+\item (Signal estimation) Assume $\tN$ is countable. Then, we have
+\[
+\onenormSize{}{\hat f - f}\lesssim t^{\alpha/(2+\alpha)}_n + {|\tN| \vee 1\over H} + H t_n.
+\]
+Setting $H=\sqrt{|\tN|\vee 1\over t_n}$ yields the optimal rate
+\[
+\onenormSize{}{\hat f - f}=\max\left( t^{\alpha /(2+\alpha)}_n,\ t_n^{1/2}\sqrt{|\tN|},\ t^{1/2}_n \right).
+\]
+\end{enumerate}
+\end{thm}
+
+\begin{comment}
+\section{Option 1. Uniform assumption over all finite $d$}
+We introduce a small tolerance $\Delta s = \Delta s(d)$ to account for discrete measure with finite $d$. Specifically, for each given tensor dimension $d\geq 2$, let $G_d\colon[-1,1]\to[0,1]$ be the empirical cumulative function of entries in $\Theta$, and $\Delta s = {1\over d^K}$ the tolerance point mass. We call $\pi$ a mass point if its averaged density around $\Delta s$-neighbor under $G_d$ is heavier than Lebesqure measure. Denote 
+\begin{align}
+\tN_d=[-1,1]/\left\{\pi\colon {G_d(\pi+\Delta s)-G_d(\pi-\Delta s)\over \Delta s}  \leq c_1  \right\}
+\end{align}
+the set of mass points in $G_d$, where $c_1$ denotes a positive constant independent of tensor dimension $d$.
+
+\begin{assumption}[$\alpha$-smoothness of all finite $d$]
+Fix $\pi\notin \tN_d$. Assume there exist positive constants $\alpha>0, c>0$, independent of tensor dimension $d$, such that
+\[
+\sup_{\Delta s\leq  t< \rho(\pi,\tN)} {G_d(\pi+t)-G_d(\pi-t) \over t^\alpha} \leq c<\infty.
+\]
+We make the conversion that $\alpha=\infty$ if $\rho(\pi,\tN)\leq \Delta s$. 
+\end{assumption}
+
+\section{Option 2. Functional assumption for infinite $d$}
+Another approach is to construct a latent infinite-dimensional process under $(\Theta_d)_{d\geq 2}$. The idea is to use Lebesque representation of a measurable function from $\tX$ to $\mathbb{R}$:
+\begin{equation}\label{eq:one-to-one}
+f \Longleftrightarrow \{\mx\in\tX\colon f(\mx)\leq \pi\}, \quad \text{for all }\pi\in\mathbb{R}.
+\end{equation}
+Because the correspondence is one-to-one except for a measure-zero set (?), we will refer to ``implicit construction'' of $f$ using the right hand side of~\eqref{eq:one-to-one}.  
+\begin{defn}[$\alpha$-smooth, $r$-sign representable function]
+Let $f$ be a multivariate function
+\begin{align}
+f\colon [0,1]^K&\to [-1,1],\\
+\mx & \mapsto f(\mx). 
+\end{align}
+We call $f$ is a $\alpha$-smooth, sign-$r$ representable function if $f$ satisfies the following two conditions:
+\begin{enumerate}
+\item ($\alpha$-smoothness) Define a function $G(\pi)=\text{Leb}\left(\mx\colon f(\mx)\leq \pi\right)$, where $\text{Leb}(\cdot)$ denotes the Lebesgue measure in $\mathbb{R}^K$. Assume the function $G\colon[-1,1]\to[0,1]$ is $\alpha$-smooth. 
+\item ($r$-sign representability) For each $d\geq 2$, let $\tD_d\colon f\mapsto \Theta$ denote the degree-$d$ interpolation of $f$ that induces a dimensional-$(d,\ldots,d)$ tensor $\Theta$, where
+\[
+\Theta(i_1,\ldots,i_d)=f\left({i_1\over d},\ldots,{i_K\over d}\right),\quad \text{for all }(i_1,\ldots,i_K)\in[d]^K.
+\]
+Assume $\sup_{d\geq 2}\sup_{\pi\in[-1,1]}\text{srank}(\tD_d(f-\pi))\leq r$ for some rank $r$. 
+\end{enumerate}
+We use $\tF(r,\alpha)$ to denote the family of functions that satisfy the above two conditions. 
+\end{defn}
+
+{\bf Set-up:} 
+\begin{enumerate}[wide, labelwidth=!, labelindent=0pt]
+\item Signal tensor $\Theta=\tD_d(f)$, where $f\in\tF(r,\alpha)$. 
+\item Observed tensor $\tY=\Theta+\tE$. Assume no noise (i.e., $\tE=0$) and complete observation (i.e., no randomness in $\omega\sim \Pi$) for simplicity. 
+\item Estimated tensor $\hat \Theta$, and the associated empirical CDF $\hat G_d(\cdot)\colon [-1,1]\to[0,1]$,
+\[
+\hat G_d(\pi)={\left|\left\{ \omega\in[d]^K \colon \hat \Theta(\omega)\leq \pi \right\}\right| \over d^K}.
+\]
+\item Estimated function $\hat f$. We implicitly define a function estimate $\hat f\colon[0,1]^K\to[-1,1]$ such that
+\begin{equation}\label{eq:defn}
+\text{Leb}\{\mx\in[0,1]^K\colon \hat f(\mx)\leq \pi\} = \hat G_d(\pi), \quad \text{for all }\pi\in[-1,1].
+\end{equation}
+\[
+\{\mx\colon \hat G_d\circ \hat f (\mx) \leq p\}= \{\mx\colon G(\mx)\leq p\}, \ \text{for all }p\in[0,1]
+\]
+\[
+\hat f \circ \hat G^{-1}_d\circ G=\hat \pi
+\]
+\item Estimation error. We define two notions of estimation error.
+\begin{itemize}
+\item Finite-dimensional error conditional on $\Theta$:
+\[
+\text{MAE}(\hat \Theta, \Theta)\stackrel{\text{def}}{=}\mathbb{E}_{Y}\onenormSize{}{\hat \Theta - \Theta}.
+\]
+\item Infinite-dimensional error: Suppose we draw a new $\mx \sim \text{Uniform}[0,1]^d$. We consider the out-of-sample error between $\hat f(\mx)$ and $f(\mx)$:
+\begin{align}\label{eq:last}
+\text{MAE}(\hat f, f)&\stackrel{\text{def}}{=}\mathbb{E}_{\mx\sim\text{Uniform}[0,1]^K}|\hat f(\mx) - f(\mx)|\notag \\
+&=\KeepStyleUnderBrace{\int_{\mx\in[0,1]^K} |\hat f(\mx)-f(\mx)| d\mx}_{\text{Riemann integral}}\notag \\
+&=\KeepStyleUnderBrace{\int_{\pi\in[-1,1]} |\hat f \circ \hat G_d^{-1}\circ G(\pi)- \pi| dG(\pi)}_{\text{Lebesque integral}} \quad \text{change of variable $\hat f (\mx)\leftrightarrow \hat G_d(\pi)$, $f(\mx)\leftrightarrow \pi$, $d\mx\leftrightarrow dG(\pi)$}.
+\end{align}
+Let $\pi$ denote a scalar random variable with distribution induced by CDF $G(\pi)$. Then, $\hat G_d(\pi)$ is also a random variable because of the randomness in $\pi$. The last line of~\eqref{eq:last} can be written more compactly as 
+\[
+\text{MAE}(\hat f, f)=\mathbb{E}_{\pi\sim G}|\hat G_d(\pi)-\pi|. 
+\]
+\end{itemize}
+In the case of noiseless and complete observation, $\text{MAE}(\hat \Theta, \Theta)=0$, but $\text{MAE}(\hat f, f)\geq 0$. This latter fact is because of randomness in the new $\mx$, or equivalently, the randomness in the new $\pi$ $(=f(\mx))$. 
+
+In our paper, we have mixed these two concepts. We define MAE using the first notion
+\[
+\textup{MAE}(\hat \Theta, \Theta)= \mathbb{E}_{\color{red}\omega\sim \Pi}|\hat \Theta(\omega)-\Theta(\omega)|,
+\]
+but in the proof we evaluate MAE using the second notion
+\[
+\textup{MAE}(\hat \Theta, \Theta)= \mathbb{E}_{\color{red}\Theta(\omega)\sim G}|\hat \Theta(\omega)-\Theta(\omega)|.
+\]
+We should correct this notation to $\textup{MAE}(\hat f, f)$ in the paper. 
+\end{enumerate}
+
+\begin{rmk}[Explicit construction of $\hat f$]
+The integrated loss~\eqref{eq:loss} relies on only the indicator function~\eqref{eq:last} of $\hat f$; the pointwise definition of $\hat f$ is unimportant. In principle, all our current proof should also go through because we only use the integral property of $\hat f$ (verify?). 
+
+
+Here we provide a constructive definition for completeness. 
+We use $\mx\in[0,1]^K$ to denote the continuous domain variable and $\omega\in[d]^K$ the discrete domain variable. Define the function $\hat f$ using a stepwise function 
+\[
+\hat f (\mx)=\hat \Theta(\lfloor d\mx \rfloor),
+\]
+where $\lfloor\cdot\rfloor$ is applied to vectors in an entrywise fashion. Under this construction, the left hand side of ~\eqref{eq:defn} can be expressed as
+\begin{align}
+\left\{\mx\colon \hat f(\mx)\leq \pi\right\}&=\left\{ \mx\colon \hat \Theta(\lfloor d \mx \rfloor) \leq \pi \right\}\\
+&=\bigcup_{\omega\in[d]^K}\left\{ \omega \leq d \mx < \omega+(1,\ldots,1) \colon \hat \Theta(\omega)\leq \pi \right\}.
+\end{align}
+Therefore we have
+\begin{align}
+\text{Leb}\left(\mx\colon \hat f(\mx)\leq \pi\right) &= \sum_{\omega\in[d]^K} \mathds{1}\{\omega\colon \hat \Theta(\omega)\leq \pi\}\times \text{Leb}\left(\mx\in{1\over d}[\omega,\omega+(1,\ldots,1))\right)\\
+&=\sum_{\omega\in[d]^K} {\mathds{1}\{\omega\colon \hat \Theta(\omega)\leq \pi\} \over d^K} = \hat G(\pi).
+\end{align}
+%By construction, the range set of $(\hat f-\pi)$ is induced in the range set of $(\hat \Theta-\pi)$, so is the $\tD_{d}(\hat f-\pi)$ for any $d'\geq 2$. Henceforce, $\hat f$ is $r$-sign representable; i.e., $\text{rank}(\tD_{d'}(\hat f-\pi)) \leq \text{srank}(\hat \Theta-\pi)\leq r$ for all $d'\geq 2$ and $\pi\in[-1,1]$.
+\end{rmk}
+
+\end{comment}
+\bibliographystyle{plainnat}
+\bibliography{tensor_wang}
+\end{document}

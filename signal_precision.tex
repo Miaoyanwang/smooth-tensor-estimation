@@ -1,0 +1,124 @@
+\documentclass[11pt]{article}
+\usepackage{lscape}
+\usepackage{amsmath,amssymb}
+\usepackage{amsthm}
+\usepackage{float}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{comment}
+\usepackage{bm}
+\usepackage{gensymb}
+\allowdisplaybreaks[4]
+\usepackage{geometry}
+\geometry{margin=1in}
+\usepackage{setspace}
+\usepackage{siunitx}
+\usepackage{enumitem}
+\usepackage{dsfont}
+
+\usepackage{graphics}
+
+
+\usepackage[utf8x]{inputenc}
+\usepackage{bm}
+
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    citecolor = blue,
+    linkcolor=blue,
+    filecolor=magenta,           
+    urlcolor=cyan,
+}
+
+
+\theoremstyle{plain}
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{claim}{Claim}
+\newtheorem{lem}{Lemma}
+\newtheorem{prop}{Proposition}
+\newtheorem{pro}{Property}
+\newtheorem{cor}{Corollary}
+\newtheorem{ass}{Assumption}
+
+\theoremstyle{definition}
+\newtheorem{defn}{Definition}
+\newtheorem{exmp}{Example}
+\newtheorem{rmk}{Remark}
+
+\usepackage{algpseudocode,algorithm}
+\algnewcommand\algorithmicinput{\textbf{Input:}}
+\algnewcommand\algorithmicoutput{\textbf{Output:}}
+\algnewcommand\INPUT{\item[\algorithmicinput]}
+\algnewcommand\OUTPUT{\item[\algorithmicoutput]}
+
+
+
+\usepackage[labelfont=bf]{caption}
+
+\setcounter{table}{1}
+\usepackage{multirow}
+\usepackage{tabularx}
+
+\def\fixme#1#2{\textbf{[FIXME (#1): #2]}}
+
+ 
+
+\newcommand*{\KeepStyleUnderBrace}[1]{%f
+  \mathop{%
+    \mathchoice
+    {\underbrace{\displaystyle#1}}%
+    {\underbrace{\textstyle#1}}%
+    {\underbrace{\scriptstyle#1}}%
+    {\underbrace{\scriptscriptstyle#1}}%
+  }\limits
+}
+\usepackage{mathtools}
+\mathtoolsset{showonlyrefs=true}
+
+
+\usepackage{hyperref}
+\hypersetup{colorlinks=true}
+\usepackage[parfill]{parskip}
+\usepackage{bm}
+\onehalfspacing
+
+\newcommand{\newnorm}[1]{\left\lVert#1\right\rVert}
+\usepackage{enumitem}
+\newcommand{\Hnorm}[1]{\left\lVert#1\right\rVert_{\tH_\alpha}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%             Math Symbols
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%               Bold Math
+\input macros.tex
+\def\refer#1{\emph{\color{blue}#1}}
+\begin{document}
+\begin{center}
+{\Large \bf How to simulate large signals for precision matrices}
+
+Miaoyan Wang, Oct 19, 2020
+\end{center}
+
+Scheme 1: simulate covariance matrix $\mS$ and then obtain precision matrix $\mOmega$ by converting $\mS$. 
+
+Scheme 2: simulate precision matrix $\mOmega$ and then obtain covariance $\mS$ from $\mOmega$. 
+
+Goal: precision matrix should be as sparse as possible. 
+
+Criteria: Write $\mOmega=\mOmega_{\text{diag}}+\mOmega_{\text{off}}$ and $\mS=\mS_{\text{diag}+\mS_{\text{off}}$. More proper notion of signal levels should be
+\[
+\text{signal}_{\text{pre}}=\frac{\lambda_r\left(\mOmega_{\text{off}}\right)}{\lambda_{r+1}\left(\mOmega_{\text{off}}\right)} \quad \text{ or} \quad \text{signal}_{\text{cov}}=\frac{\lambda_{r}\left(\mS_{\text{off}}\right)}{\lambda_{r+1}\left(\mS_{\text{off}}\right)},
+\]
+where $r$ is the target rank. 
+
+Two examples verified: 
+
+1. dense precision (random graph) $\rightarrow$ covariance with exchangeable off-diagonals $\rightarrow$ covariance with small eigen-gap.
+
+2. Hub network $\rightarrow$ a small number of dense rows/columns in $\mOmega$, and others sparse $\rightarrow$ covariance with large eigen-gap. 
+
+
+\bibliographystyle{plain}
+\bibliography{tensor_wang.bib}
+\end{document}

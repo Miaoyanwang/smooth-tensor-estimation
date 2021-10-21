@@ -1,0 +1,15 @@
+\begin{thebibliography}{1}
+
+\bibitem{ganti2015matrix}
+Ravi~Sastry Ganti, Laura Balzano, and Rebecca Willett.
+\newblock Matrix completion under monotonic single index models.
+\newblock In {\em Advances in Neural Information Processing Systems}, pages
+  1873--1881, 2015.
+
+\bibitem{wang2019multiway}
+Miaoyan Wang and Yuchen Zeng.
+\newblock Multiway clustering via tensor block models.
+\newblock In {\em Advances in Neural Information Processing Systems}, pages
+  713--723, 2019.
+
+\end{thebibliography}

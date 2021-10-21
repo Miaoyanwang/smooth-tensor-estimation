@@ -1,0 +1,201 @@
+% \bib, bibdiv, biblist are defined by the amsrefs package.
+\begin{bibdiv}
+\begin{biblist}
+
+\bib{pmlr-v108-berthet20a}{article}{
+      author={Berthet, Quentin},
+      author={Baldin, Nicolai},
+       title={Statistical and computational rates in graph logistic
+  regression},
+        date={202026--28 Aug},
+     journal={Proceedings of the Twenty Third International Conference on
+  Artificial Intelligence and Statistics},
+      volume={108},
+       pages={2719\ndash 2730},
+}
+
+\bib{gabriel1998generalised}{article}{
+      author={Gabriel, K~Ruben},
+       title={Generalised bilinear regression},
+        date={1998},
+     journal={Biometrika},
+      volume={85},
+      number={3},
+       pages={689\ndash 700},
+}
+
+\bib{geddes2016human}{article}{
+      author={Geddes, Linda},
+       title={Human brain mapped in unprecedented detail},
+        date={2016},
+     journal={Nature},
+}
+
+\bib{hoff2005bilinear}{article}{
+      author={Hoff, Peter~D},
+       title={Bilinear mixed-effects models for dyadic data},
+        date={2005},
+     journal={Journal of the American Statistical Association},
+      volume={100},
+      number={469},
+       pages={286\ndash 295},
+}
+
+\bib{hu2015scalable}{inproceedings}{
+      author={Hu, Changwei},
+      author={Rai, Piyush},
+      author={Chen, Changyou},
+      author={Harding, Matthew},
+      author={Carin, Lawrence},
+       title={Scalable bayesian non-negative tensor factorization for massive
+  count data},
+organization={Springer},
+        date={2015},
+   booktitle={Joint european conference on machine learning and knowledge
+  discovery in databases},
+       pages={53\ndash 70},
+}
+
+\bib{lee2020tensor}{article}{
+      author={Lee, Chanwoo},
+      author={Wang, Miaoyan},
+       title={Tensor denoising and completion based on ordinal observations},
+        date={2020},
+     journal={International Conference of Machine Learning},
+}
+
+\bib{narita2012tensor}{article}{
+      author={Narita, Atsuhiro},
+      author={Hayashi, Kohei},
+      author={Tomioka, Ryota},
+      author={Kashima, Hisashi},
+       title={Tensor factorization using auxiliary information},
+        date={2012},
+     journal={Data Mining and Knowledge Discovery},
+      volume={25},
+      number={2},
+       pages={298\ndash 324},
+}
+
+\bib{rabusseau2016low}{inproceedings}{
+      author={Rabusseau, Guillaume},
+      author={Kadri, Hachem},
+       title={Low-rank regression with tensor responses},
+        date={2016},
+   booktitle={Advances in neural information processing systems},
+       pages={1867\ndash 1875},
+}
+
+\bib{srivastava2008models}{article}{
+      author={Srivastava, Muni~S},
+      author={von Rosen, Tatjana},
+      author={Von~Rosen, Dietrich},
+       title={Models with a kronecker product covariance structure: estimation
+  and testing},
+        date={2008},
+     journal={Mathematical Methods of Statistics},
+      volume={17},
+      number={4},
+       pages={357\ndash 370},
+}
+
+\bib{wang2017operator}{article}{
+      author={Wang, Miaoyan},
+      author={Duc, Khanh~Dao},
+      author={Fischer, Jonathan},
+      author={Song, Yun~S},
+       title={Operator norm inequalities between tensor unfoldings on the
+  partition lattice},
+        date={2017},
+     journal={Linear Algebra and Its Applications},
+      volume={520},
+       pages={44\ndash 66},
+}
+
+\bib{wang2019three}{article}{
+      author={Wang, Miaoyan},
+      author={Fischer, Jonathan},
+      author={Song, Yun~S},
+       title={Three-way clustering of multi-tissue multi-individual gene
+  expression data using semi-nonnegative tensor decomposition},
+        date={2019},
+     journal={The Annals of Applied Statistics},
+      volume={13},
+      number={2},
+       pages={1103\ndash 1127},
+}
+
+\bib{wang2018learning}{article}{
+      author={Wang, Miaoyan},
+      author={Li, Lexin},
+       title={Learning from binary multiway data: Probabilistic tensor
+  decomposition and its statistical optimality},
+        date={2020},
+     journal={Journal of Machine Learning Research, In press},
+}
+
+\bib{wang2018two}{article}{
+      author={Wang, Miaoyan},
+      author={Roux, Fabrice},
+      author={Bartoli, Claudia},
+      author={Huard-Chauveau, Carine},
+      author={Meyer, Christopher},
+      author={Lee, Hana},
+      author={Roby, Dominique},
+      author={McPeek, Mary~Sara},
+      author={Bergelson, Joy},
+       title={Two-way mixed-effects methods for joint association analysis
+  using both host and pathogen genomes},
+        date={2018},
+     journal={Proceedings of the National Academy of Sciences},
+      volume={115},
+      number={24},
+       pages={E5440\ndash E5449},
+}
+
+\bib{wang2017tensor}{inproceedings}{
+      author={Wang, Miaoyan},
+      author={Song, Yun},
+       title={Tensor decompositions via two-mode higher-order {SVD} ({HOSVD})},
+        date={2017},
+   booktitle={Artificial intelligence and statistics},
+       pages={614\ndash 622},
+}
+
+\bib{zeng2019multiway}{article}{
+      author={Wang, Miaoyan},
+      author={Zeng, Yuchen},
+       title={Multiway clustering via tensor block models},
+        date={2019},
+     journal={Advances in Neural Information Processing Systems 32 (NeurIPS
+  2019). arXiv:1906.03807},
+}
+
+\bib{zhang2018network}{article}{
+      author={Zhang, Jingfei},
+      author={Sun, Will~Wei},
+      author={Li, Lexin},
+       title={Network response regression for modeling population of networks
+  with covariates},
+        date={2018},
+     journal={arXiv preprint arXiv:1810.03192},
+}
+
+\bib{zhang2018mapping}{article}{
+      author={Zhang, Zhengwu},
+      author={Descoteaux, Maxime},
+      author={Zhang, Jingwen},
+      author={Girard, Gabriel},
+      author={Chamberland, Maxime},
+      author={Dunson, David},
+      author={Srivastava, Anuj},
+      author={Zhu, Hongtu},
+       title={Mapping population-based structural connectomes},
+        date={2018},
+     journal={NeuroImage},
+      volume={172},
+       pages={130\ndash 145},
+}
+
+\end{biblist}
+\end{bibdiv}

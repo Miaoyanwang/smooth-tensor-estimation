@@ -37,16 +37,15 @@
 }
 
 
-\theoremstyle{plain}
-\newtheorem{thm}{Theorem}[section]
-\newtheorem{lem}{Lemma}
-\newtheorem{pro}{Property}
-\newtheorem{cor}{Corollary}
-\newtheorem{ass}{Assumption}
-
+\usepackage{amsthm}
 \theoremstyle{definition}
+\newtheorem{thm}{Theorem}
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{pro}[thm]{Property}
+\newtheorem{cor}[thm]{Corollary}
+\newtheorem{ass}{Assumption}
 \newtheorem{prob}{Problem}
-\newtheorem{prop}{Proposition}
+\newtheorem{prop}[thm]{Proposition}
 \newtheorem{defn}{Definition}
 \newtheorem{exmp}{Example}
 \newtheorem{rmk}{Remark}
@@ -58,6 +57,11 @@
 \algnewcommand\OUTPUT{\item[\algorithmicoutput]}
 
 
+\def\sign{\textup{sgn}}
+\def\srank{\textup{srank}}
+\def\rank{\textup{rank}}
+\def\caliP{\mathscr{P}_{\textup{sgn}}}
+\def\risk{\textup{Risk}}
 
 \usepackage[labelfont=bf]{caption}
 
@@ -101,6 +105,10 @@
 \newcommand{\Hnorm}[1]{\left\lVert#1\right\rVert_{\tH_\alpha}}
 \newcommand{\nullnorm}[1]{\left\lVert#1\right\rVert}
 \def\trueB{\mB^{\text{true}}}
+\def\newX{\mX_{\textup{new}}}
+\def\newy{y_{\textup{new}}}
+\def\sign{\textup{sign}}
+\def\bayesf{f_{\textup{bayes}}}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%             Math Symbols
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -111,40 +119,357 @@
 \begin{document}
 
 \begin{center}
-{\bf \Large Proofs}\\
-Miaoyan Wang, May 20, 2020\\
+{\bf \Large Summary of Theory}\\
+Miaoyan Wang, Oct 4, 2020\\
 \end{center}
 
-\begin{proof}
-Note that $f\in\tF$ implies that, there exist $\trueB\in\mathbb{R}^{d_1\times d_2}$, such that $\text{rank}(\trueB)\leq r$ and $f$ has the following representation,
+\section{Set-up}
+Consider the linear function class
+\begin{equation}\label{eq:function}
+\tF(d, r,s)=\{\mX\mapsto \langle \mX, \mB\rangle\ \big| \ \text{rank}(\mB)\leq r, \ \text{Supp}(\mB)\leq s,\ \mB \in\mathbb{R}^{d\times d}\}.
+\end{equation}
+For any function $f\in\tF(d,r,s)$, we define $\FnormSize{}{f}=\FnormSize{}{\mB}$. {\color{red}(do I need to care about $\mX$?? consistent with RHKS?). Distinguish to $L$-2 norm of $f$?}
+
+Let $\{(\mX_i, y_i)\in\mathbb{R}^{d\times d}\times \{\pm 1\}\colon i=1,\ldots,n\}$ denote the i.i.d.\ training sample from an unknown distribution $\mathbb{P}(\mX,y)$. We are interested in the high-dimensional regime as $n,d\to \infty$, while holding $s,r$ as fixed constants.  
+
+
+Define the restricted eigenvalue as
 \[
-\mathbb{P}(Y=1|\mX)=f(\mX)= \langle \mX,\ \trueB  \rangle,\quad \text{for all }\mX\in\mathbb{R}^{d_1\times d_2}.
+\lambda_{\max}(\mX)=\max_{\mx\in\mS^d, \zeronorm{\mx}\leq s} \ma^T\mX\ma.
+\]
+Assume there exists a constant $C>0$ such that $\lambda_{\max}(\mX)\leq C$, a.s.\ as $d\to \infty$. The restricted eigenvalue condition incorporates (i) bounded feature $\FnormSize{}{\mX}\leq C$, and (ii) Gaussian feature $\mX$ with i.i.d.\ $N(0,1)$ entries. In the later case, the feature space is unbounded, $\FnormSize{}{\mX}\asymp \tO(d)$ as $d\to\infty$, but spectral norm is bounded $\lambda_{\max}(\mX)\asymp s =\tO(1)$. We also need $\FnormSize{}{\mB} \leq \max_{\mX\in\mathbb{R}^{d\times d}}\langle \mB,\mX\rangle$ (this is natural)
+{\color{red} do we need assumptions on $\mX$ in the probability estimation?? We need $\norm{f}_\infty$ bounded in the $L_2$ entropy. We require $\mX$ spread out, in particular, cover the set of $\mB$} 
+
+\section{Theory}
+\begin{defn}[Classification risk and surrogate risk]
+Let $f(\cdot)\colon \mathbb{R}^{d\times d}\mapsto \mathbb{R}$ be the decision function of interest, $\ell(\cdot)\colon \mathbb{R}\mapsto \mathbb{R}_{\geq 0}$ be a surrogate loss function in terms of the margin $yf(\mX)$. We define the 0/1 classification risk and surrogate risk,
+\[
+R(f)=\mathbb{P}(y\neq \sign f(\mX)),\quad R_\ell(f) = \mathbb{E}\ell(yf(\mX)). 
+\]
+\end{defn}
+
+\begin{ass}[Surrogate loss]\label{ass:loss}
+Assume that the surrogate loss $\ell$ satisfies the following two conditions
+\begin{enumerate}
+\item [i.]$\ell$ is a $L$-Lipschitz function and $\ell$ entrywise dominates the 0/1 loss. This assumption implies that $R(f)\leq R_\ell(f)$ for all functions $f$.
+\item [ii.]The loss is Fisher consistent,
+\begin{equation}\label{eq:surrogate}
+R(f_\text{bayes})=R_\ell(f_\text{bayes}),\quad \text{and} \quad \argmin_{\text{all possible $f$}} R_\ell(f)=\argmin_{\text{all possible $f$}} R(f).
+\end{equation}
+That is, replacing 0/1 loss by surrogate loss does not change the minimal risk and minimizer. Note that the right hand side of~\eqref{eq:surrogate} is obtained at $f_\text{bayes}(\cdot)\colon \mX\mapsto \sign \{\mathbb{P}(y=1|\mX)-1/2\}$ a.s.\ except for the decision boundary $\{\mX\colon \mathbb{P}(y=1|\mX)=1/2\}$. ({\color{red} where do we use the global minimum assumption?})
+\end{enumerate}
+\end{ass}
+
+
+We denote the empirical risks calculated from the training sample,
+\[
+\hat R(f)={1\over n}\sum_{i=1}^n(y_i\neq \sign f(\mX_i)),\quad \hat R_\ell(f) = {1\over n}\sum_{i=1}^n\ell(y_i f(\mX_i)). 
 \]
 
-The low-rank SMM minimizes the sample version of the following population function
+\begin{prop}[Generalization]\label{prop:generalize}
+Consider the function class $\tF(d,r,s)$ in~\eqref{eq:function} and a surrogate loss $\ell$ under Assumption~\ref{ass:loss}i. With very high probability over $\{(\mX_i, y_i)\}$, we have
+%\[
+%\sup_{f\in \tF(d,r,s)} \big|\mathbb{P}(\newy \neq \sign\ f(\newX)) - {1\over n}\sum_{i=1}^n \ell(y_if(\mX_i))\big| \leq {rs\log d\over \sqrt{n}} \sup_{\mB\in\tF(d,r,s)}\FnormSize{}{\mB}.
+%\]
 \[
-L_\pi(\mB)\stackrel{\text{def}}{=}\mathbb{E}[\ell_\pi(\mB)] = \mathbb{E}\left\{\sum_{y_i=1}\left[1-\langle \mX_i, \mB \rangle \right]_{+}+\sum_{y_{i}=-1}\left[1+\langle \mX_i, \mB\rangle\right]_{+}\right\},
-\] 
-where the expectation is over $(\mX_i, y_i)\sim_{\text{i.i.d}}\tX\times \tY$. Straightforward calculation shows that
-\[
-{1\over n}L_\pi(\mB)=\mathbb{E}\left\{\left[1-Y\langle \mX, \mB \rangle\right]_{+} \mathds{1}\left(Y=1\right)+\left[1-Y\langle \mX, \mB \rangle\right]_{+} \mathds{1}\left(Y=-1\right)\right\}\right\},
+\sup_{f\in \tF(d,r,s)}|R_\ell(f)-\hat R_\ell(f)| \leq CL s\log d  \sqrt{r\over n}  \sup_{\mB\in\tF(d,r,s)}\FnormSize{}{\mB}.
 \]
-where $(\mX,y)\sim \tX\times \tY$. Let $\hat \mB=\argmin_{\{\mB\colon \text{rank}(\mB)\leq r]}} L(\mB)$.
-We will prove that $\hat \mB=\trueB$.
-Note that
-\begin{align}
-{1\over n}L_\pi(\hat\mB)&=\mathbb{E}\left\{\left[1-Y\langle \mX, \hat \mB \rangle\right]_{+} \mathds{1}\left(Y=1\right)+\left[1-Y\langle \mX, \hat \mB \rangle\right]_{+} \mathds{1}\left(Y=-1\right)\right\}\\
-&=\mathbb{E}\{   \left(1-Y\langle \mX, \hat \mB\rangle\right)\mathds{1}(Y=1) \}\\
-&=\mathbb{E}(Y=1)-\mathbb{E}\left\{Y\mathds{1}(Y=1) \langle \mX, \hat \mB\rangle\right\}.
+\end{prop} 
+
+
+
+%\begin{defn}[Best Optimizer in $\tF$]
+%\[
+%f^* = \argmin_{f\in\tF(d,r,s)} \mathbb{P}(\newy\neq \sign\ f(\newX)).
+%f^*=\argmin_{f\in \tF(d,r,s)} R(f).
+%\]
+%\end{defn}
+
+
+\begin{cor}[Excess risk]\label{cor:riskerror}
+Consider the same assumptions as in Proposition~\ref{prop:generalize}. Let $\hat f\in\tF(d,r,s)$ denote empirical surrogate risk minimizer constrained to the function class $\tF(d,r,s)$, 
+\[
+ \hat f =\argmin_{f\in\tF(d,r,s)}{1\over n}\sum_{i=1}^n \ell(y_i f(\mX_i)).
+\]
+Then with very high probability over the training set, the surrogate risk error satisfies
+\[
+R_\ell(\hat f)-\inf_{f\in\tF(d,r,s)}R_\ell(f)\leq 2CL s\log d \sqrt{r\over n}  \sup_{\mB\in\tF(d,r,s)}\FnormSize{}{\mB}.
+\]
+and the classification error satisfies
+\[
+R(\hat f)-\inf_{f\in\tF(d,r,s)}R(f)\leq 2CL s\log d  \sqrt{r\over n} \sup_{\mB\in\tF(d,r,s)}\FnormSize{}{\mB}.
+\]
+\end{cor}
+{\color{red} Write in terms of Bayes error?}
+
+\begin{rmk}[Two shortcomings] First, the convergence in sample size is of order $\tO(1/\sqrt{n})$. This can be improved to $\tO(1/n)$ upon mean-variance (low noise) conditions. Second, the generalization bound depends on $\sup_{\mB\in\tF(d,r,s)}\FnormSize{}{\mB}$, which may depends on $d$. In fact, we can use an adaptive penalization to replace this term to $\FnormSize{}{\mB^*}$, where $\mB^*$ is the matrix that induces $f^*$; i.e., $f^*(\mX)=\langle \mX, \mB^*\rangle$. 
+\end{rmk}
+
+To overcome the above pitfalls, we propose to use the following penalized empirical surrogate risk minimizer
+\begin{align}\label{eq:est}
+\hat f_\lambda &=  \argmin_{f\in\tF(d,r,s)} \left\{ {1\over n}\sum_{i=1}^n \ell(y_i f(\mX_i))+\lambda \FnormSize{}{f}^2\right\}, \\
+\text{where}\quad \tF(d, r,s)&=\{\mX\mapsto \langle \mX, \mB\rangle\ \big| \ \text{rank}(\mB)\leq r, \ \text{Supp}(\mB)\leq s,\ \mB \in\mathbb{R}^{d\times d}\}.
 \end{align}
-We note that
+
+
+\begin{ass}\label{ass:main} Consider the following assumptions:
+\begin{enumerate}
+\item[i.] As $n,d\to \infty$, there exists a sequence $f_n^*\in\tF(d,r,s)$ that is (1) bounded $\FnormSize{}{f^*_n}^2\leq J^*$ for some constant $C>0$, and (2) $R_\ell(f_n^*)-R_\ell(f_{\text{bayes}})\leq a_n\to 0$. The upper bound $J^*$ is allowed to depend on $d=d(n)$. 
+%{\color{red}(do we need $a_n\to 0$?) yes, we need, but the rate is not needed.}.
+%\item For any sufficient $\delta>0$, the set $\{ f\in\tF(d,r,s)\colon R_\ell(f)-R_\ell(\bayesf) \leq \delta \ \text{and}\ \FnormSize{}{f}\leq C\}$ is non-empty, where $C>0$ is a constant independent of $d$. 
+%{\color{red} sufficient when decision boundary is linear? monotonic function in inner product? what kind of $p$ satisfy this condition?? }
+
+\item[ii.] There exist constants $a>0$ and $\rho\in[0,1]$, such that, for any sufficient small $\delta>0$,
+\[
+\text{Var}\left[\ell(yf(\mX))-\ell(y\bayesf(\mX))\right] \leq a \mathbb{E}\left[\ell(yf(\mX))-\ell(y\bayesf(\mX))\right]^\rho
+\]
+holds for all $f\in \{ f\in\tF(d,r,s)\colon R_\ell(f)-R_\ell(\bayesf) \leq \delta\}$ in a $\delta$-neighborhood of $\bayesf$. 
+
+\item[iii.] There exist constants $b>0$ and $\alpha\geq 0$, such that, for any sufficient small $\delta>0$,
+\[
+\mathbb{E} \big|\sign  f (\mX)- \sign \bayesf(\mX)\big| \leq b\left[R_\ell(f)-R_\ell(\bayesf)\right]^\alpha
+\]
+holds for all $f\in \{ f\in\tF(d,r,s)\colon R_\ell(f)-R_\ell(\bayesf) \leq \delta\}$ in a $\delta$-neighborhood of $\bayesf$.
+% {\color{red} implies part of the fisher assumption $R_\ell(f)=R_\ell(\bayesf) \rightarrow f=\bayesf$. not imply the global minimum assumption. not imply $R_\ell(\bayesf)=R(\bayesf)$.}
+\end{enumerate}
+\end{ass}
+
+%\begin{rmk} If $\ell$ is log-likelihood, then Assumption ii holds with $\rho=1$. 
+%\end{rmk}
+
+\begin{thm}[Main result for classification accuracy]\label{thm:main}
+Suppose Assumption~\ref{ass:loss} and Assumption~\ref{ass:main}i-\ref{ass:main}ii hold. 
+%Rademacher analysis requires $({rs\log d \over n})^\rho\geq \lambda \geq {s^2r\log d \over n}$?
+%Current analysis requires $({rs\log d \over n})^\rho\geq \lambda \geq {1\over n^{1/(2-\rho})} \geq {1\over n}$ provided $\rho\in[0,1]$. Best case $\rho=1$. 
+Consider a penalized empirical surrogate risk minimizer~\eqref{eq:est} with the regularity parameter $\lambda \asymp {1\over J^*}\left({rs\log d\over n}\right)^{1/(2-\rho)}$. We have that, with very high probability,
+% at least $1-\exp(-Cn\left(J_*\lambda)^{2-\rho}\right)$, 
+the surrogate error and classification error satisfy
+\begin{equation}\label{eq:riskbound}
+R_\ell(\hat f_\lambda) - R_\ell(\bayesf) \leq C\left({rs\log d \over n}+a_n\right)^{1/( 2-\rho)},\quad R(\hat f_\lambda) - R(\bayesf) \leq C\left({rs\log d \over n}+a_n\right)^{1/( 2-\rho)}.
+\end{equation}
+Furthermore, suppose Assumption~\ref{ass:main}iii holds. Then, Assumption~\ref{ass:main}ii holds with $\rho=\alpha\wedge 1$, and the estimation error for level sets satisfies
+\[
+\mathbb{P}(\hat \mX\Delta\mX_{\text{bayes}}) \leq C\left({rs\log d \over n}+a_n\right)^{\alpha/(2-\alpha\wedge 1)},
+\]
+where $\hat \mX=\{\mX\colon \hat f(\mX)\geq 0\}$ and $\mX_{\text{bayes}}=\{\mX\colon \bayesf(\mX)\geq 0\}$ are estimated and true level sets, respectively. 
+\end{thm}
+\begin{rmk} The bound~\eqref{eq:riskbound} implies the consistency of risk estimator in the ultra high-dimensional regime. In particular, the dimension of feature matrices $d$ is allowed to grow sub-exponentially in sample size $n$; i.e., $d=o(e^n)$.
+\end{rmk}
+
+\begin{thm}[Main result for probability estimation] Consider the same assumptions of Theorem~\ref{thm:main}. For the estimator $\hat p\colon \mathbb{R}^{d\times d}\to[0,1]$ obtained from level-set estimation,
+\[
+\hat p(\mX)={1\over H}\sum_{h=1}^H \mathds{1}\{\mX\colon \hat f_h(\mX)\geq 0\},\quad \text{for all }\mX\in\mathbb{R}^{d\times d}.
+\]
+With probability at least $1-C\exp(-an\lambda^{2-\alpha})$,
+\[
+\mathbb{E}|\hat p(\mX)- p(\mX)| \geq \KeepStyleUnderBrace{{1\over 2H}}_{\text{discretization error}} +\ {a(H+1)\over 2} \tO\left(\KeepStyleUnderBrace{{rs\log d\over n}}_{\text{statistical error}} +\KeepStyleUnderBrace{a_n}_{\text{approximation error}}\right)^{\alpha^2}.
+\]
+\end{thm}
+
+\begin{cor} Assume $a_n \leq {rs\log d \over n}$. Choosing $H\asymp ({rs\log d \over n})^{-\alpha^2/2}$ gives the estimation error,
+\[
+\mathbb{E}|\hat p(\mX)- p(\mX)| \leq C\left({rs\log d \over n}\right)^{\rho/2}.
+\]
+\end{cor}
+
+\section{Algorithm}
+
+\section{Numerical experiments}
+Three goals 
+\begin{enumerate}
+\item Assess the 0/1 and hinge loss errors
+\item Assess the level-set estimation
+\item Assess the probability estimation
+\end{enumerate}
+
+\section{Proofs}
+\begin{proof}[Proof of Proposition~\ref{prop:generalize}]
+It suffices to bound the Radamecher complexity 
 \begin{align}
-\mathbb{E}\left\{Y\mathds{1}(Y=1) \langle \mX, \hat \mB\rangle\right\}& =\mathbb{E}_{\mX}\left\{\langle \mX, \hat \mB\rangle\mathbb{E}_{(\mX,Y)}[Y\mathds{1}(Y=1)|\mX]\right\}\\
-&=\mathbb{E}_{\mX}\left\{ \langle \mX, \hat \mB\rangle \left\{\mathbb{P}(\mY=1|\mX)-{1\over 2}\right)   \right\}\\
-&=\mathbb{E}_{\mX}\left\{ \langle \mX, \hat \mB\rangle \left( \langle \mX, \trueB \rangle - {1\over 2}\right)\right\}.
+\text{Rad}(f)&={1\over n}\mathbb{E}\max_{f\in \tF(d,r,s)}\sum_{i\in[n]}\sigma_i\langle \mX_i, \mB \rangle\\
+&\leq {1\over n} \nnormSize{}{\mB}\snormSize{}{\sum_{i\in[n]}\sigma_i\mX_i}\\
+&\leq {1\over n} \mathbb{E}\max_{\text{possible choice $\tS$ from $[d]$}}\max_{\text{given set $\tS$}} \langle \mB, \sum_i\sigma_i\mX_i\rangle\\
+&\leq {1\over n}\log{{d}\choose{s}}\mathbb{E}\max_{\{\ma_r,\mb_r,\lambda_r\}}\langle \sum_r\lambda_r\ma_r\mb^T_r,\ \sum_i \sigma_i\mX_i\rangle\\
+&\leq {s\over n}\log d \sum_r \lambda_r \langle \ma_r\mb_r,\ \sum_i\sigma_i\mX_i\rangle\\
+%&\leq {1\over n}\log d    \sqrt{n}\lambda_{\max}(\mX)(\sum_r\lambda_r)\\
+&\leq {s\over n}\log d    \sqrt{n}\lambda_{\max}(\mX)\sqrt{r}\FnormSize{}{\mB}\\
+&\leq Cs{\sqrt{r\over n}\log d}\FnormSize{}{\mB}.
 \end{align}
-Therefore, the optimal $\hat \mB$ must satisfy $\text{sign}\langle \mX, \hat \mB\rangle=\text{sign} \left(\langle  \mX, \trueB \rangle-{1\over 2}\right)$.
 \end{proof}
+
+\begin{proof}[Proof of Corollary~\ref{cor:riskerror}]
+Consider the decomposition
+\begin{align}
+R_\ell(\hat f)-\inf_{f\in \tF(d,r,s)}R_\ell(f)&\leq R_\ell(\hat f)-\hat R_\ell(\hat f) + \hat R_\ell(\hat f)-\hat R_\ell(f^*)+\hat R_\ell(f^*)-R_\ell(f^*)\\
+&\leq|R_\ell(\hat f)-\hat R_\ell(\hat f)|+\hat R_\ell(f^*)-R_\ell(f^*)\\
+&\leq 2\text{Rad}(f) \\
+&\leq 2CLs{\sqrt{r\over n}\log d}\max_{f\in\tF(d,r,s)}\FnormSize{}{\mB}
+\end{align}
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}] We set $\delta_n=\tO({rs\log d \over n})^\rho$. Then 
+\begin{align}
+&\mathbb{P}\left\{R_\ell(\hat f) - R_\ell(\bayesf) \geq \delta \right\} \\
+\leq\ & \mathbb{P}\left\{ \sup_{\{f\in\tF(d,r,s)\colon R_\ell(f)-R_\ell(\bayesf)\geq \delta\}} \left(\hat R(f^*) +\lambda \FnormSize{}{f^*}^2 - \hat R(f)-\lambda \FnormSize{}{f}^2\right)
+\geq 0\right\}\\
+\leq \ & 3.5\exp(-an\lambda^{2-\rho}),
+\end{align}
+where the last line comes from Lemma~\ref{lem:metric}, by taking $\lambda\asymp \delta_n$. {\color{red}(where $a_n$ enters?)}
+
+The classification bound follows by noting that $R(\hat f)\leq R_\ell(\hat f)$ and $R(\bayesf)=R_\ell(\bayesf)$.
+\end{proof}
+
+\begin{defn}[bracketing number, uniform entropy, and bounded functions]\label{pro:inftynorm}
+Consider a function set $\tF$, and let $\varepsilon>0$. We call $\{(f^l_m,f^u_m)\}_{m=1}^M$ an $L_2$-metric, $\varepsilon$-bracketing function set of $\tF$, if for every $f\in \tF$, there exists an $m\in[M]$ such that 
+\[
+f^l_m(\mX)\leq f(\mX)\leq f^u_m(\mX),\quad \text{for all }\mX\in\mathbb{R}^{d\times d},
+\]
+and
+\[
+\vnormSize{}{f^l_m-f^u_m}\stackrel{\text{def}}{=}\sqrt{\mathbb{E}|f^l_m(\mX)-f^u_m(\mX)|^2} \leq \varepsilon, \ \text{for all } m=1,\ldots,M. 
+\]
+The bracketing number with $L_2$-metric, $\tH_{[\ ]}(\varepsilon,\ \tF,\ \vnormSize{}{\cdot})$, is defined as the logarithm of the smallest cardinality of the $\varepsilon$-bracketing function set of $\tF$.  
+Furthermore, consider the set of functions with $L_\infty$ bound no larger than $M$, denoted $\tF(M)=\{f\in\tF\colon \norm{f}_\infty\leq M\}$. Then we have 
+\[
+\tH_{[\ ]}(\varepsilon,\ \tF(M),\ \vnormSize{}{\cdot})\leq \tH(\varepsilon,\ \tF(M),\ \norm{\cdot}_\infty).
+\]
+\end{defn}
+
+\begin{lem}[Uniform entropy for bounded functions in $\tF(d,r,s)$] Let $\tF(d,r,s)$ denote the function class in~\eqref{eq:function}. Consider the subset of functions with $L_\infty$ bound no larger than $M$, denoted $\tF(M)=\{f\in \tF(d,r,s)\colon \norm{f}_\infty\leq M\}$ for $M=1,2,\ldots.$ When $\varepsilon$ sufficiently small, we have 
+\[
+\tH(\varepsilon,\ \tF(M),\ \norm{\cdot}_\infty) \leq  5rs \log {M\sqrt{r}\lambda_{\max}d\over \varepsilon }.
+\]
+\end{lem}
+\begin{proof} For a given matrix $\mB$, the definition $f(\mX)=\langle \mX,\mB\rangle$ implies that $\FnormSize{}{\mB}\leq \max_{\mX\in\mathbb{R}^{d\times d}}\langle \mX,\mB\rangle=\norm{f}_\infty\leq \FnormSize{}{\mB}\sqrt{r}\lambda_{\max}$. Therefore, we have 
+\begin{equation}\label{eq:norm}
+\tH(\varepsilon\sqrt{r}\lambda_{\max},\ \tF(M),\ \norm{\cdot}_\infty) = \tH\left(\varepsilon,\ \tB(M),\ \FnormSize{}{\cdot}\right),
+\end{equation}
+where we have defined the matrix set $\tB(M)=\{\mB\in\mathbb{R}^{d\times d}\colon \text{rank}(\mB)\leq r,\ \text{Supp}(\mB)\leq s,\ \FnormSize{}{\mB}\leq M\}$. Note that the $F$-norm of matrix $\mB$ is equivalent to the $l_2$-norm of the vector $\text{vec}(\mB)$, and the vector $l_2$-norm is lower bounded by vector $l_\infty$-norm in Euclidean space. Therefore, it suffices to bound $\tH(\varepsilon,\ \tB(M),\ \norm{\cdot}_\infty)$. Now fix a subset $S\subset [d]$ with $|S|=s$, and let $\tB_S(M)\subset \tB(M)$ denote the subset of matrices satisfying $\mB(i,j)=0$ whenever $(i,j)\notin S^2$. {\color{red}Based on ...}, the $\varepsilon$-covering of $\tB_{S}(M)$ has entropy
+\[
+\tH(\varepsilon,\ \tB_S(M),\ \norm{\cdot}_\infty)\leq r(2s+1)\log\left({M\over \varepsilon}\right).
+\]
+In view of $\tB(M)\subset\bigcup_{S\subset [d], |S|=s}\tB_{S}(M)$, an $\varepsilon$-covering set $\tB(M)$ is then given by the union of $\varepsilon$-covering set of $\tB_S(M)$. Using Stirling's bound, we derive that 
+\[
+\tH(\varepsilon,\ \tB(M),\ \norm{\cdot}_\infty)\leq 2 s \log {d\over s}+r(2s+1)\log{M\over \varepsilon} \leq 5rs\log{Md\over \varepsilon}.
+\]
+Substituting $\varepsilon$ by $\varepsilon/\sqrt{r}\lambda_{\max}$ into~\eqref{eq:norm} concludes the proof. 
+\end{proof}
+
+\begin{lem}[Metric of local $\tF(d,r,s)$] \label{lem:metric}
+Let $\delta>0$ be the solution to the following inequality,
+\[
+\max_{M\geq 2}\left\{{1\over \delta+\lambda(M/2-1)}\int^{\left(\delta+\lambda(M/2-1)\right)^{\rho/2}}_{\delta+\lambda(M/2-1)} \sqrt{\tH(\varepsilon,\ \tF(M),\ \norm{\cdot}_\infty) }d\varepsilon\right\} \leq n^{1/2}.
+\]
+Then we have $\delta=\tO\left({rs\log d\over n}\right)^{\rho}$ provided that $\lambda \leq 4\delta$ (??).
+\end{lem}
+
+\begin{thm}[] Let $\tF$ be a class of functions. Let $T, V\in(0,\infty)$ denote the upper bound of functions in $\tF$ in $L_\infty$ and $L_2$ norms; that is, $\sup_{f\in\tF}\norm{f}_\infty\leq T$ and $\sup_{f\in\tF}\text{Var}(f)\leq v$. Let $E_n(f)={1\over n}\sum_{i=1}^n(f(Y_i)$ be the empirical process. 
+Define $x_n^*$ be the solution of the equation to the following equation
+\[
+{1\over x}\int_x^{\sqrt{V}}\sqrt{\tH_{[\ ]}(\varepsilon,\tF,\vnormSize{}{\cdot})}d\varepsilon =\sqrt{n}.
+\]
+Suppose the $\sqrt{V}\leq T$, and 
+\[
+x_n^*\lesssim {V\over T},\quad \text{and}\quad \tH_{[\ ]}(\sqrt{V},\tF,\vnormSize{}{\cdot})\lesssim {n x_n^* \over T}.
+\]
+Then we have
+\[
+\mathbb{P}\left(\sup_{f\in\tF}E_n(f)\geq \mathbb{E}f(Y)+x_n^*\right)\lesssim \exp\left(-{c n x^*_n}\right).
+\]
+\end{thm}
+\begin{rmk} The function set $\tF$, and bounds $T$, $v$ are allowed to depend on $n$.
+\end{rmk}
+
+
+
+
+We view $\tY_\Omega=\{\bar \tY(\omega)\colon \omega\in \Omega\}$ as a collection of $n$ i.i.d.\ random variables where the randomness is induced form both $\bar \tY$ and $\omega\sim\Pi$, and view the tensor $\tZ$ as a function that maps $\bar \tY_\Omega$ to $L(\tZ,\bar \tY_{\Omega})$. 
+
+Specifically, the data takes the form $\{y_i\colon i=1,2,\ldots,n\}$, where for each $i\in[n]$, $y_i$ is i.i.d.\ sampled from all entries of $\tY$ based on $\omega\sim \Pi$. We denote $y_i$ i.i.d. random variables where the randomness is induced from both $\Pi$ and noise in the tensor model. 
+
+The loss function then takes the form
+\[
+L(\tZ,\tY_\Omega)={1\over n}\sum_{i=1}^n\ell_{i}(y_i), 
+\]
+where $\ell_i(y_i)=|y_i||\sign(z_i)-\sign(y_i)|$. The collection of function $\{\ell_i\colon i\in[d_1]\times \cdots[d_K]\}$ is one-to-one $\tZ$. For notational simplicity, we write $L(\tZ)$ in place of $L(\tZ, \tY_\Omega)$. The relevant probability statements, such as $\mathbb{E}$ and $\text{Var}$, are taken with respect to $\tY(\omega)$. 
+
+
+Because $\bar \Theta$ is the global minimizer of $\risk(\cdot)$, and by definition, $L(\hat Z)\leq L(\bar \Theta)$, we have the following inclusion of the event 
+\[
+\{\risk(\hat \tZ)-\risk(\bar \Theta) \geq T_n \}\subset \{ \sup_{\tZ\in \tF}\left(\risk(\tZ)-\risk(\bar \Theta)+L(\bar \Theta)-L(\tZ)\right)\geq {T_n} \}.
+\]
+Therefore,
+\[
+\mathbb{P}\left( \risk(\hat \tZ)-\risk(\bar \Theta) \geq T_n \right)\leq \mathbb{P}\left(\sup_{\tZ\in \tF}|L(\tZ)-\risk(\tZ)-L(\bar \Theta)+\risk(\bar \Theta)| \geq {T_n} \right).
+\]
+We then use the empirical process to uniformly bound the stochastic residual
+\[
+E_n(\tZ):=L(\tZ)-\risk(\tZ)-L(\bar \Theta)+\risk(\bar \Theta).
+\]
+To show this, we notice that the stochastic residual is a sum of i.i.d.\ r.v.'s
+\begin{align}
+E_n(\tZ)&={1\over n}\sum_{i=1}^n \KeepStyleUnderBrace{\left[ \ell_{\tZ}(y_i)-\ell_{\bar \Theta}(y_i)+\mathbb{E}\ell_{\bar \Theta}(y_i)-\mathbb{E}\ell_{\tZ}(y_i)\right]}_{\text{mean-zero, $i.i.d.$ r.v.'s}}\\
+&={1\over n}\sum_{i=1}^n  e_i+\risk(\bar \Theta)-\risk(\tZ)
+\end{align}
+where
+\[
+\text{Var}[e_i]\leq \mathbb{E}[e_i]^{\alpha}+{1\over \rho}\mathbb{E}[e_i].
+\]
+With high probability 
+\[
+\max_{\tZ}{1\over n}\sum_{i=1}^n e_i \leq T_n +\risk(\tZ)-\risk(\bar \Theta)
+\]
+\[
+ \sup_{\tZ}E_n(\tZ) \leq T_n 
+\]
+
+\begin{lem} Let $\tF$ be a class of functions, and $(y_i)_{i\in[n]}$ be an i.i.d. sample from random variable $y$. Suppose the variance-to-mean relationship holds uniformly over $\tF$,
+\[
+\text{Var}f(y)=[\mathbb{E}f(y)]^\beta+{1\over \rho}\mathbb{E}f(y), \quad \text{for all }f\in\tF,
+\]
+where $\beta\in[0,1]$ is a constant. Then
+\[
+\mathbb{P}\left(\sup_{f\in \tF} {1\over n}\sum_{i=1}^nf(y_i)\geq  \mathbb{E}f(y)+T_n    \right)\leq \exp(-T_n).
+\]
+\end{lem}
+
+To bound the right-hand side, we partition $\{\tZ\in\tF\colon \risk(\tZ)-\risk(\bar \Theta) \geq L_n\}$ into a union of $A_s=\{\tZ\in\tF\colon 2^{s-1}L_n \leq  \risk(\tZ)-\risk(\bar \Theta)  <2^sL_n\}$ for $s=1,2,\ldots$. Then it suffices to bounding the corresponding probability over each $A_s$. Towards this end, we need to bound the first and second moment of $\Delta_n(\tZ, \tY_{\Omega})$.
+
+For the first moment we have
+\[
+\inf_{\tZ\in A_s}\mathbb{E}\Delta_n(\tZ, \tY) = \inf_{\tZ\in A_s}\mathbb{E}[L(\tZ,\tY_{\Omega})-L(\bar \Theta, \tY_{\Omega})] \geq \inf_{\tZ\in A_s}[\risk(\tZ)-\risk(\bar \Theta)]\geq \KeepStyleUnderBrace{2^{s-1}L_n}_{=:M(s)}
+\]
+for any $s=1,2,\ldots$
+For the second moment, it follows from Lemma~\ref{lem:variance} that 
+\begin{align}
+\sup_{\tZ\in A_s}\textup{Var} \Delta_n(\tZ,\tY)
+&=\sup_{\tZ\in A_s}\textup{Var}[L(\tZ,\bar \tY_\Omega)-L(\bar \Theta, \bar \tY_\Omega)]\\
+&\leq \KeepStyleUnderBrace{M^{\alpha\over 1+\alpha}(s)+{1\over \rho}M(s)}_{=:V(s)}
+\end{align}
+We now apply Shen \& Wong for each of the set $\{\tZ\in A_s\}$
+\begin{align}\label{eq:sum}
+\mathbb{P}\left(\risk(\hat \tZ)-\risk(\bar \Theta) \geq L_n \right)\leq \sum_{s=1}^\infty\mathbb{P}\left( \sup_{A_s}(\mathbb{E}\Delta_n - \Delta_n) \geq M_n\right)&\leq \sum_{s=1}^{\infty} \exp\left[ -{ncM^2(s) \over V(s)+T M(s)}\right] \\
+& \leq \sum_{s=1}^{\infty} \exp\left[-{nM^{2}(s)\over M^{\alpha\over 1+\alpha}(s)+{1\over \rho}M(s)}\right]\\
+&\lesssim \exp(-d^{\alpha\over \alpha+1}n^{1\over \alpha+1})\\
+& \lesssim \exp(-d), \text{ provided $n\geq d$}.
+\end{align}
+where the convergence rate $L_n>0$ is determined by the solution to the following inequality,
+\begin{equation}\label{eq:solveL}
+{1\over L_n}\int_{L_n}^{\sqrt{L_n^{\alpha/(\alpha+1)}+{L_n\over \rho}}}\sqrt{\tH(\varepsilon,\tF, \vnormSize{}{\cdot}) }d\varepsilon \leq \sqrt{n}. 
+\end{equation}
+In particular, the smallest $L_n$ satisfying~\eqref{eq:solveL} yields the best upper bound of the error rate. Here $\tH(\varepsilon, \tF,\vnormSize{}{\cdot})$ denotes the $L_2$-metric, $\varepsilon$-bracketing number (c.f. Definition~\ref{pro:inftynorm}) of family $\tF$. 
+
+It remains to solve for the smallest possible $L_n$ in~\eqref{eq:solveL}. Based on Lemma~\ref{lem:metric}, the inequality~\eqref{eq:solveL} is satisfied with 
+\begin{equation}\label{eq:tn}
+L_n\asymp t_n^{(\alpha+1)/ (\alpha+2)} +{1\over \rho} t_n, \quad \text{where }t_n={Kd_{\max} r \over n}.
+\end{equation}
+
+Combining~\eqref{eq:uniform} and~\eqref{eq:sum} gives
+\[
+\risk(\hat \tZ)-\risk(\bar \Theta) \geq \left( {Kd_{\max} r \over n} \right)^{(\alpha+1)/ (\alpha+2)}+{1\over \rho}\left( {Kd_{\max} r \over n} \right).
+\]
+with probability at least $1- \exp(-\sqrt{Knd_{\max}r}).$. 
+
 
 \bibliographystyle{unsrt}
 \bibliography{tensor_wang}

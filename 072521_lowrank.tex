@@ -1,0 +1,160 @@
+\documentclass[11pt]{article}
+\usepackage{lscape}
+\usepackage{amsmath,amssymb}
+\usepackage{amsthm}
+\usepackage{float}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{comment}
+\usepackage{bm}
+\usepackage{gensymb}
+\allowdisplaybreaks[4]
+\usepackage{geometry}
+\geometry{margin=1in}
+\usepackage{setspace}
+\usepackage{siunitx}
+\usepackage{enumitem}
+\usepackage{dsfont}
+\usepackage{arydshln}
+\usepackage{natbib}
+
+\newcommand*{\vertbar}{\rule[-1ex]{0.5pt}{2.5ex}}
+\newcommand*{\horzbar}{\rule[.5ex]{2.5ex}{0.5pt}}
+
+
+\usepackage{graphics}
+\allowdisplaybreaks
+
+\usepackage[utf8x]{inputenc}
+\usepackage{bm}
+
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    citecolor = blue,
+    linkcolor=blue,
+    filecolor=magenta,           
+    urlcolor=cyan,
+}
+
+
+\theoremstyle{plain}
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{lem}{Lemma}
+\newtheorem{pro}{Property}
+\newtheorem{cor}{Corollary}
+
+\theoremstyle{definition}
+\newtheorem{assumption}{Assumption}
+\newtheorem{prob}{Problem}
+\newtheorem{prop}{Proposition}
+\newtheorem{defn}{Definition}
+\newtheorem{exmp}{Example}
+\newtheorem{rmk}{Remark}
+\newtheorem{con}{Conjecture}
+
+\usepackage{algpseudocode,algorithm}
+\algnewcommand\algorithmicinput{\textbf{Input:}}
+\algnewcommand\algorithmicoutput{\textbf{Output:}}
+\algnewcommand\INPUT{\item[\algorithmicinput]}
+\algnewcommand\OUTPUT{\item[\algorithmicoutput]}
+
+\def\marginest{\hat \Theta^{\textup{margin}}}
+\def\MLEest{\hat \Theta^{\textup{MLE}}}
+\def\sign{\textup{sign }}
+
+\usepackage[labelfont=bf]{caption}
+
+\setcounter{table}{1}
+\usepackage{multirow}
+\usepackage{tabularx}
+
+\def\fixme#1#2{\textbf{[FIXME (#1): #2]}}
+
+\def\Holder{\text{H\"{o}lder }}
+
+\newcommand*{\KeepStyleUnderBrace}[1]{%f
+  \mathop{%
+    \mathchoice
+    {\underbrace{\displaystyle#1}}%
+    {\underbrace{\textstyle#1}}%
+    {\underbrace{\scriptstyle#1}}%
+    {\underbrace{\scriptscriptstyle#1}}%
+  }\limits
+}
+\usepackage{mathtools}
+\mathtoolsset{showonlyrefs=true}
+
+\begingroup
+\makeatletter
+\@for\theoremstyle:=definition,remark,plain\do{%
+\expandafter\g@addto@macro\csname th@\theoremstyle\endcsname{%
+\addtolength\thm@preskip\parskip
+}%
+}
+\endgroup
+
+
+\usepackage{hyperref}
+\hypersetup{colorlinks=true}
+\usepackage[parfill]{parskip}
+\usepackage{bm}
+\onehalfspacing
+
+\newcommand{\maxnorm}[1]{\left\lVert#1\right\rVert_{\infty}}
+\newcommand{\Hnorm}[1]{\left\lVert#1\right\rVert_{\tH_\alpha}}
+\newcommand{\nullnorm}[1]{\left\lVert#1\right\rVert}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%             Math Symbols
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%               Bold Math
+\input macros.tex
+\def\refer#1{\emph{\color{blue}#1}}
+\begin{document}
+
+\begin{center}
+{\bf \Large Compatibility of smooth tensor and low-rank tensor}\\
+Miaoyan Wang, July 25, 2021\\
+\end{center}
+
+Let $\mS^r=\{\mx\in\mathbb{R}^r\colon \vnormSize{}{\mx}\leq 1\}$ be an $r$-dimensional unit ball. We also use $\mx=(\mx(1),\ldots,\mx(r))^T$ to denote the vector in $\mathbb{R}^r$, where $\mx(i)\in\mathbb{R}$ denotes $i$-th element in the vector. Consider the following generative process: 
+\begin{enumerate}[wide]
+\item[] Step 1. Fix an $m$-variate function
+\begin{align}
+f\colon \mS^{r}\times\cdots\times \mS^{r} &\to [0,1],\\
+(\mx_1,\ldots,\mx_m)&\mapsto f(\mx_1,\ldots,\mx_m)=\sum_{i=1}^r\mx_1(i)\cdots\mx_m(i).
+\end{align}
+By the multilinearlity of $f$ and boundedness of $\mS^r$, $f$ is a 1-Lipschitz function. 
+\item[] Step 2. Draw either random or fixed samples $\mx_1,\ldots,\mx_d$ from $\mS^r$. 
+\item[] Step 3. Define the signal tensor 
+\[
+\Theta(i_1,\ldots,i_m)=f(\mx_{i_1},\ldots,\mx_{i_m}), \quad \text{for all }(i_1,\ldots,i_m)\in[d]^m.
+\]
+By construction, $\Theta$ is a rank-$r$ tensor. 
+\end{enumerate}
+
+\begin{thm}[Block approximation to low-rank tensors] Let $\Theta\in[0,1]^m$ be an order-$m$ rank-$r$ tensor generated from steps 1-3. Then, for every $K\in\mathbb{N}_{+}$, there exists a block-$K$ tensor $\bar \Theta$ such that
+\[
+\FnormSize{}{\Theta-\bar \Theta}^2 \lesssim {d^m\over K^{2/r}}. 
+\]
+\end{thm}
+\begin{proof}
+Because $\mS^r$ is a compact set, $\mS^r$ can be covered by $K$ Euclidean balls with radius $K^{-1/r}$. Let $\my_1,\ldots,\my_{K}$ be the center of these balls. Without loss of generality, assume $\my_k\in\mS^r$ for all $k\in[K]$. Then, by definition of covering sets, for every $i\in[d]$, there exists $k=k(i)\in\{1,\ldots,K\}$ such that
+\[
+\vnormSize{}{\mx_i-\my_{k(i)}}\lesssim {1\over K^{1/r}}. 
+\]
+By the smoothness of $f$, we have
+\begin{equation}\label{eq:f}
+|f(\mx_{i_1},\ldots,\mx_{i_m})-f(\my_{k(i_1)},\ldots,\my_{k(i_m)})|^2 \lesssim {1\over K^{2/r}}.
+\end{equation}
+Notice that there are in total $K$ distinct points $\my_{k(i)}$. Therefore, the tensor $\bar \Theta$ defined by
+\[
+\bar \Theta(i_1,\ldots,i_m):=f(\my_{k(i_1)},\ldots,\my_{k(i_m)})
+\]
+has at most $K$ blocks on each model. Based on~\eqref{eq:f}, we have constructed a block-$K$ tensor $\bar \Theta$ such that
+\[
+\FnormSize{}{\Theta-\bar \Theta}^2 \leq {d^m\over K^{2/r}}. 
+\]
+\end{proof}
+\end{document}

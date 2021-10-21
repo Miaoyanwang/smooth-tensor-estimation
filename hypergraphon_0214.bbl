@@ -1,0 +1,22 @@
+\begin{thebibliography}{1}
+
+\bibitem{ganti2015matrix}
+Ravi~Sastry Ganti, Laura Balzano, and Rebecca Willett.
+\newblock Matrix completion under monotonic single index models.
+\newblock In {\em Advances in Neural Information Processing Systems}, pages
+  1873--1881, 2015.
+
+\bibitem{shah2019low}
+N~Shah, Sivaraman Balakrishnan, and M~Wainwright.
+\newblock Low permutation-rank matrices: Structural properties and noisy
+  completion.
+\newblock {\em Journal of machine learning research}, 2019.
+
+\bibitem{li2019nearest}
+Yihua Li, Devavrat Shah, Dogyoon Song, and Christina~Lee Yu.
+\newblock Nearest neighbors for matrix estimation interpreted as blind
+  regression for latent variable model.
+\newblock {\em IEEE Transactions on Information Theory}, 66(3):1760--1784,
+  2019.
+
+\end{thebibliography}

@@ -1,0 +1,395 @@
+\documentclass[11pt]{article}
+\usepackage{lscape}
+\usepackage{amsmath,amssymb}
+\usepackage{amsthm}
+\usepackage{float}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{comment}
+\usepackage{bm}
+\usepackage{gensymb}
+\allowdisplaybreaks[4]
+\usepackage{geometry}
+\geometry{margin=1in}
+\usepackage{setspace}
+\usepackage{siunitx}
+\usepackage{enumitem}
+\usepackage{dsfont}
+\usepackage{arydshln}
+\usepackage{natbib}
+
+\newcommand*{\vertbar}{\rule[-1ex]{0.5pt}{2.5ex}}
+\newcommand*{\horzbar}{\rule[.5ex]{2.5ex}{0.5pt}}
+
+
+\usepackage{graphics}
+\allowdisplaybreaks
+
+\usepackage[utf8x]{inputenc}
+\usepackage{bm}
+
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    citecolor = blue,
+    linkcolor=blue,
+    filecolor=magenta,           
+    urlcolor=cyan,
+}
+
+
+\theoremstyle{plain}
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{lem}{Lemma}
+\newtheorem{pro}{Property}
+\newtheorem{cor}{Corollary}
+
+\theoremstyle{definition}
+\newtheorem{assumption}{Assumption}
+\newtheorem{prob}{Problem}
+\newtheorem{prop}{Proposition}
+\newtheorem{defn}{Definition}
+\newtheorem{exmp}{Example}
+\newtheorem{rmk}{Remark}
+\newtheorem{con}{Conjecture}
+
+\usepackage{algpseudocode,algorithm}
+\algnewcommand\algorithmicinput{\textbf{Input:}}
+\algnewcommand\algorithmicoutput{\textbf{Output:}}
+\algnewcommand\INPUT{\item[\algorithmicinput]}
+\algnewcommand\OUTPUT{\item[\algorithmicoutput]}
+
+\def\marginest{\hat \Theta^{\textup{margin}}}
+\def\MLEest{\hat \Theta^{\textup{MLE}}}
+\def\sign{\textup{sign }}
+
+\usepackage[labelfont=bf]{caption}
+
+\setcounter{table}{1}
+\usepackage{multirow}
+\usepackage{tabularx}
+
+\def\fixme#1#2{\textbf{[FIXME (#1): #2]}}
+
+\def\Holder{\text{H\"{o}lder }}
+
+\newcommand*{\KeepStyleUnderBrace}[1]{%f
+  \mathop{%
+    \mathchoice
+    {\underbrace{\displaystyle#1}}%
+    {\underbrace{\textstyle#1}}%
+    {\underbrace{\scriptstyle#1}}%
+    {\underbrace{\scriptscriptstyle#1}}%
+  }\limits
+}
+\usepackage{mathtools}
+\mathtoolsset{showonlyrefs=true}
+
+\begingroup
+\makeatletter
+\@for\theoremstyle:=definition,remark,plain\do{%
+\expandafter\g@addto@macro\csname th@\theoremstyle\endcsname{%
+\addtolength\thm@preskip\parskip
+}%
+}
+\endgroup
+
+
+\usepackage{hyperref}
+\hypersetup{colorlinks=true}
+\usepackage[parfill]{parskip}
+\usepackage{bm}
+\onehalfspacing
+
+\newcommand{\maxnorm}[1]{\left\lVert#1\right\rVert_{\infty}}
+\newcommand{\Hnorm}[1]{\left\lVert#1\right\rVert_{\tH_\alpha}}
+\newcommand{\nullnorm}[1]{\left\lVert#1\right\rVert}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%             Math Symbols
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%               Bold Math
+\input macros.tex
+\def\refer#1{\emph{\color{blue}#1}}
+\begin{document}
+
+\begin{center}
+{\bf \Large Nonparametric approach for binary matrix completion}\\
+Miaoyan Wang, Sep 1, 2020\\
+\end{center}
+
+
+\newpage
+\begin{assumption}[GLM tensor]\label{def:GLM}
+We call the tensor $\tY=\entry{y_\omega}$ is exponential family tensor with bounded variance, if the following two assumptions are met. 
+\begin{enumerate}[leftmargin=-1pt,topsep=0pt,itemsep=0ex,partopsep=0ex,parsep=0ex]
+\item []1. [GLM density] Conditional on canonical parameter tensor $\Theta=\entry{\theta_\omega}$, the tensor entries $y_\omega$'s are independent of each other, and $y_\omega|\theta_\omega$ follows a generalized linear model (GLM) with density
+\begin{equation}\label{eq:density}
+p(y_\omega|\theta_\omega)=c(y_\omega,\phi)\exp\left(\frac{y_\omega \theta_\omega- b(\theta_\omega)}{\phi}\right),
+\end{equation}
+where $b(\cdot)$ is a known function depending on the distribution family of $y_\omega$, $\phi>0$ is the dispersion parameter, and $c(\cdot)$ is a known normalizing function.
+\item []2. [Boundedness] The parameter tensor $\Theta$ is bounded, i.e, $\mnormSize{}{\Theta}\leq \alpha$ for some $\alpha>0$. 
+\end{enumerate}
+\end{assumption}
+
+\noindent {\bf Proposition 1} (sub-Gaussian residuals under bounded variance).\label{prop}
+Let $\tY$ be a GLM data tensor, and $\tE=\tY-b'(\Theta)$ be the residual tensor, where $b'(\cdot)$ denotes the first-order derivative. Under Assumption~\ref{def:GLM}, the entries of $\tE$ are independent sub-Gaussian entries with parameter $(\phi U)$, where $U=\max_{|\theta|\leq \alpha}b''(\theta)<\infty$ and $\phi>0$ is the dispersion parameter in the GLM density.
+
+
+\begin{proof} It is easy to see that the entries of $\tE=\entry{\varepsilon_\omega}$ are independent conditional on $\Theta=\entry{\theta_\omega}$. Furthermore, we show that $\varepsilon_\omega$ is a sub-Gaussian random variable under the boundedness condition on $\theta_\omega$. For notational convinene, we drop the subscript $\omega$, and simply write $\varepsilon$ and $\theta$. By the definition of sub-Gaussian random variable, it suffices to show 
+\[
+\mathbb{E}\left[\exp(t\varepsilon|\theta)\right]\leq \exp\left(\phi U t^2\over 2 \right), \quad \text{for all }t\in\mathbb{R}.
+\]
+By the definition of GLM density, we have
+\begin{align}
+\mathbb{E}[\exp(t\varepsilon|\theta)]&=\int c(y,\phi) \exp\left({y\theta  - b(\theta)\over \phi}   \right)\exp \left[t(y-b'(\theta))\right]dy\\
+&=\int c(y,\phi)\exp \left( {y(\theta + \phi t) - b (\theta+\phi t)+b(\theta+\phi t)-b(\theta)-\phi t b'(\theta) \over \phi}\right)dy\\
+&=\exp\left( {b(\theta+\phi t)-b(\theta)-\phi t b'(\theta) \over \phi} \right)\\
+&\leq \exp\left(\phi U t^2\over 2 \right),
+\end{align}
+where the last inequality follows from Taylor expansion and the definition of $U$. Therefore, $\varepsilon$ is sub-Gaussian-$(\phi U)$. 
+\end{proof}
+
+
+\section{Problem}
+Suppose that we observe a subset of entries from a binary matrix, $\{ y_{ij} \in \{-1,1\}\colon (i,j)\in \Omega\}$, where $\Omega\subset[d_1]\times[d_2]$ is the index set of observed entries. How to predict the unobserved entries $\{ y_{ij} \in \{-1,1\}\colon (i,j)\in \Omega^c\}$?
+\begin{equation}\label{eq:model}
+\begin{bmatrix}
+-1&?&?&-1&?\\
+?&1&?&?&?\\
+-1&?&?&-1&?\\
+?&?&-1&?&1
+\end{bmatrix}
+\end{equation}
+
+\section{Earlier solution}
+
+First, we perform probability estimation based on parametric models. Assume $y_{ij}$ are independent Bernoulli random variables with success probabilities $P(y_{ij}=1)$ for all $(i,j)\in[d_1]\times[d_2]$. We model the probability matrix using the GLM logistic model,
+\[
+\mathbb{P}(y_{ij}=1)={e^{\theta_{ij}}\over 1+e^{\theta_{ij}}}, \quad \text{where}\quad \Theta=\entry{\theta_{ij}}\in\mathbb{R}^{d_1\times d_2} \text{ is a rank-$r$ matrix}. 
+\]  
+Define the rank-$r$ maximum log-likelihood estimator $\hat\Theta^{\text{MLE}} =\entry{\hat \theta^{\text{MLE}}_{ij}} = \argmin_{\Theta\in\tP(r,\alpha)} L(\Theta)$, where
+\begin{align}\label{eq:MLE}
+ %L(\Theta)=-\sum_{(i,j)\in\Omega}\left[\mathds{1}\{y_{ij}=1\}\log (e^{-\theta_{ij}}+1) + \mathds{1}\{y_{ij}=-1\}\log ( e^{\theta_{ij}}+1)\right].
+ L(\Theta)&=-\sum_{(i,j)\in\Omega}\log(e^{y_{ij}\theta_{ij}}+1),\quad \text{and}\\
+ P(r,\alpha)&=\{\Theta\in\mathbb{R}^{d_1\times d_2}\colon \text{rank}(\Theta)\leq r \ \text{and}\ \mnormSize{}{\Theta}\leq \alpha\}.
+\end{align}
+Second, we perform prediction using plug-in estimates,
+\[
+\hat y_{ij}=\sign \hat \theta^{\text{MLE}}_{ij},\quad \text{for all $(i,j)\in\Omega^c$}.
+\]
+
+\section{New proposal}
+
+If our goal is to predict the unobserved entries by two labels \{-1,1\}, there is no need to estimate the probability. We could directly perform the prediction in a nonparametric fashion. This scenario reduces to a special case of our matrix-valued classification problem. 
+\begin{enumerate}
+\item Feature space: 
+\begin{align}
+\tX&=\{\mX\in\{0,1\}^{d_1\times d_2}\big| \text{only one entry of $\mX$ is one, and others are zero}\} \\
+&= \{\me_i\otimes \me_j: (i,j)\in[d_1]\times[d_2]\}.
+\end{align}
+\item Outcome space: $\tY\in\{0,1\}$.
+\item Uniform marginal distribution $\tP(\mX)$ over $\tX$. No other joint distribution assumptions on $P(\mX,y)$; 
+\item i.i.d.\ training set: $\{(\mX_{ij}, y_{ij}): (i,j)\in\Omega\}$, where $\mX_{ij}=\me_i\otimes \me_j \in \{0,1\}^{d_1\times d_2}$ is an indicator matrix specifying the observed index, and $y_{ij}\in\{-1,1\}$ is the observed label at index $(i,j)$. 
+For example, the features in the training sample for problem~\eqref{eq:model} are
+\[
+\mX_1=\begin{bmatrix}
+1&0&\cdots&0\\
+0&\vdots&\ddots&\vdots\\
+0&0&\cdots&0\\
+\end{bmatrix},\quad
+\mX_2=\begin{bmatrix}
+0&\cdots&1&0\\
+0&\ddots&\vdots&\vdots\\
+0&\cdots&0&0\\
+\end{bmatrix}, \quad \cdots,\quad 
+\mX_7=\begin{bmatrix}
+0&\cdots&0
+&0\\
+0&\ddots&\vdots&\vdots\\
+0&\cdots&0&1\\
+\end{bmatrix}.
+\]
+
+\item Define the rank-$r$ large-margin estimator $\marginest=\entry{\hat \theta^{\text{margin}}_{ij}}=\arg\min_{\Theta\in\tP(r,\alpha)}L(\Theta)$, where
+\begin{align}\label{eq:SMM}
+L(\Theta) &= \sum_{(i,j)\in\Omega}\left[1-y_{ij}\langle \mX_{ij}, \Theta \rangle\right]_{+}, \ \text{and}\ \\
+\tP(r,\alpha)&=\{\Theta\in\mathbb{R}^{d_1\times d_2}\colon \text{rank}(\Theta)\leq r\ \text{and}\ \mnorm{\Theta}\leq \alpha\}.
+\end{align}
+Here, we have omitted the intercept for simplicity. 
+\item Predict unobserved entries using $\hat y_{ij} = \sign\hat \theta^{\text{margin}}_{ij}$. 
+\item Nonparametric probability estimation $\widehat{\mathbb{P}}(y_{ij}=1|\mX_{ij})$ is also possible using a sequence of weighted low-rank classifications~\eqref{eq:SMM}. 
+\end{enumerate}
+
+\section{Numerical experiments}
+\subsection{Missing data imputation}
+dimension $d_1=d_2=10$; rank $=2$; cost = 1; observation probability $p=0.6$.
+
+
+
+\begin{center}
+\includegraphics[width=15cm]{missing.pdf}
+\end{center}
+
+\begin{table}
+\centering
+\begin{tabular}{c|cc||cc}
+&\multicolumn{2}{c||}{Unobserved} & \multicolumn{2}{c}{Observed}\\
+&pred = 1&pred = -1&pred = 1&pred = -1\\
+\hline
+true = 1&16 & 3& 36&1 \\
+true = -1&1 & 12&1 & 30
+\end{tabular}
+\end{table}
+
+\subsection{Probability estimation}
+dimension $d_1=d_2=11$; cost = 1; observation probability $p=1$ (no missing data). 
+
+Goal: estimate probability matrix $P\in[0,1]^{d_1\times d_2}$ from binary observations $\mY=\{0,1\}^{d_1\times d_2}$. 
+
+
+\begin{center}
+\includegraphics[width=16cm]{est.pdf}
+\end{center}
+ 
+Intermediate steps. 
+
+
+ \begin{center}
+\includegraphics[width=6cm]{true_step.pdf}
+\hspace{1cm}
+\includegraphics[width=6cm]{step_est.pdf}
+\end{center}
+Define a sequence of cumulative probability matrices ${1\over 10}\sum_{h\leq 1}F_h$ (Panel A), ${1\over 10}\sum_{h\leq 2}F_h$ (Panel B), $\ldots, {1\over 10}\sum_{h\leq 9}F_h$ (Panel I), where $F_h = \mathds{1}(P\leq {h\over 10}) \in \{0,1\}^{d_1\times d_2}$ is the indicator function. 
+
+
+For each matrix entry $(i,j)$, estimate the probability using estimated cumulative probability
+\[
+\hat P(i,j) = {1\over 10}\argmax_{H\in[10]} \sum_{h\leq H} \widehat{F_h}(i,j),\quad \text{for }\quad (i,j)\in[d_1]\times[d_2],
+\]
+where $\widehat{F_h}(i,j)$ is the predicted class indicator for $(i,j)$-th entry, based on weighted classifiers.  
+
+\section{Theory}
+\begin{defn}[Misclassification error]
+Let $\mY=\entry{y_{ij}},\ \mZ=\entry{z_{ij}}\in\{0,1\}^{d_1\times d_2}$ be two binary matrices. We define the misclassification error (MCE),
+\[
+\textup{MCE}(\mY,\mZ)={1\over d_1d_2}\sum_{(i,j)\in[d_1]\times[d_2]} \mathds{1}\{y_{ij}\neq z_{ij}\}.
+\]
+\end{defn}
+
+\begin{thm}[Generalization error bounds]\label{thm:main}
+Consider a binary target matrix $\mY=\entry{y_{ij}}\in\{-1,1\}^{d_1\times d_2}$ whose entires are independent realizations from some unknown distributions $\text{Ber}(p_{ij})$, for all $(i,j)\in[d_1]\times[d_2]$. Suppose that we observe a subset of entries, $\mY_\Omega:=\{y_{ij}\}_{(i,j)\in\Omega}$, where $\Omega\subset[d_1]\times[d_2]$ is a random set with $|\Omega|$ entries, and each entry in $\Omega$ is an i.i.d.\ drawn uniformly from $[d_1]\times[d_2]$. Let $\hat \Theta=\entry{\hat \theta_{ij}}\in\tP(r,\alpha)$ denote any estimator based on the observations $\mY_\Omega$, where $r$ is the rank bound and $\alpha$ is the infinity norm bound. Then, with probability at least $1-\delta$ over $\mY$ and the sample selection $\Omega$, the following bound holds uniformly for all $\hat \Theta \in \tP(r,\alpha)$,
+\begin{equation}\label{eq:conclusion}
+\KeepStyleUnderBrace{\textup{MCE}(\mY, \sign\hat \Theta)}_{\text{misclassification error in targeted matrix}} \leq \KeepStyleUnderBrace{{L\over |\Omega|}\sum_{(i,j)\in \Omega} \textup{surrogate-loss}(y_{ij}\hat \theta_{ij})}_{\text{surrogate loss in sample}}+C_1\alpha\sqrt{(d_1+d_2)r\over |\Omega|}+C_2\sqrt{\log(3/\delta)\over 2|\Omega|},
+\end{equation}
+where where $C_1,C_2>0$ are two universal constants, and $L>0$ is the Lipschitz constant of the surrogate loss,
+\[
+L=\begin{cases}
+1,& \text{for hinge loss }S(t)=(1-t)_{+},\\
+1\over \log 2,& \text{for logistic loss }S(t)=\log_2(e^t+1),
+\end{cases}
+\]
+%\begin{equation}\label{eq:conclusion}
+%\KeepStyleUnderBrace{\textup{MCE}(\mY, \sign\hat \Theta)}_{\text{misclassification error in targeted matrix}} \leq \KeepStyleUnderBrace{{1\over |\Omega|}\sum_{(i,j)\in \Omega} \textup{hinge-loss}(y_{ij},\hat \theta_{ij})}_{\text{surrogate error in sample}}+C_1\alpha\sqrt{(d_1+d_2)r\over |\Omega|}+C_2\sqrt{\log(3/\delta)\over 2|\Omega|},
+%\end{equation}
+In particular, the generalization error of $\hat \Theta$ converges to zero as long as the sample size $|\Omega|\geq \tilde \tO(d_{\max}r)$.
+\end{thm}
+
+
+\begin{cor}[Large-margin estimator] Consider the same set-up as in Theorem~\ref{thm:main}. Let $\Theta^*\in\mathbb{R}^{d_1\times d_2}$ be the optimal estimator in $\tP(r,\alpha)$ that minimizes the MCE, i.e., 
+\[
+\Theta^*=\argmin_{\Theta\in\tP(r,\alpha)}\textup{MCE}(\mY, \sign\Theta).
+\] Then, for the constrained MLE defined in~\eqref{eq:MLE} and large-margin estimator defined in~\eqref{eq:SMM}, we have
+\begin{align}
+\textup{MCE}(\mY, \sign\marginest)- \textup{MCE}(\mY, \sign\Theta^*) & \leq C_1\alpha\sqrt{(d_1+d_2)r\over |\Omega|}+C_2\sqrt{\log(1/\delta)\over 2|\Omega|},\\
+\textup{MCE}(\mY, \sign\MLEest)- \textup{MCE}(\mY, \sign\Theta^*)  & \leq C_1\alpha\sqrt{(d_1+d_2)r\over |\Omega|}+C_2\sqrt{\log(1/\delta)\over 2|\Omega|},
+\end{align}
+with probability at least $1-\delta$ over $\mY$ and the sample selection $\Omega$.
+\end{cor}
+
+%\begin{cor}[Constrained MLE] Consider the same set-up as in Theorem~\ref{thm:main}. Let $\MLEest\in\mathbb{R}^{d_1\times d_2}$ be the constrained MLE defined in~\eqref{eq:MLE}, and $\Theta^*\in\mathbb{R}^{d_1\times d_2}$ be the optimal estimator in $\tP(r,\alpha)$ that minimizes the MCE, i.e., $\Theta^*=\argmin_{\Theta\in\tP(r,\alpha)}\textup{MCE}(\mY, \sign\Theta)$. Then, we have
+%\[
+%\textup{MCE}(\mY, \sign\MLEest)- \textup{MCE}(\mY, \sign\Theta^*)  \leq C_1\alpha\sqrt{(d_1+d_2)r\over |\Omega|}+C_2\sqrt{\log(1/\delta)\over 2|\Omega|}.
+%\]
+%with probability at least $1-\delta$ over $\mY$ and the sample selection $\Omega$.
+%\end{cor}
+
+\begin{rmk}[Approximation error]
+What is the total estimation error of $\sign \hat \Theta$ from the bayes rule? Two sources of error: generalization error + approximation error. The approximation error reaches zero when the ``bayes rule'' binary matrix is included in the set of candidate sign matrices. Namely, there exists a low-rank, entrywise bounded matrix $\Theta^*\in\tP(r,\alpha)$ such that 
+\[
+\Theta^*\stackrel{\text{equal in sign}}{=}\entry{p_{ij}-0.5},\  \text{ or equivalently, }\ \textup{MCE}(\Theta^*, \KeepStyleUnderBrace{\text{sign}(p_{ij}-0.5)}_{\text{``bayes rule'' binary matrix}})=0.
+\]
+\end{rmk}
+
+\begin{rmk}
+Given a bayes rule binary matrix, how can we tell whether it is the sign matrix for some low-rank matrix in $\mathbb{P}(r,\alpha)$? For matrix completion problem, the sample size $|\Omega|$ is always smaller than the feature dimension $d_1d_2$. {\color{red}What does ``decision boundary'' mean when the feature space is discrete?} 
+\end{rmk}
+
+
+\begin{rmk} If full rank, then $\theta_{ss'}=\text{intercept} = \text{sample average} = {1\over |\Omega|}\sum_{(i,j)\in\Omega}y^{\text{test}}_{ij}$ for all $(s,s')\in \Omega^c$. Non-vanishing MCE unless $|\Omega| \approx d_1d_2$. 
+\end{rmk}
+
+\begin{rmk} {\color{red}MCE vs. MSE. sharpness compared to earlier paper?}
+
+
+\end{rmk}
+
+\begin{rmk} [Nonlinear extension]
+\end{rmk}
+
+\section{Proofs}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}] Because the desired conclusion is a uniform bound over all $\hat \Theta \in \tP(r,\alpha)$, we write $\Theta$ in place of $\hat \Theta$ for notational convenience. One should note that $\Theta$ is a random variable depending on the realizations of the training set $\{y_{ij}\}_{(i,j)\in \Omega}$. 
+
+Define the function class $\tF=\{f(\mX)\colon \mX\mapsto \langle \mX,\Theta\rangle\ \big|\ \Theta\in\tP(r,M)\}$. Given the features in the training set, $\{\mX_{ij}=\me_i\otimes \me_j:(i,j)\in\Omega\}$, we consider the empirical Rademacher complexity of $\tF$ conditional on $\Omega$ and the training set. Let $\{\xi_{ij}\}$ a set of i.i.d.\ Rademacher random variables with equal probability on $\pm 1$, then
+\begin{align}\label{eq:bound1}
+\tR_{\Omega}(\tF)={2\over |\Omega|}\mathbb{E}_{\xi_{ij}}\left\{\sup_{\Theta\in\tP(r,\alpha)}\sum_{(i,j)\in\Omega} \xi_{ij} \Theta_{{ij}}\right\}.
+\end{align}
+Note that $\Theta\in\tP(r,M)$ implies that $\norm{\Theta}_{\max}\leq \sqrt{r}\alpha$, where $\norm{\Theta}_{\max}=\min_{\Theta=\mU^T\mV}\{\norm{\mU}_{2,\infty} \norm{\mV}_{2,\infty}\}$ denotes the matrix max-qnorm. Therefore, the inequality~\eqref{eq:bound1} is upper bounded,
+\begin{align}
+{2\over |\Omega|} \mathbb{E}_{\xi_{ij}}\left\{\sup_{\Theta\in\tP(r,M)}\sum_{(i,j)\in\Omega} \xi_{ij} \Theta_{{ij}}\right\} &\leq {2\over |\Omega|} \mathbb{E}_{\xi_{ij}}\left\{\sup_{\norm{\Theta}_{\max}\leq \sqrt{r}\alpha }\sum_{(i,j)\in\Omega} \xi_{ij} \Theta_{{ij}}\right\}\\
+&\leq c\alpha\sqrt{r(d_1+d_2) \over |\Omega|},
+\end{align}
+where the last inequality follows from \citet[Lemma 31]{ghadermarzy2019near}.
+
+Using the generalization error inequality in the earlier notes, we have that, with probability at least $1-\delta$ over the sample selection $\Omega$ and training data $\{y_{ij}^{\text{train}}\}_{(i,j)\in \Omega}$, the following bound holds uniformly over $\Theta=\entry{\theta_{ij}} \in\tP(r,M)$,
+\begin{equation}\label{eq:new}
+\mathbb{P}\left[y^{\text{test}}\neq \sign\langle \mX^{\text{test}},\Theta\rangle\right] \leq {1\over |\Omega|}\sum_{(i,j)\in\Omega}\text{hinge-loss}(y^{\text{train}}_{ij}, \theta_{ij}) + C_1\alpha\sqrt{r(d_1+d_2)\over |\Omega|} + \sqrt{\log(1/\delta)\over 2|\Omega|},
+\end{equation}
+for some constant $C_1>0$, where the probability at the left hand side is taken with respect to $(\mX^{\text{test}}, y^{\text{test}})\in \{\me_s\otimes \me_s'\colon (s,s')\in[d_1]\times[d_2]\}\times\{0,1\}$, independent of training data $\{y_{ij}^{\text{train}}\}_{(i,j)\in \Omega}$. 
+
+Now, the i.i.d.\ uniform sampling assumption implies the mutual independence of the events $\mathds{1}\{ y_{ss'}\neq \sign\theta_{ss'}\}$ and marginal uniform distribution $\mathbb{P}(\mX^{\text{test}}=\me_s\otimes\me_{s'})={1\over d_1d_2}$ for all $(s,s')\in[d_1]\times[d_2]$. By properties of conditional expectation and concentration inequality, we have, for any $\alpha>0$,
+\begin{align}\label{eq:bound}
+\mathbb{P}\left[y^{\text{test}}\neq \sign\langle \mX^{\text{test}},\Theta\rangle\right]&={1\over d_1d_2} \sum_{(s,s')\in[d_1]\times[d_2]}\mathbb{E}_{y^{\text{test}}_{ss'}}\mathds{1}\left\{ y^{\text{test}}_{ss'}\neq \sign\theta_{ss'}\right\}\notag \\
+&\geq {1\over d_1d_2}\sum_{(s,s')\in[d_1]\times[d_2]}\mathds{1}\left\{y^{\text{test}}_{ss'}\neq \sign\theta_{ss'}\right\} -  C\alpha \sqrt{1\over d_1d_2},
+\end{align}
+where the last statement holds with probability at least $1-\exp(-\alpha^2)$ over the test matrix $\mY^{\text{test}}=\entry{y^{\text{test}}_{ss'}}\in\{0,1\}^{d_1\times d_2}$. 
+
+Combining~\eqref{eq:new} and~\eqref{eq:bound} with $\alpha=\sqrt{\log(1/\delta)}$ yields the uniform bound for all $\Theta\in\tP(r,\alpha)$,
+\begin{equation}\label{eq:MCE}
+\textup{MCE}(\mY^{\textup{test}}, \sign \Theta) \leq \ {1\over |\Omega|}\sum_{(i,j)\in\Omega}\text{hinge-loss}(y^{\text{train}}_{ij}, \theta_{ij}) + C_1\alpha\sqrt{r(d_1+d_2)\over |\Omega|} + C_2\sqrt{\log(1/\delta)\over 2|\Omega|},
+\end{equation}
+with probability at least $1-2\alpha$ taken jointly over the test data $\mY^{\text{test}}$, sample selection $\Omega$, and training data $\{y^{\text{train}}_{ij}\}_{(i,j)\in\Omega}$. Note that in the bound~\eqref{eq:MCE}, the test data $\mY^{\text{test}}$ at the left hand side and training data $\{y^{\text{train}}_{ij}\}_{(i,j)\in\Omega}$ at the right hand side are independent of each other. 
+
+
+We write the target binary matrix $\mY=\entry{y_{ij}}\in\{0,1\}^{d_1\times d_2}$ as
+\[
+y_{ij} =\begin{cases}
+y^{\text{train}}_{ij},& (i,j)\in \Omega,\\
+y^{\text{test}}_{ij},& (i,j)\in \Omega^c.
+\end{cases}
+\]
+Then, the classification error satisfies
+\begin{align}\label{eq:last}
+\textup{MCE}(\mY, \sign \Theta)&=
+{1\over d_1d_2}\left\{\sum_{(s,s')\in\Omega^c}\mathds{1}\left\{y^{\text{test}}_{ss'}\neq \sign \theta_{ss'}\right\} + \sum_{(s,s')\in\Omega}\mathds{1}\left\{y^{\text{test}}_{ss'}\neq \sign \theta_{ss'}\right\}\right\} \notag\\
+ & \quad + {1\over d_1d_2}\left\{\sum_{(s,s')\in\Omega}\mathds{1}\left\{y^{\text{train}}_{ss'}\neq \sign \theta_{ss'}\right\}-\sum_{(s,s')\in\Omega}\mathds{1}\left\{y^{\text{test}}_{ss'}\neq \sign
+\theta_{ss'}\right\}  \right\}\notag\\
+\leq &\ {1\over |\Omega|}\sum_{(i,j)\in\Omega}\text{hinge-loss}(y^{\text{train}}_{ij}, \theta_{ij}) + C_1\alpha\sqrt{r(d_1+d_2)\over |\Omega|} + C'_2\sqrt{\log(1/\delta)\over 2|\Omega|},
+\end{align}
+with probability at least $1-3\delta$, where the last line follows from~\eqref{eq:MCE} and the concentration inequality for $\sum_{(s,s')\in\Omega}\left[\mathds{1}\left\{y^{\text{train}}_{ss'}\neq \sign \theta_{ss'}\right\}-\mathds{1}\left\{y^{\text{test}}_{ss'}\neq \sign \theta_{ss'}\right\}\right]$. 
+\end{proof}
+
+\bibliographystyle{plainnat}
+\bibliography{tensor_wang}
+\end{document}

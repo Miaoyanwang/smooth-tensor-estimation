@@ -1,0 +1,225 @@
+\documentclass[11pt]{article}
+\usepackage{lscape}
+\usepackage{amsmath,amssymb}
+\usepackage{amsthm}
+\usepackage{float}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{comment}
+\usepackage{bm}
+\usepackage{gensymb}
+\allowdisplaybreaks[4]
+\usepackage{geometry}
+\geometry{margin=1in}
+\usepackage{setspace}
+\usepackage{siunitx}
+\usepackage{enumitem}
+\usepackage{dsfont}
+
+\usepackage{graphics}
+
+
+\usepackage[utf8x]{inputenc}
+\usepackage{bm}
+
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    citecolor = blue,
+    linkcolor=blue,
+    filecolor=magenta,           
+    urlcolor=cyan,
+}
+
+
+\theoremstyle{plain}
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{lem}{Lemma}
+\newtheorem{prop}{Proposition}
+\newtheorem{pro}{Property}
+\newtheorem{cor}{Corollary}
+\newtheorem{ass}{Assumption}
+
+\theoremstyle{definition}
+\newtheorem{defn}{Definition}
+\newtheorem{exmp}{Example}
+\newtheorem{rmk}{Remark}
+
+\usepackage{algpseudocode,algorithm}
+\algnewcommand\algorithmicinput{\textbf{Input:}}
+\algnewcommand\algorithmicoutput{\textbf{Output:}}
+\algnewcommand\INPUT{\item[\algorithmicinput]}
+\algnewcommand\OUTPUT{\item[\algorithmicoutput]}
+
+
+
+\usepackage[labelfont=bf]{caption}
+
+\setcounter{table}{1}
+\usepackage{multirow}
+\usepackage{tabularx}
+
+\def\fixme#1#2{\textbf{[FIXME (#1): #2]}}
+
+ 
+
+\newcommand*{\KeepStyleUnderBrace}[1]{%f
+  \mathop{%
+    \mathchoice
+    {\underbrace{\displaystyle#1}}%
+    {\underbrace{\textstyle#1}}%
+    {\underbrace{\scriptstyle#1}}%
+    {\underbrace{\scriptscriptstyle#1}}%
+  }\limits
+}
+\usepackage{mathtools}
+\mathtoolsset{showonlyrefs=true}
+
+
+\usepackage{hyperref}
+\hypersetup{colorlinks=true}
+\usepackage[parfill]{parskip}
+\usepackage{bm}
+\onehalfspacing
+
+\newcommand{\Hnorm}[1]{\left\lVert#1\right\rVert_{\tH_\alpha}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%             Math Symbols
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%               Bold Math
+\input macros.tex
+\def\refer#1{\emph{\color{blue}#1}}
+\begin{document}
+\begin{center}
+{\Large \bf Rademacher complexity and generalization error}
+
+Miaoyan Wang, July 1, 2020
+\end{center}
+
+\section{Previous results}\label{sec:1}
+Define the linear function class
+\[
+\tF=\tF(r,M)=\{f\colon \mX\mapsto \langle \mB, \mX\rangle\ \big| \ \mB\in\mathbb{R}^{d_1\times d_2},\ \text{rank}(\mB)\leq r, \snormSize{}{\mB}\leq M\},
+\]
+where $\snormSize{}{\cdot}$ denotes the matrix spectral norm. 
+\begin{ass}[Bounded feature]\label{ass:1} Let $\tX\subset \mathbb{R}^{d_1\times d_2}$ be the feature space of interest. Assume $\FnormSize{}{\mX}\leq G$ for all $\mX\in \tX$, where $G>0$ is a constant independent of the dimensions $d_1,d_2$. \\
+
+\end{ass}
+\begin{lem}[Rademacher complexity] Under Assumption~\ref{ass:1}, the Rademacher complexity of $\tF$ with respect to a set of i.i.d.\ samples $\{\mX_i\in \tX\colon i=1,\ldots,n\}$ is
+\[
+\tR_n(\tF)\leq 2MG\sqrt{r\over n}.
+\]
+\end{lem}
+\begin{thm}\label{thm:1}Let $\phi\colon \mathbb{R}\to\mathbb{R}$ be a $L$-Lipchitz loss function. Suppose $\phi$ entrywise dominates the $0/1$ loss, and the Assumption~\ref{ass:1} holds. Then, with probability at least $1-\delta$, we have
+\[
+\mathbb{P}[Y\neq \text{sign } f(\mX)]\leq {1\over n}\sum_{i=1}^n \phi(y_i f(\mX_i))+{2LMG\sqrt{r\over n}}+\sqrt{\log({1\over \delta})\over 2n},\quad \text{for all }f\in\tF.
+\]
+\end{thm}
+
+\section{Implications}
+\begin{rmk}[Connection to our estimator] Theorem~\ref{thm:1} immediately gives the statistical error bound for estimating $f$ when restricted in the class $\tF$. Specifically, note that our algorithm uses the $1$-Lipchitz hinge loss, $\phi(t)=t_{+}$. Let $\hat f \in \tF$ be the empirical risk minimizer (ERM) returned by our algorithm,
+\begin{equation}\label{eq:C}
+{\color{red}\hat f}=\min_{f\in \tF}{1\over n}\sum_{i=1}^n [y_if(\mX_i)]_{+},
+\end{equation}
+and let ${\color{blue}f^*}=\min_{f\in\tF} \mathbb{E}_{(\mX,Y)}[Yf(\mX)]_{+}$ be the ``best'' population risk minimizer when restricted in the class $\tF$. (In particular, $\color{blue}\text{sign}f^*$ equals the Bayes classifier if $\tF$ is rich enough.) \\
+\begin{cor}[Excess risk]\label{cor:risk} Under the assumption of Theorem~\ref{thm:1}, with very high probability, 
+\begin{equation}\label{cor}
+\KeepStyleUnderBrace{\mathbb{P}[Y\neq \text{sign }{\color{blue}f^*}(\mX)] - \mathbb{P}[Y\neq \text{sign } {\color{red}\hat f}(\mX)]}_{\text{statistical error for estimating $f$}}\leq 4MG\sqrt{r\over n}.
+\end{equation}
+\end{cor}
+
+\begin{rmk}
+The sample requirement for consistent estimation is $n\gg \tO(rM^2G^2)$.
+\end{rmk}
+
+\begin{proof}[Proof of Corollary~\ref{cor:risk}]
+The bound~\eqref{cor} follows from the following observation,
+\begin{align}
+&\mathbb{P}[Y\neq \text{sign }{\color{blue}f^*}(\mX)] - \mathbb{P}[Y\neq \text{sign }{\color{red} \hat f}(\mX)] \\
+=& \KeepStyleUnderBrace{\left\{\mathbb{P}[Y\neq \text{sign } {\color{blue}f^*}(\mX)]  - {1\over n}\sum_{i=1}^n [y_i {\color{blue}f^*}(\mX_i)]_{+}\right\}}_{\text{bounded by Theorem~\ref{thm:1}}} - \KeepStyleUnderBrace{\left\{\mathbb{P}[Y\neq \text{sign } {\color{red}\hat f}(\mX)] - {1\over n}\sum_{i=1}^n [y_i {\color{red}\hat f}(\mX_i)]_{+}\right\}}_{\text{bounded by Theorem~\ref{thm:1}}}\\
+& + \KeepStyleUnderBrace{{1\over n}\sum_{i=1}^n [y_i {\color{blue}f^*}(\mX_i)]_{+}-{1\over n}\sum_{i=1}^n [y_i {\color{red}\hat f}(\mX_i)]_{+}}_{\geq 0 \text{ by definition of }{\color{red} \hat f}}\\ 
+ \leq& 4MG\sqrt{r\over n},
+\end{align}
+\vspace{-.5cm}
+\end{proof}
+\end{rmk}
+
+\begin{cor} Let $\text{sign }f_{\text{Bayes}}\colon \tX \to \{0,1\}$ denote the Bayes classifier. Then
+\begin{align}
+&\KeepStyleUnderBrace{\mathbb{P}[Y\neq \text{sign }f_{\text{Bayes}}(\mX)] - \mathbb{P}[Y\neq \text{sign }{\color{red} \hat f}(\mX)]}_{\text{total error}}  \\
+\leq &\KeepStyleUnderBrace{\mathbb{P}[Y\neq \text{sign }f_{\text{Bayes}}(\mX)]  - \mathbb{P}[Y\neq \text{sign }{\color{blue}f^*}(\mX)]}_{\text{approximation error}} +\KeepStyleUnderBrace{\mathbb{P}[Y\neq \text{sign }{\color{blue}f^*}(\mX)] -\mathbb{P}[Y\neq \text{sign }{\color{red} \hat f}(\mX)]}_{\text{statistical error}}
+\end{align}
+\end{cor}
+\section{Three caveats and remedies}
+\begin{enumerate}
+\item The spectral-norm constraint $\snormSize{}{\mB}\leq M$ was imposed to the analysis but not to the algorithm. Can we remove this constraint from $\tF$?  
+
+Q: Yes; use a different Cauchy-Schwart inequality in the Rademacher complexity bound. 
+
+\item In practice, our algorithm returns the penalized ERM $\hat f_\text{pen} =\arg\min_{f\in \tF}{1\over n}\sum_{i=1}^n [y_if(\mX_i)]_{+}+\lambda\FnormSize{}{F}$, not~\eqref{eq:C}. Can we modify the analysis to allow penalized ERM? 
+
+Q: Yes. Note the equivalence between the following two optimizations:
+\[
+\min_{f\in \tF}{1\over n}\sum_{i=1}^n [y_if(\mX_i)]_{+}+\lambda\FnormSize{}{F}. \quad \text{v.s}\quad \min_{f\in \tF}{1\over n}\sum_{i=1}^n [y_if(\mX_i)]_{+},  \ \text{s.t.}\ \FnormSize{}{F}\leq C.
+\]
+We define the penalized ERM $\hat f_{\text{pen}}$ by imposing the F-norm constraint to the class $\tF$; i.e,
+\begin{equation}\label{eq:penalize}
+\hat f_\text{pen} =\argmin_{f\in \tF \cap \{f\colon \FnormSize{}{f}\leq C\}}{1\over n}\sum_{i=1}^n [y_if(\mX_i)]_{+}.
+\end{equation}
+Theorem~\ref{thm:main} gives the excess risk bound for~\eqref{eq:penalize}.
+\item The sample complexity for estimator~\eqref{eq:C} is $\tO(rM^2G^2)$. We are interested in the high-dimensional regime as $d_1, d_2, n\to \infty$ while holding $r$ fixed. Is it reasonable to assume a constant $G=\FnormSize{}{\mX}>0$ as $d_1, d_2\to \infty$? 
+
+Q: Depends. Consider the neuroimaging imaging application, where features $\mX=\entry{x_{pq}}\in\mathbb{R}^{d_1\times d_2}$ are brain images and the size $d_1\times d_2$ represents the resolution. In the i.i.d.\ Gaussian random feature model $x_{qp}\sim_{\text{i.i.d.}} N(0,1)$, $G=\FnormSize{}{\mX}=\tO(\sqrt{d_1d_2}) \to \infty$, which is bad. Our remedy for mitigating the growth rate is to use a different norm, $\snormSize{}{\mX}=\tO(\sqrt{d_1+d_2}) \ll \tO(\sqrt{d_1d_2})$. 
+\end{enumerate}
+
+\section{New results}\label{sec:new}
+\begin{defn}[Gaussian feature with bounded variation]\label{ass:2}The Gaussian matrix feature is defined as
+\[
+\mX\sim \tM\tN(\mathbf{0}_{d_1\times d_2}, \mU, \mV),
+\]
+where $\mU\in\mathbb{R}^{d_1\times d_1}, \mV\in\mathbb{R}^{d_2\times d_2}$ denote the row- and column-wise covariance matrices, respectively. Equivalently, $\text{vec}(\mX)\sim \tM\tN(\mathbf{0}_{d_1d_2}, \mU\otimes \mV)$. We call $\mX$ is Gaussian feature with bounded variation, if there exists a universal constant $c>0$ such that $\snormSize{}{\mU}\snormSize{}{\mV}\leq c$, as $d_1, d_2\to \infty$.\\
+\end{defn}
+
+
+\begin{exmp} Let $\mX=\entry{x_{p,q}}\in\mathbb{R}^{d_1\times d_2}$ be a random matrix with i.i.d.\ Gaussian entries $x_{p,q}\sim_{\text{i.i.d}} N(0,1)$ for all $(p,q)\in[d_1]\times [d_2]$. Then, $\mX$ is a Gaussian feature with bounded variation, because both $\mU$ and $\mV$ are identity matrices with spectral norm bounded by $1$. \\
+\end{exmp}
+
+\begin{prop} Let $\mX\sim\tM\tN(\mathbf{0}_{d_1\times d_2}, \mU, \mV)$ be Gaussian feature with bounded variation. Then, $\snormSize{}{\mX}=\tO(\sqrt{d_1+d_2})$ and $\FnormSize{}{\mX}=\tO(\sqrt{d_1d_2})$.\\
+\end{prop}
+
+Consider the modified linear function class
+\[
+\tF=\tF(r,C)=\{f\colon \mX\mapsto \langle \mB, \mX\rangle\ \big| \ \mB\in\mathbb{R}^{d_1\times d_2},\ \text{rank}(\mB)\leq r, \ {\color{red}\FnormSize{}{\mB}\leq C}\}.
+\]
+
+\begin{lem}\label{lem:norm} Let $\{\mX_i\}_{i\in[n]}$ be a set of i.i.d.\ Gaussian features with bounded variation. The Rademacher complexity of $\tF$ with respect to $\{\mX_i\}_{i\in[n]}$ is
+\[
+\tR_n(\tF)\leq 2C\sqrt{r (d_1+d_2)\over n}.
+\]
+\end{lem}
+
+
+\begin{thm}[Excess risk]\label{thm:main}Under Assumption~\ref{ass:2}, with very high probability
+\begin{equation}\label{cor}
+\KeepStyleUnderBrace{\mathbb{P}[Y\neq \text{sign }{\color{blue}f^*}(\mX)] - \mathbb{P}[Y\neq \text{sign } {\color{red}\hat f_{\text{pen}}}(\mX)]}_{\text{statistical error for estimating $f$}}\leq {4C\sqrt{r(d_1+d_2)}\over \sqrt{n}}.
+\end{equation}
+\end{thm}
+
+\begin{rmk}
+The sample complexity for $\hat p_{\text{pen}}$ is $\tO(r(d_1+d_2))$, which improves the sample complexity $\tO(rd_1d_2)$ for $\hat p$ in~\eqref{eq:C}.
+\end{rmk}
+
+\begin{proof}[Proof of Lemma~\ref{lem:norm}]
+\begin{align}\label{eq:result}
+\tR_n(\tF)=\mathbb{E}_{(\sigma_i, \mX_i)}\left\{\sup_{ \text{rank}(\mB)\leq r, \FnormSize{}{\mB}\leq C}{1\over n}\sum_{i=1}^n \sigma_i \langle \mB, \mX_i\rangle\right\}&={2\over n} \mathbb{E}\left\{\sup_{\text{rank}(\mB)\leq r, \FnormSize{}{\mB}\leq C}\langle \mB, \sum_{i=1}^n \sigma_i \mX_i\rangle\right\}\\
+&\leq {1\over n}\mathbb{E}\left\{\sup_{\text{rank}(\mB)\leq r, \FnormSize{}{\mB}\leq C} \nnormSize{}{\mB}\ \snormSize{}{\sum_{i=1}^n \sigma_i \mX_i }\right\}\\
+&\leq {1\over n}\sqrt{r}C\mathbb{E}\left\{\snormSize{}{\sum_{i=1}^n\sigma_i \mX_i}\right\},
+%&\leq {\sqrt{r}C \over n}\max_{i\in[n]}\mathbb{E}_{\sigma_i\sim \text{Ber}(1/2)}\snormSize{}{\sigma_i\mX_i}\\
+%&={\sqrt{r} C\over n}\max_i \snormSize{}{\mX_i}
+\end{align}
+where we have used the property $\nnormSize{}{\mB}\leq\sqrt{r}\FnormSize{}{\mB}$ in the last line. 
+Under the Gaussian feature assumption, $\mX_i\stackrel{\tD}\sim \sigma_i \mX_i$ for all $i\in[n]$, and $\sqrt{n} \sum_{i=1}^n \sigma_i \mX_i \stackrel{\tD}{\sim} \tM\tN({\bf 0}_{d_1\times d_2}, \mU, \mV)$ (need to verify). The conclusion follows by noting $\mathbb{E}\left\{\snormSize{}{\sum_{i=1}^n\sigma_i \mX_i}\right\}=\tO(\sqrt{d_1+d_2\over n})$.
+\end{proof}
+
+\end{document}

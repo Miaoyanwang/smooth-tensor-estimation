@@ -1,0 +1,195 @@
+\documentclass[11pt]{article}
+\usepackage{lscape}
+\usepackage{amsmath,amssymb}
+\usepackage{amsthm}
+\usepackage{float}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{comment}
+\usepackage{bm}
+\usepackage{gensymb}
+\allowdisplaybreaks[4]
+\usepackage{geometry}
+\geometry{margin=1in}
+\usepackage{setspace}
+\usepackage{siunitx}
+\usepackage{enumitem}
+\usepackage{dsfont}
+
+\usepackage{graphics}
+
+
+\usepackage[utf8x]{inputenc}
+\usepackage{bm}
+
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    citecolor = blue,
+    linkcolor=blue,
+    filecolor=magenta,           
+    urlcolor=cyan,
+}
+
+
+\theoremstyle{plain}
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{claim}{Claim}
+\newtheorem{lem}{Lemma}
+\newtheorem{prop}{Proposition}
+\newtheorem{pro}{Property}
+\newtheorem{cor}{Corollary}
+\newtheorem{ass}{Assumption}
+
+\theoremstyle{definition}
+\newtheorem{defn}{Definition}
+\newtheorem{exmp}{Example}
+\newtheorem{rmk}{Remark}
+
+\usepackage{algpseudocode,algorithm}
+\algnewcommand\algorithmicinput{\textbf{Input:}}
+\algnewcommand\algorithmicoutput{\textbf{Output:}}
+\algnewcommand\INPUT{\item[\algorithmicinput]}
+\algnewcommand\OUTPUT{\item[\algorithmicoutput]}
+
+
+
+\usepackage[labelfont=bf]{caption}
+
+\setcounter{table}{1}
+\usepackage{multirow}
+\usepackage{tabularx}
+
+\def\fixme#1#2{\textbf{[FIXME (#1): #2]}}
+
+ 
+
+\newcommand*{\KeepStyleUnderBrace}[1]{%f
+  \mathop{%
+    \mathchoice
+    {\underbrace{\displaystyle#1}}%
+    {\underbrace{\textstyle#1}}%
+    {\underbrace{\scriptstyle#1}}%
+    {\underbrace{\scriptscriptstyle#1}}%
+  }\limits
+}
+\usepackage{mathtools}
+\mathtoolsset{showonlyrefs=true}
+
+
+\usepackage{hyperref}
+\hypersetup{colorlinks=true}
+\usepackage[parfill]{parskip}
+\usepackage{bm}
+\onehalfspacing
+
+\newcommand{\newnorm}[1]{\left\lVert#1\right\rVert}
+\usepackage{enumitem}
+\newcommand{\Hnorm}[1]{\left\lVert#1\right\rVert_{\tH_\alpha}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%             Math Symbols
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%               Bold Math
+\input macros.tex
+\def\refer#1{\emph{\color{blue}#1}}
+\begin{document}
+\begin{center}
+{\Large \bf Comparison between two forms of Cauchy-Schwarz inequality}
+
+Miaoyan Wang, July 2, 2020
+\end{center}
+
+We have proposed two choices of function class:
+\begin{itemize}[leftmargin=-1pt]
+\item[] Case 1. bounded features + low rank coefficients
+\[
+\tF_1=\tF(r,M, G)=\{f\colon \mX\mapsto \langle \mB, \mX\rangle\ \big| \ \mB,\mX,\in\mathbb{R}^{d_1\times d_2},\ \text{rank}(\mB)\leq r, \snormSize{}{\mB}\leq M, \FnormSize{}{\mX}\leq G\}.
+\]
+\item[] Case 2. unbounded, random features + low rank coefficients
+\[
+\tF_2=\tF(r,M)=\{f\colon \mX\mapsto \langle \mB, \mX\rangle\ \big| \ \mB, \mX\in\mathbb{R}^{d_1\times d_2},\ \text{rank}(\mB)\leq r, \FnormSize{}{\mB}\leq M, \mX\sim \tM\tN(\mathbf{0}_{d_1\times d_2}, \mI, \mI)\}.
+\]
+\end{itemize}
+{\bf Question:} Can we provide a common approach to obtain sharp bounds for both cases? 
+
+Recall that the key step in the Rademacher bound is the Cauchy–Schwarz inequality,
+\[
+\langle \mB, \mS_n \rangle \leq \newnorm{\mB}_p \newnorm{\mS_n}_q, \quad \text{for any $p,q\geq 0$ satisfying ${1\over p} + {1\over q}=1$},
+\]
+where $\mS_n=\sum_{i=1}^n \sigma_i\mX_i$ is a stochastically-weighted sum of feature matrices.  
+
+Approach 1 uses $p=q=2$; i.e.,\ F-norm for both $\mB$ and $\mS_n$. 
+
+Approach 2 uses $p=0, q=\infty$; i.e., nuclear norm for $\mB$ and spectral norm for $\mS_n$. \\
+
+\begin{claim}
+Approach 2 is always no worse than approach 1. In particular, both approaches give the same bounds in Case 1, and Approach 2 gives better bound in Case 2. 
+\end{claim}
+
+In Case 2, substantially different results are obtained based on Approach 1 vs. 2.
+\begin{itemize}
+\item Applying Approach 1 to Case 2 gives polynomial growth in $d$:
+\[
+\tR_n(\tF_2)\leq {\FnormSize{}{\mB} \over \sqrt{n} } \max_i\FnormSize{}{\mX_i} \asymp \tO\left(\sqrt{d_1d_2\over n}\right).
+\]
+\item Applying Approach 2 to Case 2 gives linear growth in $d$:
+\[
+\tR_n(\tF_2) \leq {1\over n}\nnormSize{}{\mB}\mathbb{E}\snormSize{}{\mS_n} \asymp \tO\left(\sqrt{r(d_1+d_2)\over n}\right), \ \text{much sharper than Approach 1.}
+\]
+\end{itemize}
+
+It remains to show that, in Case 1, similar bounds are obtained based on Approaches 1 vs. 2.
+
+\begin{itemize}
+\item Applying Approach 1 to Case 1: 
+\begin{equation}\label{eq:1}
+\tR_n(\tF_1)={\FnormSize{}{\mB} \over \sqrt{n} } \max_i\FnormSize{}{\mX_i}.
+\end{equation}
+\item Applying Approach 2 to Case 1:
+\begin{align}\label{eq:2}
+\tR'_n(\tF_1)& \leq {1\over n}\nnormSize{}{\mB}\mathbb{E}\snormSize{}{\mS_n}\notag \\
+& \leq 2\left(\sqrt{r\over n} \log (d_1+d_2)  + {\sqrt{\log (d_1+d_2)}}\right) {\FnormSize{}{\mB}\over \sqrt{n}} \max_i \snormSize{}{\mX_i},
+\end{align}
+where the expectation is taken over i.i.d.\ Rademacher sequence $\sigma_i\sim_{\text{i.i.d}}\text{Bernoulli}({1\over 2})$, and the second line comes from the matrix Bernstein inequality (c.f. Lemma~\ref{lem:1}). 
+\end{itemize}
+
+Consider the high-dimensional regime as $n, d_1, d_2\to \infty$ while holding $r$ fixed. Note that the log term is smaller than any polynomial term, $\log (d_1+d_2)\leq o(d^\alpha)$ for any $\alpha>0$. Henceforth, the bound~\eqref{eq:2} is no worse than~\eqref{eq:1},
+\[
+\tR'_n(\tF_1) \ll o(d^{0.001}){\FnormSize{}{\mB}\over \sqrt{n}} \max_i \snormSize{}{\mX_i} \ {\color{red}\leq \text{or} \ll }{\FnormSize{}{\mB}\over \sqrt{n}} \max_i \FnormSize{}{\mX_i} = \tR_n(\tF_1).
+\]
+The gap in the last inequality can be substantial, e.g., by a factor of $\tO(\sqrt{d})$ when $\mX_i$ are approximately full rank.  As a conclusion, we favor Approach 2 over Approach 1 in both cases.  \\
+
+\begin{lem}[Matrix Bernstein, Theorem 1.6.2 in Ref.~\cite{tropp2015introduction}]\label{lem:1}Let $\mY_1, \ldots, \mY_n$ be independent, centered random matrices with common dimension $d_1\times d_1$, and assume that each one is uniformly bounded, 
+\[
+\mathbb{E}\mY_i=\mathbf{0}\quad \text{and}\quad \snormSize{}{\mY_i}\leq L\quad \text{for all }i\in[n].
+\]
+Define the sum $\mS_n=\sum_{i=1}^n\mY_i$, and let $v(\mS_n)$ denote the matrix variance statistic of the sum:
+\[
+v(\mS_n)=\max\left\{\snormSize{}{\sum_{i=1}^n \mathbb{E}(\mY_i\mY^T_i)},\ \snormSize{}{\sum_{i=1}^n \mathbb{E}(\mY^T_i\mY_i)}\right\}.
+\]
+Then
+\begin{equation}\label{eq:bound}
+\mathbb{E}\snormSize{}{\mS_n}\leq\sqrt{2v(\mS_n)\log (d_1+d_2)}+{1\over 3} L \log (d_1+d_2).
+\end{equation}
+\end{lem}
+
+\begin{rmk} In light of matrix Bernstein inequality, we probably do not need the Gaussian random feature assumption in the previous note. 
+\end{rmk}
+\begin{proof}[Proof of bound~\eqref{eq:2}]
+We apply Bernstein inequality to $\mY_i=\sigma_i\mX_i$, where $\mX_i$ is a deterministic matrix and $\sigma_i\sim_{\text{i.i.d.}}\text{Ber}(1/2)$, for all $i\in[n]$. It ie easy to verify that $\mY_i$ are independent, centered random matrix with spectral norm bounded by $L=\max_i \snormSize{}{\mX_i}$. Furthermore, the matrix variance statistic
+\begin{align}\label{eq:stat}
+v(\mS_n)&=\max\left\{ \snormSize{}{\sum_{i=1}^n \mathbb{E} \sigma^2_i(\mX_i\mX^T_i)},\ \snormSize{}{\sum_{i=1}^n \mathbb{E}\sigma^2_i(\mX_i\mX^T_i)}\right\} \notag \\
+&= \max\left\{\snormSize{}{ \sum_{i=1}^n \mX_i\mX^T_i\mathbb{E}\sigma^2_i},\ \snormSize{}{ \sum_{i=1}^n \mX_i\mX^T_i\mathbb{E}\sigma^2_i}\right\}\notag \\
+&=\max\left\{\snormSize{}{\sum_{i=1}\mX_i\mX^T_i},\ \snormSize{}{\sum_{i=1}\mX^T_i\mX_i} \right\}\notag \\
+&\leq n\max_i\snormSize{}{\mX_i}^2.
+\end{align}
+Combining~\eqref{eq:stat} into~\eqref{eq:bound} gives
+\begin{equation}\label{eq:sp}
+\mathbb{E}\snormSize{}{\mS_n}\leq 2 \max_i\snormSize{}{\mX_i}\left(\sqrt{n\log (d_1+d_2)}+\log (d_1+d_2)\right).
+\end{equation}
+The final conclusion~\eqref{eq:2} follows by plugging~\eqref{eq:sp} and $\nnormSize{}{\mB}\leq \sqrt{r}\FnormSize{}{\mB}$ into the first line of~\eqref{eq:2}.
+\end{proof}
+\bibliographystyle{plain}
+\bibliography{tensor_wang.bib}
+\end{document}

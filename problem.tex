@@ -1,0 +1,304 @@
+\documentclass[11pt]{article}
+\usepackage{lscape}
+\usepackage{amsmath,amssymb}
+\usepackage{amsthm}
+\usepackage{float}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{comment}
+\usepackage{bm}
+\usepackage{gensymb}
+\allowdisplaybreaks[4]
+\usepackage{geometry}
+\geometry{margin=1in}
+\usepackage{setspace}
+\usepackage{siunitx}
+\usepackage{enumitem}
+\usepackage{dsfont}
+
+\usepackage{graphics}
+
+
+\usepackage[utf8x]{inputenc}
+\usepackage{bm}
+
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    citecolor = blue,
+    linkcolor=blue,
+    filecolor=magenta,           
+    urlcolor=cyan,
+}
+
+
+\theoremstyle{plain}
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{lem}{Lemma}
+\newtheorem{conjecture}{Conjecture}
+\newtheorem{prop}{Proposition}
+\newtheorem{pro}{Property}
+\newtheorem{cor}{Corollary}
+\newtheorem{ass}{Assumption}
+
+\theoremstyle{definition}
+\newtheorem{defn}{Definition}
+\newtheorem{exmp}{Example}
+\newtheorem{rmk}{Remark}
+
+\usepackage{algpseudocode,algorithm}
+\algnewcommand\algorithmicinput{\textbf{Input:}}
+\algnewcommand\algorithmicoutput{\textbf{Output:}}
+\algnewcommand\INPUT{\item[\algorithmicinput]}
+\algnewcommand\OUTPUT{\item[\algorithmicoutput]}
+
+
+
+\usepackage[labelfont=bf]{caption}
+
+\setcounter{table}{1}
+\usepackage{multirow}
+\usepackage{tabularx}
+
+\def\fixme#1#2{\textbf{[FIXME (#1): #2]}}
+
+ 
+
+\newcommand*{\KeepStyleUnderBrace}[1]{%f
+  \mathop{%
+    \mathchoice
+    {\underbrace{\displaystyle#1}}%
+    {\underbrace{\textstyle#1}}%
+    {\underbrace{\scriptstyle#1}}%
+    {\underbrace{\scriptscriptstyle#1}}%
+  }\limits
+}
+\usepackage{mathtools}
+\mathtoolsset{showonlyrefs=true}
+
+
+\usepackage{hyperref}
+\hypersetup{colorlinks=true}
+\usepackage[parfill]{parskip}
+\usepackage{bm}
+\onehalfspacing
+
+
+\usepackage{stmaryrd}
+\newtheorem{Example}{Example}  
+\newtheorem{Definition}{Definition}
+\newtheorem{Theorem}{Theorem}
+\newtheorem{Assumption}{Assumption}
+\newtheorem{Proposition}{Proposition}
+\newtheorem{Conjecture}{Conjecture}
+
+\newtheorem{Lemma}{Lemma}
+\newtheorem{Remark}{Remark}
+\newtheorem{Corollary}{Corollary}
+
+
+\def\entry#1{\llbracket #1 \rrbracket}
+\newcommand{\subscript}[2]{$#1 _ #2$}
+\newcommand{\cC}{\mathcal{C}}
+\newcommand{\cD}{\mathcal{D}}
+\newcommand{\cS}{\mathcal{S}}
+\newcommand{\cT}{\mathcal{T}}
+\newcommand{\cO}{\mathcal{O}}
+\newcommand{\cP}{\mathcal{P}}
+\newcommand{\cU}{\mathcal{U}}
+\newcommand{\cV}{\mathcal{V}}
+\newcommand{\Ra}{{\mathcal{R}}}
+\newcommand{\Null}{{\mathcal{N}}}
+\newcommand{\Range}{{\mathcal{R}}}
+\newcommand{\cI}{{\mathcal{I}}}
+\newcommand{\cJ}{{\mathcal{J}}}
+\renewcommand{\cU}{{\mathcal{U}}}
+\renewcommand{\cV}{{\mathcal{V}}}
+\newcommand{\cA}{{\mathcal{A}}}
+\newcommand{\cB}{{\mathcal{B}}}
+\newcommand{\cE}{{\mathcal{E}}}
+\newcommand{\cF}{{\mathcal{F}}}
+\newcommand{\cG}{{\mathcal{G}}}
+\newcommand{\cW}{{\mathcal{W}}}
+\newcommand{\cX}{{\mathcal{X}}}
+\newcommand{\cY}{{\mathcal{Y}}}
+\newcommand{\cZ}{{\mathcal{Z}}}
+\newcommand{\tF}{\textrm{F}}
+
+\newcommand{\br}{{\mathbf{r}}}
+\newcommand{\bp}{{\mathbf{p}}}
+\newcommand{\bs}{{\mathbf{s}}}
+
+\newcommand{\0}{{\mathbf{0}}}
+\newcommand{\1}{{\mathbf{1}}}
+\renewcommand{\a}{{\mathbf{a}}}
+\renewcommand{\b}{{\mathbf{b}}}
+\newcommand{\e}{{\mathbf{e}}}
+\newcommand{\f}{{\mathbf{f}}}
+\renewcommand{\u}{{\mathbf{u}}}
+\renewcommand{\v}{{\mathbf{v}}}
+\renewcommand{\r}{{\boldsymbol{r}}}
+\newcommand{\p}{{\boldsymbol{p}}}
+\newcommand{\x}{{\mathbf{x}}}
+\newcommand{\y}{{\mathbf{y}}}
+\newcommand{\z}{{\mathbf{z}}}
+\newcommand{\X}{{\mathbf{X}}}
+\newcommand{\B}{{\mathbf{B}}}
+\newcommand{\C}{{\mathbf{C}}}
+\newcommand{\D}{{\mathbf{D}}}
+\newcommand{\I}{{\mathbf{I}}}
+\newcommand{\M}{{\mathbf{M}}}
+\newcommand{\N}{{\mathbf{N}}}
+\newcommand{\E}{{\mathbf{E}}}
+\renewcommand{\P}{{\mathbf{P}}}
+\newcommand{\Q}{{\mathbf{Q}}}
+\newcommand{\R}{{\mathbf{R}}}
+\renewcommand{\S}{{\mathbf{S}}}
+\newcommand{\U}{{\mathbf{U}}}
+\newcommand{\V}{{\mathbf{V}}}
+\newcommand{\Var}{{\rm Var}}
+\newcommand{\Corr}{{\rm Corr}}
+\newcommand{\Cov}{{\rm Cov}}
+\newcommand{\W}{{\mathbf{W}}}
+\newcommand{\A}{{\mathbf{A}}}
+\newcommand{\Y}{{\mathbf{Y}}}
+\newcommand{\Z}{{\mathbf{Z}}}
+
+\newcommand{\todo}[1]{{\textcolor{red}{[#1]}}}
+\newcommand{\RH}[1]{{\textcolor{blue}{[RH: #1]}}}
+
+\newcommand{\tX}{{\mathbf{\tilde{X}}}}
+\newcommand{\tu}{{\mathbf{\tilde{u}}}}
+\newcommand{\tv}{{\mathbf{\tilde{v}}}}
+
+\newcommand{\Proj}{{\mathbb{P}}}
+\newcommand{\Poisson}{{\rm Poisson}}
+
+\newcommand{\bX}{{\mathbf{\bar{X}}}}
+\newcommand{\by}{{\mathbf{\bar{y}}}}
+
+\newcommand{\cR}{{\cal R}}
+\newcommand{\cN}{{\cal N}}
+
+\newcommand{\bbeta}{\boldsymbol{\beta}}
+\newcommand{\bvarepsilon}{\boldsymbol{\varepsilon}}
+\newcommand{\bOmega}{\boldsymbol{\Omega}}
+\newcommand{\bDelta}{\boldsymbol{\Delta}}
+\newcommand{\Bphi}{\boldsymbol{\phi}}
+\newcommand{\Bpsi}{\boldsymbol{\psi}}
+\newcommand{\Bdelta}{\boldsymbol{\delta}}
+
+\newcommand{\mean}{{\rm mean}}
+\newcommand{\rank}{{\rm rank}}
+\newcommand{\var}{{\rm var}}
+\newcommand{\SSigma}{\boldsymbol{\Sigma}}
+\newcommand{\tr}{{\rm tr}}
+\newcommand{\CV}{\operatorname{\rm CV}}
+\newcommand{\GCV}{\operatorname{\rm GCV}}
+\newcommand{\diag}{{\rm diag}}
+\newcommand{\poly}{{\rm poly}}
+\newcommand{\Trun}{{\rm Trun}}
+\newcommand{\SVD}{{\rm SVD}}
+\newcommand{\VEC}{{\rm Vec}}
+\newcommand{\Logit}{{\rm Logit}}
+
+\newcommand{\pnorm}[1]{{[\![}#1{]\!]}}
+\newcommand{\plangle}{{\langle\!\langle}}
+\newcommand{\prangle}{{\rangle\!\rangle}}
+\newcommand{\bbR}{\mathbb{R}}
+\newcommand{\bbI}{\mathbb{I}}
+\newcommand{\bbN}{\mathbb{N}}
+\newcommand{\bbO}{\mathbb{O}}
+\newcommand{\bbP}{\mathbb{P}}
+\newcommand{\bbE}{\mathbb{E}}
+\newcommand{\cM}{\mathcal{M}}
+\newcommand{\supp}{{\rm supp}}
+
+
+\newcommand{\Hnorm}[1]{\left\lVert#1\right\rVert_{\tH_\alpha}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%             Math Symbols
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%               Bold Math
+\input macros.tex
+\def\refer#1{\emph{\color{blue}#1}}
+\begin{document}
+
+\begin{center}
+{\bf \large Effective use of figures for research}\\
+Miaoyan Wang, June 17, 2020\\
+\end{center}
+
+{\bf Claim of confidentiality: No discussion/sharing is allowed without my permission. }
+\begin{enumerate}
+\item {\bf Design a figure to summarize the following paragraph:}
+\begin{quote}
+``...Let $\cY=\entry{\cY_{i_1,\dots,i_d}} \in \bbR^{p_1 \times \cdots \times p_d}$ be an order-$d$ $(p_1,\ldots,p_d)$-dimensional data tensor of interest. The tensor block model assumes an underlying checkerbox structure in the signal tensor. Specifically, suppose there are $r_k$ clusters in the $k$th mode of the signal for all $k \in [d]$. Then, $\cY$ is a realization from the following block model:
+\begin{equation}\label{eq:model-tensor}
+	\cY = \cS \times_1 \M_1 \times_2 \cdots \times_d \M_d + \cE,
+\end{equation}
+where $\cS=\entry{\cS_{i_1,\ldots,i_d}}\in \bbR^{r_1 \times \ldots r_d}$ is the core tensor, $\M_k\in\{0,1\}^{p_k\times r_k}$ is the membership matrix indicating the block allocations along mode $k\in[d]$, and $\cE=\entry{\varepsilon_{i_1,\ldots,i_d}}\in \mathbb{R}^{p_1\times \cdots \times p_d}$ is the noise tensor. We assume $\varepsilon_{i_1,\ldots,i_d}$ are independent, mean-$0$, $\sigma-$subgaussian random variables; i.e.
+\[
+\bbE \exp\left(\lambda\varepsilon_{j_1,\ldots,j_d}\right) \leq \exp\left(\lambda^2\sigma^2/2\right),\qquad \forall \lambda \in \bbR.
+\]
+Note that the tensor block model~\eqref{eq:model-tensor} is related, but distinct from, classical low-rank Tucker model. The factor matrix $\M_k$ has one copy of 1's and $(r_k-1)$ copies of 0's in each of the rows. The membership matrix $\mM_k$ is equivalently represented by a label vector $z_k\in[r_k]^{p_k}$, where the $j$-th entry of $z_k$ is the cluster label to which element $j$ is assigned, $j\in[p_k].$
+
+There are two main tasks in the inference of tensor block model:
+\begin{itemize}
+\item Question 1 [Clustering]. Estimate the membership matrix $\M_k$, or equivalently the label vector $z_k.$
+\item Question 2 [Denoising]. Estimate the signal tensor $\Theta=\mathbb{E}\cY$ given the estimated membership.
+\end{itemize}
+We will focus on the theory and algorithm for the clustering problem in this paper....''
+\end{quote}
+
+\item {\bf Design a figure to summarize the following paragraph:}
+\vspace{-.7cm}
+\begin{quote}
+\begin{defn}
+For each mode $k$, the separation between two mode-$k$ slides is quantified by
+\begin{equation}\label{eq:delta-define}
+	\Delta_k^2 := \min_{i_1 \neq i_2} \FnormSize{}{\cS \times_k \left(e^{(r_k, i_1)} - e^{(r_k, i_2)} \right)}^2 > 0,
+\end{equation}
+where $e^{(r, i)}=(0,\ldots,0,1,0,\ldots,0)^T$ is the $i$th canonical orthogonal basis in $\bbR^r$; i.e. a length-$r$ vector with $i$-th entry 1 and others 0. 
+\end{defn}
+\begin{Theorem}[Exact label recovery]\label{coro:strong-consistency}
+Consider a tensor block model~\eqref{eq:model-tensor}. Let $p_* = \prod_{k\in [d]} p_k$, $r_* = \prod_{k\in [d]} r_k$, $\bar p = \max_k p_k$, $\bar r = \max_k r_k$, $\underline p = \min_k p_k$. Suppose the signal-to-noise ratio satisfies
+\begin{equation}\label{ineq:SNR-local-convergence}
+	\Delta_{\min}^2 := \min_k \Delta_k^2 \geq C\sigma^2  \frac{r_* \bar p}{p_*}\left(r_*\bar r + \log \bar p\right),
+\end{equation}
+and the initialization satisfies the assumption 1 (not specified here for our purpose). Let $z^{(T)}_k$ be the $T$-th iterate generated from the non-polynomial Algorithm 1, where $T \geq \lceil2 \bar p \rceil$. With probability at least $1-\exp(-c\underline p)-\exp\left(-\frac{c p_*}{4r_{*}\bar p}\Delta_{\min}^2\right)$, the labels in each of the $d$ modes are exactly recovered; that is,
+there exist a set of permutations $\pi_k\colon [r_k]\to [r_k]$, such that
+	\begin{equation}
+		\hat z_k^{(T)} = \pi_k \circ z_k^*,\qquad \forall k=1,\ldots,d.
+	\end{equation}
+\end{Theorem}
+Here given a $\pi\colon [r]\to [r]$ label permutation, $(\pi\circ z)_j := \pi(z_j)$ for all $j\in[r]$.
+
+\begin{Theorem}[Lower bound]\label{thm:mcr-lower-bound}
+Consider a Gaussian tensor block model~\eqref{eq:model-tensor}, where the entries of the noise tensor $\cE$ follow i.i.d.\ $N(0,\sigma^2)$. Define $p_{-k}=p_*/p_k$, $r_{-k}=r_*/r_k$. Suppose $r_k = o(p_k^{1/3})$ and there exists a constant $c_0>0$ such that
+\[
+\frac{\Delta_k^2}{\sigma^2}\frac{p_{-k}}{r_{-k}} < c_0.
+\]
+Then
+	\begin{equation}
+		\inf_{\hat z_k} \sup_{\Theta} \bbE \left[\min_{\pi_k \in \Pi_{r_k}}\sum_{j=1}^{p_k}\bbI\{(\hat z_k)_j \neq \left(\pi_k\circ z_k)_j\right)\}\right] \geq 1, 
+	\end{equation}
+	where $\Pi_{r_k}$ is the collection of all permutations of the cluster label $[r_k]$, and the infimum is taken over all estimators $\hat z_k$ based on Gaussian tensor block model.
+\end{Theorem}
+
+\begin{Theorem}[Guarantee for polynomial-time algorithm]
+Suppose the numbers of clusters $r_k$ are fixed and $p_1=\cdots=p_d=p$, $\Delta^2_{\min}/\sigma^2 \geq C\left( p^{-d/2} \vee p^{-(d-1)}\log p\right)$. Let $z^{(T)}_k$ be the $T$-th iterate generated from the polynomial-time Algorithm 2, where $T \geq \lceil2\log \bar p \rceil$. With probability at least $1-\exp(-c\underline p)-\exp\left(-\frac{c p_*}{4r_{*}\bar p}\Delta_{\min}^2\right)$, the labels in each of the $d$ modes are exactly recovered; that is,
+there exist a set of permutations $\pi_k\colon [r_k]\to [r_k]$, such that
+	\begin{equation*}
+		\hat z_k^{(T)} = \pi_k \circ z_k^*,\qquad \forall k=1,\ldots,d.
+	\end{equation*}
+
+\end{Theorem}
+	
+\begin{conjecture}
+There exists no polynomial-time algorithm which can exactly recover the block labels in tensor block model when $\Delta^2_{\min}/\sigma^2 = \tO(p^{-d/2-\varepsilon})$ for $\varepsilon>0$.
+\end{conjecture}
+\end{quote}
+\end{enumerate}
+\end{document}

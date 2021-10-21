@@ -1,0 +1,262 @@
+\documentclass[11pt]{article}
+\usepackage{lscape}
+\usepackage{amsmath,amssymb}
+\usepackage{amsthm}
+\usepackage{float}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{comment}
+\usepackage{bm}
+\usepackage{gensymb}
+\allowdisplaybreaks[4]
+\usepackage{geometry}
+\geometry{margin=1in}
+\usepackage{setspace}
+\usepackage{siunitx}
+\usepackage{enumitem}
+\usepackage{dsfont}
+\usepackage{arydshln}
+
+\newcommand*{\vertbar}{\rule[-1ex]{0.5pt}{2.5ex}}
+\newcommand*{\horzbar}{\rule[.5ex]{2.5ex}{0.5pt}}
+
+
+\usepackage{graphics}
+\allowdisplaybreaks
+
+\usepackage[utf8x]{inputenc}
+\usepackage{bm}
+
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    citecolor = blue,
+    linkcolor=blue,
+    filecolor=magenta,           
+    urlcolor=cyan,
+}
+
+
+\theoremstyle{plain}
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{lem}{Lemma}
+\newtheorem{pro}{Property}
+\newtheorem{cor}{Corollary}
+\newtheorem{ass}{Assumption}
+
+\theoremstyle{definition}
+\newtheorem{prob}{Problem}
+\newtheorem{prop}{Proposition}
+\newtheorem{defn}{Definition}
+\newtheorem{exmp}{Example}
+\newtheorem{rmk}{Remark}
+\newtheorem{con}{Conjecture}
+
+\usepackage{algpseudocode,algorithm}
+\algnewcommand\algorithmicinput{\textbf{Input:}}
+\algnewcommand\algorithmicoutput{\textbf{Output:}}
+\algnewcommand\INPUT{\item[\algorithmicinput]}
+\algnewcommand\OUTPUT{\item[\algorithmicoutput]}
+
+
+
+\usepackage[labelfont=bf]{caption}
+
+\setcounter{table}{1}
+\usepackage{multirow}
+\usepackage{tabularx}
+
+\def\fixme#1#2{\textbf{[FIXME (#1): #2]}}
+
+\def\Holder{\text{H\"{o}lder }}
+
+\newcommand*{\KeepStyleUnderBrace}[1]{%f
+  \mathop{%
+    \mathchoice
+    {\underbrace{\displaystyle#1}}%
+    {\underbrace{\textstyle#1}}%
+    {\underbrace{\scriptstyle#1}}%
+    {\underbrace{\scriptscriptstyle#1}}%
+  }\limits
+}
+\usepackage{mathtools}
+\mathtoolsset{showonlyrefs=true}
+
+\begingroup
+\makeatletter
+\@for\theoremstyle:=definition,remark,plain\do{%
+\expandafter\g@addto@macro\csname th@\theoremstyle\endcsname{%
+\addtolength\thm@preskip\parskip
+}%
+}
+\endgroup
+
+
+\usepackage{hyperref}
+\hypersetup{colorlinks=true}
+\usepackage[parfill]{parskip}
+\usepackage{bm}
+\onehalfspacing
+
+\newcommand{\maxnorm}[1]{\left\lVert#1\right\rVert_{\infty}}
+\newcommand{\Hnorm}[1]{\left\lVert#1\right\rVert_{\tH_\alpha}}
+\newcommand{\nullnorm}[1]{\left\lVert#1\right\rVert}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%             Math Symbols
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%               Bold Math
+\input macros.tex
+\def\refer#1{\emph{\color{blue}#1}}
+\begin{document}
+
+\begin{center}
+{\bf \Large An equivalent formulation of matrix kernels (III)}\\
+Miaoyan Wang, Aug 7, 2020\\
+\end{center}
+
+\section{Equivalence}
+\begin{itemize}
+\item {\bf Concatenated mapping}.
+\begin{align}
+\Phi_\text{con}: \mathbb{R}^{d_1\times d_2}& \to \tH_r^{d_1}\times \tH_c^{d_2} \\
+\mX& \mapsto (\Phi_r(\mX),\Phi_c(\mX))\stackrel{\text{def}}{= }(\KeepStyleUnderBrace{\phi_r(\mX_{1:}),\ldots,\phi_r(\mX_{d_1:})}_{\text{row vectors, denoted $\mR$}}, \KeepStyleUnderBrace{\phi_c(\mX_{:1}),\ldots,\ \phi_c(\mX_{:d_2})}_{\text{col vectors, denoted $\mL$}})
+\end{align}
+\item {\bf Bilinear mapping}.
+\begin{align}
+\Phi_{\text{bi}}: \mathbb{R}^{d_1\times d_2}& \to (\tH_r\times \tH_c)^{d_1\times d_2}\\
+\mX& \mapsto [\Phi_{\text{bi}}(\mX)_{ij}],\quad \text{where}\ \Phi_{\text{bi}}(\mX)_{ij}\stackrel{\text{def}}{=}(\phi_c(\mX_{i:}),\ \phi_r(\mX_{:j})) = (\mR_i, \mL_j),
+\end{align}
+where $\mR_i\in\tH_r$ (respectively, $\mL_j\in \tH_c$) denotes the $i$-th (respectively, $j$-th) element in $\mR\in\tH_r^{d_1}$ (respectively, $\mL\in \tH_c^{d_2}$).
+
+\end{itemize}
+Using symbolic computation, it is easy to verify the following two properties. 
+\begin{enumerate}
+\item There exists an one-to-one correspondence between the two mapped features. 
+\item There exists an one-to-one correspondence between the two low-rank coefficients. Specifically, 
+\begin{align}\label{eq:equivalence}
+\text{concatenated function induced by }( \mC_1, \mC_2, \mP_1, \mP_2)&\cong \text{bilinear function induced by }( \mC,\mP_1,\mP_2)\notag \\
+&\cong \text{bilinear function induced by } (\tilde \mC, \mP_1, \mP_2),
+\end{align}
+where $ \mC, \tilde \mC, \mC_1, \mC_2, \mP_1, \mP_2$ are parameters related to the low-rank coefficients (to be specified below).
+\end{enumerate}
+\begin{proof}[Proof of Property 2]
+Note: I typically use subscripts ``1'' and ``2'' to distinguish quantities relevant to rows and columns. When there are clumped notations in sub/super-scripts, I omit the subscripts and instead use superscripts ``row'' and ``col''.  
+
+``$\Rightarrow$'' The decision function under the concatenated mapping is
+\begin{align}
+f_\text{con}(\mX)=\langle \KeepStyleUnderBrace{(\mB_1, \mB_2)}_{\text{coefficients of interest}},\ \KeepStyleUnderBrace{(\mR,\mL)}_{\text{mapped feature $\Phi_1(\mX)$}} \rangle  = \langle \mB_1, \mR \rangle +  \langle \mB_2, \mL \rangle.
+\end{align}
+Suppose we impose low-rank structure $\mB_k=\mC_k\mP^T_k$, where $\mC_k\in\tH^{r_k}$, and $\mP_k\in\mathbb{R}^{d_k\times r}$ are matrices for $k=1,2$. In particular, $\mP_k$ has full column rank but is not necessarily column-orthonormal. Denote $(\mC_1,\mC_2, \mP_1, \mP_2)$ the parameters for the decision function under the concatenated mapping. Then, we have
+\begin{align}\label{eq:con}
+f_\text{con}(\mX)&=\langle \mC_1, \mR\mP_1 \rangle + \langle \mC_2, \mL\mP_2 \rangle\\
+& = \sum_{(i,s)\in[r]\times [d_1]} \mP^{\text{row}}_{si}\KeepStyleUnderBrace{ \langle \mc^{\text{row}}_{i}, \mR_{s}\rangle}_{\text{in mapped row space}}+\sum_{(i,s)\in[r]\times [d_2]} \mP^{\text{col}}_{si} \KeepStyleUnderBrace{\langle \mc^{\text{col}}_{i}, \mL_{s}\rangle}_{\text{\text{in mapped col space}}},
+\end{align}
+where the subscripts, $i,s, is$, denote the $i$-th, $s$-th, and $(i,s)$-th element in the corresponding vector/matrices. 
+
+Now, consider the decision function under the bilinear mapping. We prove the equivalence~\eqref{eq:equivalence} by construction. Define a triplet $( \mC, \mP_1, \mP_2)$ based on $(\mC_1,\mC_2, \mP_1, \mP_2)$, 
+\begin{equation}\label{eq:mapping}
+\mC\leftarrow \entry{(\gamma_1\mc^{\text{row}}_i,\ \gamma_2\mc^{\text{col}}_j)}\in (\tH_1\times \tH_2)^{r\times r}, \quad \mP_k\leftarrow \mP_k,\quad k=1,2,
+\end{equation} 
+where $\gamma_1={1\over \sum_{i,s}\mP^{\text{col}}_{si}}, \gamma_2={1\over \sum_{i,s}\mP^{\text{row}}_{si}}$ are two normalizing constants (assuming non-zero denominators), and $\{\mc^{\text{row}}_i\}$, $\{\mc^{\text{col}}_j\}$ are elements of $\mC_1$, $\mC_2$, respectively. Define a low-rank coefficient ``matrix'' $\mB= \mP_1\mC \mP^T_2 \in (\tH_1\times \tH_2)^{d_1\times d_2}$. 
+
+With this choice, the decision function under the bilinear mapping is
+\begin{align}\label{eq:bi}
+f_{\text{bi}}(\mX)&=\langle\mB, \Phi_{\text{bi}}(\mX) \rangle=\langle \mP_1\mC\mP^T_2,\ \Phi_{\text{bi}}(\mX) \rangle \notag \\
+&=\sum_{s,s',i,j} \mP^{\text{row}}_{si} \mP^{\text{col}}_{s'j}  \langle (\mc^{\text{row}}_{i}, \mc^{\text{col}}_{j}),\ (\mR_s, \mL_{s'}) \rangle\notag\\
+%&=\sum_{i,j,s,s'} \mP^{\text{row}}_{is}  \mP^{\text{col}}_{js'}  \left\{ \langle \mc^{\text{row}}_{s}, \mR_i\rangle+\langle \mc^{\text{col}}_{s'}, \mL_j \rangle\right\}\\
+%&=\gamma_1 \left(\sum_{j,s'}\mP^{\text{col}}_{s'j}\right) \left(\sum_{i,s}\mP^{\text{row}}_{si} \langle\mc^{\text{row}}_{i},\mR_s\rangle\right)+\gamma_2 \left(\sum_{i,s}\mP^{\text{row}}_{si}\right)\left( \sum_{s',j}\mP^{\text{col}}_{s',j} \langle\mc^{\text{col}}_{j},\mR_{s'}\rangle\right)\\
+&=\sum_{i,s}\mP^{\text{row}}_{si} \langle\mc^{\text{row}}_{i},\mR_s\rangle+  \sum_{s,i}\mP^{\text{col}}_{si} \langle\mc^{\text{col}}_{i},\mR_{s}\rangle,
+\end{align}
+where the last line follows from the definition of $\gamma_1$ and $\gamma_2$. Comparing~\eqref{eq:bi} and~\eqref{eq:con}, we have shown the correspondence from concatenated function to bilinear function. 
+
+``$\Leftarrow$'' Suppose that we have a triplet of parameters, $(\mC, \mP_1,\mP_2)$, for the decision function under the bilinear mapping. Let $(\mc^{\text{row}}_{ij},\mc^{\text{col}}_{ij})$ denote the $(i,j)$-th entry of $\mC$. Define a new matrix $\tilde \mC$ whose $(i,j)$-th entry is $(\tilde\mc^{\text{row}}_i , \tilde\mc^{\text{col}}_j)$,
+\[
+\tilde \mc^{\text{row}}_i  = {1\over r} \sum_{j} \mc^{\text{row}}_{ij},\quad \tilde \mc^{\text{col}}_j  = {1\over r} \sum_{i} \mc^{\text{row}}_{ij}, \quad \text{for all }(i,j)\in[r]\times [r].
+\]
+The following computation shows that $(\tilde \mC,\mP_1,\mP_2)$ induces the same function as $(\mC,\mP_1,\mP_2)$. 
+\begin{align}
+f_{\text{bi}}(\mX)&=\langle \mC,\ \mY\rangle=\sum_{ij} \langle \mc^{\text{row}}_{ij}, y^{\text{row}}_{i}\rangle +\sum_{ij} \langle \mc^{\text{col}}_{ij}, y^{\text{col}}_{j}\rangle \\
+&= r \sum_i  \langle \tilde \mc^{\text{row}}_i, y^{\text{row}}_i\rangle+r \sum_j \langle \tilde \mc^{\text{col}}_j, y^{\text{col}}_j\rangle\\
+&= \langle\tilde \mC, \mY\rangle 
+\end{align}
+where, for notational convenience, we have denoted the matrix $\mY\stackrel{\text{def}}{=}\mP^T_1\Phi_{\text{bi}}(\mX)\mP_2 = \entry{(y^{\text{row}}_i, y^{\text{col}}_j)}$. Hence, the second correspondence in~\eqref{eq:equivalence} is proved. The first correspondence in~\eqref{eq:equivalence} is shown by a similar argument as in ``$\Rightarrow$'' in combination with the relationship~\eqref{eq:mapping}. 
+\end{proof}
+
+\section{Algorithm under bilinear mapping}
+Consider the bilinear mapping,
+\begin{align}
+\Phi\colon \mathbb{R}^{d_1\times d_2}& \to (\tH_r\times \tH_c)^{d_1\times d_2}\\
+\mX& \mapsto [\Phi(\mX)_{ij}],\quad \text{where}\ \Phi(\mX)_{ij}\stackrel{\text{def}}{=}(\phi_c(\mX_{i:}),\ \phi_r(\mX_{:j})).
+\end{align}
+
+We solve the optimization problem
+\begin{align}\label{eq:opt}
+\min_{\mB}&{1\over 2}\FnormSize{}{\mC}^2 + c\sum_{i=1}^ n \xi_i,\\
+\text{subject to }&y_i\langle \mP_r\mC\mP_c^T, \Phi(\mX_i)\rangle \leq 1-\xi_i \text{ and}\ \xi_i\geq 0,\ i=1,\ldots,n
+\end{align}
+where $\mP_r\in\mathbb{R}^{d_1\times r}$ and $\mP_c\in\mathbb{R}^{d_2\times r}$ are column-orthonormal matrices,  and $\mC=\entry{(\mc^{\text{row}}_i,\ \mc^{\text{col}}_j)} \in (\tH_r\times \tH_c)^{r\times r}$ are linear coefficients. Note that $\mC \cong \tH_r \times \tH_c$ and $\FnormSize{}{\mC}=\sum_{i=1}^r (\mc^{\text{row}}_i)^2+\sum_{i=1}^r (\mc^{\text{col}}_j)^2$.
+
+\begin{enumerate}
+\item First, we update $\mC\mP_c^T$ holding $\mP_r$ fixed. 
+Under the orthonormal condition, the dual problem of~\eqref{eq:opt} is
+\begin{align}\label{eq:dual}
+\min_{\boldsymbol{\alpha}=(\alpha_1,\ldots,\alpha_n)} &- \sum_{i=1}^n \beta_i + {1\over 2} \sum_{i,j}\alpha_i\alpha_jy_iy_j\langle 
+\mP^T_r\Phi(\mX_i),\ \mP^T_r\Phi(\mX_j)
+\rangle\\
+\text{subject to} & \sum_i y_i\alpha_i=0, \text{ and }0\leq \beta_i\leq c,\ i=1,\ldots,n.
+\end{align}
+Using kernel tricks, we solve~\eqref{eq:dual} without the explicit feature mapping. The updating scheme of $\mC\mP_c^T$ is
+\begin{align}\label{eq:update}
+\mC\mP_c^T=\sum_i\alpha_iy_i\mP^T_r\Phi(\mX_i) \in (\tH_r\times \tH_c)^{r\times d_2}.
+\end{align}
+
+\item Second, we update $\mP_r$ holding $\mC\mP^T_c$ fixed. The dual problem of~\eqref{eq:opt} is
+\begin{align}\label{eq:update2}
+\min_{\boldsymbol{\beta}=(\beta_1,\ldots,\beta_n)} &- \sum_{i=1}^n \beta_i + {1\over 2} \sum_{i,j}\beta_i\beta_jy_iy_j\langle \Phi(\mX_i)\mP_c\mC^T(\mC\mC^T)^{-1/2}, \ \Phi(\mX_j)\mP_c\mC^T(\mC\mC^T)^{-1/2}\rangle\\
+\text{subject to} & \sum_i y_i\beta_i=0, \text{ and }0\leq \beta_i\leq c,\ i=1,\ldots,n.
+\end{align}
+Using kernel tricks, we can solve~\eqref{eq:update2} without explicit feature mapping. To show this, notice that by plugging~\eqref{eq:update} to~\eqref{eq:update2}, we have
+\begin{align}
+\mC\mC^T&=\mC\mP^T_c\mP_c\mC^T=\sum_{i,j}\alpha_i\alpha_jy_iy_j\mP_r^T\Phi(\mX_i)\Phi^T(\mX_j)\mP_r \in \mathbb{R}^{r\times r},\\
+\Phi(\mX_i)\mP_c\mC^T&=\sum_j \Phi(\mX_i) \alpha_jy_j\Phi^T(\mX_j)\mP_r=\sum_j \alpha_jy_j\Phi(\mX_i)\Phi^T(\mX_j) \mP_r \in \mathbb{R}^{d_1\times r}.
+\end{align}
+Hence, the kernel in~\eqref{eq:update2} can be expressed without explicit feature mapping. 
+
+We update $\mP_r$ by
+\[
+\mP_r=\sum_{i}\beta_iy_i\KeepStyleUnderBrace{\Phi(\mX_i) \mP_c\mC^T}_{\in\mathbb{R}^{d_1\times r}}\KeepStyleUnderBrace{(\mC\mC^T)^{-1}}_{\in \mathbb{R}^{r\times r}} \in \mathbb{R}^{d_1\times r}
+\]
+%Normalize $\tilde \mP_r \leftarrow \text{SVD}( \mP_r)$.
+The output $\mP_r$ may not have orthonormal columns. We postprocess $\mP_r$ by {\color{red}updating $\mP_r\leftarrow \text{Left singular space of $\mP_r$}$, if $\mP_r$ is not orthonormal.}
+\end{enumerate}
+
+{\bf How to read off $\mP_r$ and $\mP_c$ from the algorithm outputs?} 
+
+(All the quantities below are outputs from the step 1.)
+
+The row projection matrix $\mP_r$ is readily available from the second step of the algorithm. To obtain the column projection matrix $\mP_c$, we notice that the matrix $\mP_c\mP^T_c$ can be expressed without explicit feature mapping (see calculation below). Hence, $\mP_c \leftarrow \text{Singular space of $(\mP_c\mP^T_c)$}$. 
+
+\underline{Calculation of $\mP_c\mP^T_c$ without feature mapping:}
+\begin{align}\label{eq:projection}
+\mP_c\mP^T_c&=\mP_c\mC^T(\mC\mP^T_c\mP_c\mC^T)^{-1}\mC\mP^T_c\\
+&\stackrel{\text{c.f.}~\eqref{eq:update}}{=}\left(\sum_i \alpha_i y_i\Phi^T(\mX_i) \right) \KeepStyleUnderBrace{\mP_r \left(\sum_{i,j}\alpha_i\alpha_jy_iy_j\mP^T_r\Phi(\mX_i)\Phi^T(\mX_j)\mP_r \right)^{-1}\mP^T_r}_{\text{computable without explicit feature mapping; denoted $\mW$}}\left(\sum_i \alpha_i y_i  \Phi(\mX_i)\right)\\
+&=\sum_{i,j}\alpha_i \alpha_j y_iy_j \KeepStyleUnderBrace{\left[\Phi^T(\mX_i)\mW\Phi(\mX_j)\right]}_{\text{a $d_2$-by-$d_2$ matrix over $\mathbb{R}$}}
+\end{align}
+The matrix $\Phi^T(\mX)\mW\Phi(\mY)\in\mathbb{R}^{d_2\times d_2}$ can be expressed without explicit feature mapping. Specifically, the $(i,j)$-entry of $\Phi^T(\mX)\mW\Phi(\mY)$ is
+\[
+[\Phi^T(\mX)\mW\Phi(\mY)]_{i,j}=\sum_{s,s'}w_{ss'}\langle \Phi(\mX)_{s,i},\ \Phi(\mY)_{s',j}\rangle = \sum_{i,j}w_{ss'}K_r(s,s')+K_c(i,j)(\sum_{s,s'}w_{ss'}),
+\]
+for all $(i,j)\in[d_2]\times [d_2].$
+
+{\bf How to read off the decision function from the algorithm outputs?} 
+\begin{align}
+f(\mX_{\text{new}}) &= \text{trace}\left(\Phi^T(\mX_{\text{new}})\mP_r\mC\mP^T_c\right) \\
+%&= \text{trace}\left( \mP_r \sum_i \alpha_iy_i \mP^T_r\Phi(\mX_i)\Phi^T(\mX_{\text{new}})\right)\\
+&\stackrel{\text{c.f.}~\eqref{eq:update}}{=} \text{trace}\left( \mP_r\mP^T_r \sum_{i}\alpha_i y_i \KeepStyleUnderBrace{\Phi(\mX_i)\Phi^T(\mX_{\text{new}})}_{\in \mathbb{R}^{d_1\times d_2}} \right)\\
+&=:\sum_i \alpha_i y_i \left[K_r(i,\text{new})+\tilde K_c(i,\text{new})\right]
+\end{align}
+
+
+
+\end{document}

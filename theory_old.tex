@@ -1,0 +1,152 @@
+\documentclass[11pt]{article}
+\usepackage{lscape}
+\usepackage{amsmath,amssymb}
+\usepackage{amsthm}
+\usepackage{float}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{comment}
+\usepackage{bm}
+\usepackage{gensymb}
+\allowdisplaybreaks[4]
+\usepackage{geometry}
+\geometry{margin=1in}
+\usepackage{setspace}
+\usepackage{siunitx}
+\usepackage{enumitem}
+\usepackage{dsfont}
+\usepackage{arydshln}
+
+\newcommand*{\vertbar}{\rule[-1ex]{0.5pt}{2.5ex}}
+\newcommand*{\horzbar}{\rule[.5ex]{2.5ex}{0.5pt}}
+
+
+\usepackage{graphics}
+\allowdisplaybreaks
+
+\usepackage[utf8x]{inputenc}
+\usepackage{bm}
+
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    citecolor = blue,
+    linkcolor=blue,
+    filecolor=magenta,           
+    urlcolor=cyan,
+}
+
+
+\theoremstyle{plain}
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{lem}{Lemma}
+\newtheorem{pro}{Property}
+\newtheorem{cor}{Corollary}
+\newtheorem{ass}{Assumption}
+
+\theoremstyle{definition}
+\newtheorem{prob}{Problem}
+\newtheorem{prop}{Proposition}
+\newtheorem{defn}{Definition}
+\newtheorem{exmp}{Example}
+\newtheorem{rmk}{Remark}
+
+\usepackage{algpseudocode,algorithm}
+\algnewcommand\algorithmicinput{\textbf{Input:}}
+\algnewcommand\algorithmicoutput{\textbf{Output:}}
+\algnewcommand\INPUT{\item[\algorithmicinput]}
+\algnewcommand\OUTPUT{\item[\algorithmicoutput]}
+
+
+
+\usepackage[labelfont=bf]{caption}
+
+\setcounter{table}{1}
+\usepackage{multirow}
+\usepackage{tabularx}
+
+\def\fixme#1#2{\textbf{[FIXME (#1): #2]}}
+
+\def\Holder{\text{H\"{o}lder }}
+
+\newcommand*{\KeepStyleUnderBrace}[1]{%f
+  \mathop{%
+    \mathchoice
+    {\underbrace{\displaystyle#1}}%
+    {\underbrace{\textstyle#1}}%
+    {\underbrace{\scriptstyle#1}}%
+    {\underbrace{\scriptscriptstyle#1}}%
+  }\limits
+}
+\usepackage{mathtools}
+\mathtoolsset{showonlyrefs=true}
+
+\begingroup
+\makeatletter
+\@for\theoremstyle:=definition,remark,plain\do{%
+\expandafter\g@addto@macro\csname th@\theoremstyle\endcsname{%
+\addtolength\thm@preskip\parskip
+}%
+}
+\endgroup
+
+
+\usepackage{hyperref}
+\hypersetup{colorlinks=true}
+\usepackage[parfill]{parskip}
+\usepackage{bm}
+\onehalfspacing
+
+\newcommand{\maxnorm}[1]{\left\lVert#1\right\rVert_{\infty}}
+\newcommand{\Hnorm}[1]{\left\lVert#1\right\rVert_{\tH_\alpha}}
+\newcommand{\nullnorm}[1]{\left\lVert#1\right\rVert}
+\def\trueB{\mB^{\text{true}}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%             Math Symbols
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%               Bold Math
+\input macros.tex
+\def\refer#1{\emph{\color{blue}#1}}
+\begin{document}
+
+\begin{center}
+{\bf \Large Proofs}\\
+Miaoyan Wang, May 20, 2020\\
+\end{center}
+
+\begin{proof}
+Note that $f\in\tF$ implies that, there exist $\trueB\in\mathbb{R}^{d_1\times d_2}$, such that $\text{rank}(\trueB)\leq r$ and $f$ has the following representation,
+\[
+\mathbb{P}(Y=1|\mX)=f(\mX)= \langle \mX,\ \trueB  \rangle,\quad \text{for all }\mX\in\mathbb{R}^{d_1\times d_2}.
+\]
+
+The low-rank SMM minimizes the sample version of the following population function
+\[
+L_\pi(\mB)\stackrel{\text{def}}{=}\mathbb{E}[\ell_\pi(\mB)] = \mathbb{E}\left\{\sum_{y_i=1}\left[1-\langle \mX_i, \mB \rangle \right]_{+}+\sum_{y_{i}=-1}\left[1+\langle \mX_i, \mB\rangle\right]_{+}\right\},
+\] 
+where the expectation is over $(\mX_i, y_i)\sim_{\text{i.i.d}}\tX\times \tY$. Straightforward calculation shows that
+\[
+{1\over n}L_\pi(\mB)=\mathbb{E}\left\{\left[1-Y\langle \mX, \mB \rangle\right]_{+} \mathds{1}\left(Y=1\right)+\left[1-Y\langle \mX, \mB \rangle\right]_{+} \mathds{1}\left(Y=-1\right)\right\}\right\},
+\]
+where $(\mX,y)\sim \tX\times \tY$. Let $\hat \mB=\argmin_{\{\mB\colon \text{rank}(\mB)\leq r]}} L(\mB)$.
+We will prove that $\hat \mB=\trueB$.
+Note that
+\begin{align}
+{1\over n}L_\pi(\hat\mB)&=\mathbb{E}\left\{\left[1-Y\langle \mX, \hat \mB \rangle\right]_{+} \mathds{1}\left(Y=1\right)+\left[1-Y\langle \mX, \hat \mB \rangle\right]_{+} \mathds{1}\left(Y=-1\right)\right\}\\
+&=\mathbb{E}\{   \left(1-Y\langle \mX, \hat \mB\rangle\right)\mathds{1}(Y=1) \}\\
+&=\mathbb{E}(Y=1)-\mathbb{E}\left\{Y\mathds{1}(Y=1) \langle \mX, \hat \mB\rangle\right\}.
+\end{align}
+We note that
+\begin{align}
+\mathbb{E}\left\{Y\mathds{1}(Y=1) \langle \mX, \hat \mB\rangle\right\}& =\mathbb{E}_{\mX}\left\{\langle \mX, \hat \mB\rangle\mathbb{E}_{(\mX,Y)}[Y\mathds{1}(Y=1)|\mX]\right\}\\
+&=\mathbb{E}_{\mX}\left\{ \langle \mX, \hat \mB\rangle \left\{\mathbb{P}(\mY=1|\mX)-{1\over 2}\right)   \right\}\\
+&=\mathbb{E}_{\mX}\left\{ \langle \mX, \hat \mB\rangle \left( \langle \mX, \trueB \rangle - {1\over 2}\right)\right\}.
+\end{align}
+Therefore, the optimal $\hat \mB$ must satisfy $\text{sign}\langle \mX, \hat \mB\rangle=\text{sign} \left(\langle  \mX, \trueB \rangle-{1\over 2}\right)$.
+\end{proof}
+
+\bibliographystyle{unsrt}
+\bibliography{tensor_wang}
+
+\end{document}

@@ -1,0 +1,185 @@
+\documentclass[11pt]{article}
+\usepackage{lscape}
+\usepackage{amsmath,amssymb}
+\usepackage{amsthm}
+\usepackage{float}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{comment}
+\usepackage{bm}
+\usepackage{gensymb}
+\allowdisplaybreaks[4]
+\usepackage{geometry}
+\geometry{margin=1in}
+\usepackage{setspace}
+\usepackage{siunitx}
+\usepackage{enumitem}
+\usepackage{dsfont}
+
+\usepackage{graphics}
+
+
+\usepackage[utf8x]{inputenc}
+\usepackage{bm}
+
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    citecolor = blue,
+    linkcolor=blue,
+    filecolor=magenta,           
+    urlcolor=cyan,
+}
+
+
+\theoremstyle{plain}
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{lem}{Lemma}
+\newtheorem{prop}{Proposition}
+\newtheorem{pro}{Property}
+\newtheorem{cor}{Corollary}
+\newtheorem{ass}{Assumption}
+
+\theoremstyle{definition}
+\newtheorem{defn}{Definition}
+\newtheorem{exmp}{Example}
+\newtheorem{rmk}{Remark}
+
+\usepackage{algpseudocode,algorithm}
+\algnewcommand\algorithmicinput{\textbf{Input:}}
+\algnewcommand\algorithmicoutput{\textbf{Output:}}
+\algnewcommand\INPUT{\item[\algorithmicinput]}
+\algnewcommand\OUTPUT{\item[\algorithmicoutput]}
+
+
+
+\usepackage[labelfont=bf]{caption}
+
+\setcounter{table}{1}
+\usepackage{multirow}
+\usepackage{tabularx}
+
+\def\fixme#1#2{\textbf{[FIXME (#1): #2]}}
+
+ 
+
+\newcommand*{\KeepStyleUnderBrace}[1]{%f
+  \mathop{%
+    \mathchoice
+    {\underbrace{\displaystyle#1}}%
+    {\underbrace{\textstyle#1}}%
+    {\underbrace{\scriptstyle#1}}%
+    {\underbrace{\scriptscriptstyle#1}}%
+  }\limits
+}
+\usepackage{mathtools}
+\mathtoolsset{showonlyrefs=true}
+
+
+\usepackage{hyperref}
+\hypersetup{colorlinks=true}
+\usepackage[parfill]{parskip}
+\usepackage{bm}
+\onehalfspacing
+
+\newcommand{\Hnorm}[1]{\left\lVert#1\right\rVert_{\tH_\alpha}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%             Math Symbols
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%               Bold Math
+\input macros.tex
+\def\refer#1{\emph{\color{blue}#1}}
+\begin{document}
+\begin{center}
+{\Large \bf Nonparametric Tensor Model and Hypergraphons}
+
+Miaoyan Wang, Feb 14, 2020
+\end{center}
+
+
+\section{Set-up}\label{sec:model}
+Let $\tY=\entry{\tY(\mi)}\in\mathbb{R}^{d_1\times \cdots \times d_K}$ be an order-$K$ $(d_1,\ldots,d_K)$-dimensional data tensor, where $\mi=(i_1,\ldots,i_K)$ is the $K$-way index. We propose a two-stage generative process for the tensor observation. 
+\begin{enumerate}
+\item First stage -- random feature. We draw a collection of i.i.d.\ random variables, $x_k(i) \in \tX_k$, from some probability measure $(\tX_k,\mu_{\tX_k})$, for all $i\in[d_k]$, $k\in[K]$. The Cartesian product of the random variables, denoted $(x_1(i_1),\ldots,x_K(i_K))$, represents the latent features at position $\mi=(i_1,\dots,i_K)$ of the tensor. 
+\item Second stage -- graph function. Conditional on the latent features, the tensor entries are drawn independently with mean $f((x_1(i_1),\ldots,x_K(i_K))$.
+\end{enumerate}
+\begin{itemize}[label=\textbullet, leftmargin=*]
+\item Nonparametric mean: there exists a unknown function $f\colon \tX_1\times \cdots \times \tX_K \mapsto [0,1]$ such that
+\begin{equation}\label{eq:model}
+\mathbb{E}\tY(\mi) =f(x_1(i_1),\ldots,x_K(i_K)),\quad \text{for all}\ \mi=(i_1,\ldots,i_K)\in[d_1]\times \cdots \times [d_K].
+\end{equation}
+Here $x_k(i_k)\in\tX_k$ denotes the latent feature associated with the $i_k$-th entry along the $k$-th mode of the tensor, where $k\in[K]$.  
+\item Latent features: for each mode $k$, the latent features $\{x_k(i_k)\colon i_k\in[d_k]\}$ are sampled independently {\color{red}(identical??)} from the probability measure $(\tX_k,\mu_{\tX_k})$.
+\item Conditionally independence: conditional on the latent features $x_k(i_k)$, the tensor entries $\tY(\mi)$ are independent, sub-Gaussian random variables; i.e. $\mathbb{E}\exp [t(\tY(\mi)-\mathbb{E}(\tY(\mi))] \leq \exp(t^2\sigma^2/2)$ for all $\mi\in[d_1]\times \cdots \times[d_K]$ and $t\in\mathbb{R}$.
+
+\item {\color{red}For simplicity}(?), we set $\tX_k=[0,1]$ and $\mu_{\tX_k}$ the Lebesgue measure over $[0,1]$ for all $k\in[K]$. Furthermore, we assume the latent features are mutually independent across $K$ modes.
+\item Regularity conditions on $f$. Two possible options: 
+\begin{enumerate}
+\item Stepwise functions.
+\item Holder smooth functions.
+\end{enumerate}
+\end{itemize}
+We call the model~\eqref{eq:model} the {\bf hypergraphon tensor model} because the function $f$ is unknown and to be estimated. 
+
+{\bf Why the name ``hypergraphon''?}
+In the case of binary tensor observations, our nonparametric model is closely connected to the hypergraphon model in the graphical literature. Specifically, let $\tG=(V, E)$ be a $K$-uniform hypergraph, where $V=[d]$ is the node set and $E\subset V^{\otimes K}$ is the hyperedge set with each hyperedge connecting precisely $K$ nodes, $K\leq d$. The hypergraphon model assumes that the hyperedges are generated through a symmetric, measurable function $f\colon[0,1]^K \to [0,1]$,
+\[
+\mathds{1}\{\mi\in E\} \sim \text{Bernoulli}(f(x(i_1), \ldots,x(i_K)),\quad \text{ for all }\mi\in[d]^K,
+\]
+where $\{x(i)\colon i\in[d]\}$ is an i.i.d. random sample from $U[0,1]$, and the events $\mathds{1}\{\mi\in E\}$ are mutually independent conditional on $\{x(i)\}$. The function $f$ is referred to as the $K$-uniform hypergraphon. Our nonparametric tensor model~\eqref{eq:model} generalizes the hypergraphon model by allowing more flexible observations with {\color{red}mode-specific latent features??} and asymmetric latent function~$f$. For this reason, we adopt the terminology and call the function $f$ a hypergraphon. 
+
+\section{Examples}
+We use $(\tX_k, \mu_{\tX_k}, f)$ to denote the sampling scheme for the latent features and the hypergraphon associated with our nonparametric tensor model~\eqref{eq:model}. By specializing the latent features in $\tX_k$ and the function $f$, the conditional mean model~\eqref{eq:model} incorporates several common previously-studied tensor models as special cases. 
+
+{\bf Low-rank model.} Let $\tX_k\subset\mathbb{R}^{r_k}$ be a bounded close set, and $\mu_{\tX_k}$ a probability measure over $\tX_k$. Consider a multilinear hypergraphon
+\begin{align}\label{eq:linear}
+f\colon \tX_1\times \cdots \times \tX_K &\to \mathbb{R}\\
+(x_1,\ldots,x_K) &\mapsto \tC\times_1 x^T_1\times_2\cdots\times_K x^T_K,
+\end{align}
+where $\tC\in\mathbb{R}^{r_1\times \cdots \times r_K}$ is a fixed coefficient tensor. Let $x_k(i_k)\in \tX_k$ be the realization of the mode-$k$ latent feature at index $i_k\in[d_k]$, and $\mX_k=[x_k(1)|\ldots|x_k(d_k)]\in\mathbb{R}^{r_k\times d_k}$ the corresponding feature matrix. Then, model~\eqref{eq:model} induces a rank-$(r_1,\ldots,r_K)$ Tucker model:
+\begin{equation}\label{eq:Tucker}
+\mathbb{E}\left(\tY|\mX_1,\ldots,\mX_K\right)=\tC\times_1\mX^T_1\times_2\cdots \times_K \mX^T_K.
+\end{equation}
+Similarly, our model incorporates the CP tensor model by setting $r_1=\cdots=r_K=r$ and a super-diagonal core tensor $\tC$.
+
+
+
+{\bf Nonlinear single-index model.} Consider the same setting as in Example 1. Let $f'=g\circ f$, where $f$ is defined as in~\eqref{eq:linear}, $g\colon \mathbb{R}\to\mathbb{R}$ is a nonlinear ({\color{red}do we need monotonic?}) function, and $\circ$ denotes the function composition. Then the model~\eqref{eq:model} induces a nonlinear single-index model:
+\[
+\mathbb{E}(\tY|\mX_1,\ldots,\mX_K)=g(\tC\times_1\mX_1^T\times_2\cdots\times_K\mX^T_K).
+\]
+Here the function $g$ could be either parametric such as a logistic function as in Bradly-Terry model, or nonparametric such as a monotonic, Lipschitz function as in~\cite{ganti2015matrix}. Note that, with the nonlinear transformation, the data tensor is likely to have full rank in expectation. 
+
+
+{\bf Stochastic transitivity model.} Let $\tX_k\subset\mathbb{R}$ be a bounded close set, and $\mu_{\tX_k}$ a probability measure over $\tX_k$. Consider a monotonic hypergraphon $f\colon \mathbb{R}^K\to \mathbb{R}$ in that 
+\[
+f(x_1,\ldots,x_K)\leq f(x'_1,\ldots,x'_K), \quad \text{whenever }x_k\leq x'_k \text{ for all }k\in[K].
+\]
+ Then, model~\eqref{eq:model} reduces to the strong stochastic transitivity model~\cite{shah2019low,li2019nearest}; i.e., there exist a set of permutations $\sigma_k\colon[d_k]\to[d_k]$ such that the entries are monotonically increasing along the permuted indices:
+\begin{equation}\label{eq:st}
+\mathbb{E}\tY(\sigma_1(i_1),\ldots,\sigma_K(i_K)) \leq \mathbb{E}\tY(\sigma_1(i'_1),\ldots,\sigma_K(i'_K)),\ \text{whenever }\sigma_k(i_k)\leq \sigma_k(i'_k) \text{ for all } k\in[K]. 
+\end{equation}
+The strong stochastic transitivity~\eqref{eq:st} is also known as rank-1 permutation model; the model was initially proposed for the matrix case $K=2$. Our formulation extends the model to higher-order cases. More generally, by setting $f$ as a mixture of shape-constrained functions over multivariate latent features $\tX_k=\mathbb{R}^r$, our model encompasses the more general low permutation-rank models and statistical seriation models ({\color{red}how?}). 
+
+
+{\bf Stochastic block model.} Let $\tX_k=[0,1]$ and $\mu_{\tX_k}$ the Lebesque measure over $[0,1)$. For each $k$, write $\tX_k=[0,1/r_k)\cup [2/r_k, 3/r_k) \cup \cdots \cup [(r_k-1)/r_k, 1)$ as a disjoint union of $r_k$ equal-sized intervals. Define a piecewise constant hypergraphon
+\begin{align}\label{eq:block}
+f\colon [0,1]^K &\to \mathbb{R}\\
+(x_1,\ldots,x_K) &\mapsto \sum_{j_1,\ldots,j_K} c_{j_1,\ldots,j_K} \mathds{1}\left\{x_k\in \left[{j_k-1\over r_k},\ {j_k\over r_k}\right),\ \text{for all }k\in[K]\right\},
+\end{align}
+where $\tC=\entry{c_{j_1,\ldots,j_K}}\in\mathbb{R}^{r_1\times \cdots \times r_k}$ is a fixed tensor specifying the block means. Let $x_k(i_k)\in\tX_k$ be the realization of the mode-$k$ latent feature at index $i_k\in[d_k]$. Then model~\eqref{eq:model} reduces to a stochastic block model,
+\begin{equation}\label{eq:tbm}
+\mathbb{E}\tY(\mi)|\{x_k(i_k)\}=c_{j_1,\ldots,j_K},
+\end{equation}
+where $j_k\in[r_k]$ is the mode-$k$ block index for which $(j_k-1)/r_k \leq x_k(i_k)\leq j_k/ r_k$, $k\in[K]$.
+
+\section{Next step}
+\begin{itemize}
+\item Simulate data from hypergraphon models. Use {\tt tensorsparse} package to fit. 
+\item What is the approximation error from tensor block model to hypergrahon model? 
+\item What is the MSE for tensor block model (my prior work)?
+\end{itemize}
+\bibliographystyle{unsrt}
+\bibliography{tensor_wang}
+\end{document}

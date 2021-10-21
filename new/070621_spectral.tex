@@ -1,0 +1,325 @@
+\documentclass[10pt]{article}
+\usepackage{setspace}
+\usepackage{amsmath,amssymb}
+\usepackage{amsthm}
+\usepackage{fancybox}
+\usepackage{algorithm, algpseudocode}
+\usepackage{url}
+
+\usepackage{multirow}
+\usepackage{color}
+\usepackage{graphicx}
+\usepackage{setspace}
+\usepackage{comment}
+\usepackage{bm}
+\usepackage{enumitem}
+\usepackage[breakable, theorems, skins]{tcolorbox}
+\DeclareRobustCommand{\mybox}[2][gray!20]{%
+\begin{tcolorbox}[   %% Adjust the following parameters at will.
+        breakable,
+        left=0pt,
+        right=0pt,
+        top=0pt,
+        bottom=0pt,
+        colback=#1,
+        colframe=#1,
+        width=\dimexpr\textwidth\relax, 
+        enlarge left by=0mm,
+        boxsep=5pt,
+        arc=0pt,outer arc=0pt,
+        ]
+        #2
+\end{tcolorbox}
+}
+
+
+\newcommand*{\KeepStyleUnderBrace}[1]{%f
+  \mathop{%
+    \mathchoice
+    {\underbrace{\displaystyle#1}}%
+    {\underbrace{\textstyle#1}}%
+    {\underbrace{\scriptstyle#1}}%
+    {\underbrace{\scriptscriptstyle#1}}%
+  }\limits
+}
+
+
+\usepackage[margin=1in]{geometry}
+ 
+\allowdisplaybreaks[4]
+\usepackage{bbm}
+
+
+\usepackage{amsrefs}
+\usepackage{mathtools}
+\mathtoolsset{showonlyrefs=true}
+
+
+\usepackage[utf8]{inputenc}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    citecolor = blue,
+    linkcolor=blue,
+    filecolor=magenta,           
+    urlcolor=black,
+}
+
+\usepackage[breakable, theorems, skins]{tcolorbox}
+\DeclareRobustCommand{\mybox}[2][gray!20]{%
+\begin{tcolorbox}[   %% Adjust the following parameters at will.
+        breakable,
+        left=0pt,
+        right=0pt,
+        top=0pt,
+        bottom=0pt,
+        colback=#1,
+        colframe=#1,
+        width=\dimexpr\textwidth\relax, 
+        enlarge left by=0mm,
+        boxsep=5pt,
+        arc=0pt,outer arc=0pt,
+        ]
+        #2
+\end{tcolorbox}
+}
+
+\theoremstyle{definition}
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{model}{Model}
+\newtheorem{lem}{Lemma}
+\newtheorem{prop}{Proposition}
+\newtheorem{pro}{Property}
+\newtheorem{conjecture}{Conjecture}
+\newtheorem{cor}{Corollary}[section]
+
+\theoremstyle{definition}
+\newtheorem{assumption}{Assumption}
+\newtheorem{defn}{Definition}
+\newtheorem{example}{Example}
+\newtheorem{rmk}{Remark}
+\newtheorem{questions}{Questions}
+\usepackage{dsfont}
+\def\rank{\text{Rank}}
+\def\Mat{\text{Mat}}
+
+\newcommand{\hdeg}{\widehat{\textup{deg}}}
+
+
+\theoremstyle{definition}
+\newtheorem{open}[]{Open problems}
+
+ \usepackage[parfill]{parskip}
+
+\usepackage[compact]{titlesec}
+
+\usepackage{sectsty}
+\sectionfont{\fontsize{11}{10}\selectfont}
+\subsectionfont{\fontsize{10.5}{10}\selectfont}
+\usepackage[compact]{titlesec}
+\titlespacing{\section}{0pt}{*0}{*0}
+\titlespacing{\subsection}{0pt}{*0}{*0}
+\titlespacing{\subsubsection}{0pt}{*0}{*0}
+
+\input macros.tex
+
+\begin{document}
+\begin{center}
+{\bf \large Discussion note: spectral method for smooth hypergraphon estimation}\\
+{Chanwoo Lee (and Miaoyan Wang)}\\
+\end{center}
+\section{Rank-$\sqrt{d}$ approximatable}
+\begin{defn}[Rank-$\sqrt{d}$ approximatable tensor]\label{ass} Let $\Theta$ be an order-3 tensor.  We use $f\colon[d]\to\mathbb{R}$ to denote the distance function, in the sense of matrix spectral norm $\snormSize{}{\tM(\cdot)}$, between $\Theta$ and its rank-$r$ projection,
+\[
+f(r)=\inf\{\snormSize{}{\tM(\Theta-\tA)}\colon  \text{Rank}(\tA)\leq (r,r,r)\}.
+\]
+The tensor $\Theta$ is called rank-$\sqrt{d}$ approximatable, if $f(\sqrt{d})\leq \sqrt{d}$. Geometrically, the intersection point between two curves $f(r)$ and $g(r)=r$ is smaller than $\sqrt{d}$.
+
+Equivalently, $\Theta$ admits the decomposition
+\begin{equation}\label{eq:decomp}
+\Theta=\tA+\tA^{\perp},\quad \text{s.t.}\quad \text{Rank}(\tA)\leq (\sqrt{d},\sqrt{d},\sqrt{d}),\quad \text{and}\quad \snormSize{}{\text{Unfold}(\tA^{\perp})}\leq \sqrt{d}.
+\end{equation}
+\end{defn}
+\begin{prop}[Smooth matrix]\label{prop}Every Lipschitz smooth matrix is rank-$\sqrt{d}$ approximatable. 
+\end{prop}
+\begin{proof}[Proof of Proposition~\ref{prop}] Let $\Theta$ be a Lipschitz smooth matrix. Set $\tA=\text{Block}(\Theta,\sqrt{d})$ and $\tA^{\perp}=\Theta-\text{Block}(\Theta,\sqrt{d})$. Then, by approximation theorem, 
+\[
+\snormSize{}{\text{Unfold}(\tA^{\perp})}\leq \FnormSize{}{\tA^{\perp}}\leq \sqrt{d^2\over d}=\sqrt{d}.
+\]
+Since $\tA$ is of rank at most $\sqrt{d}$, the decomposition satisfies the condition~\eqref{eq:decomp}.
+\end{proof}
+
+\begin{conjecture}[Higher-order spectral algorithm] Suppose $\Theta$ is an order-$3$, rank-$\sqrt{d}$ approximatable tensor. Then, the rank-$\sqrt{d}$ higher-order spectral algorithm~\cite{han2020exact} yields the estimate $\hat \Theta$ with error bound
+\[
+\tR(\hat \Theta, \Theta):={\FnormSize{}{\hat \Theta-\Theta}^2\over d^3} \lesssim d^{-1}. 
+\]
+\end{conjecture}
+Intuition: We decompose the error into estimation error and approximation bias
+\begin{align}\label{eq:block}
+\FnormSize{}{\hat \Theta-\Theta}^2&\leq \FnormSize{}{\hat \Theta-\tA}^2 +\FnormSize{}{\tA^{\perp}}^2\notag \\
+&\lesssim \KeepStyleUnderBrace{(d^{3/2}r+dr^2+r^3)}_{\text{by Proposition 1 in~\cite{han2020exact}}}+ \KeepStyleUnderBrace{d[f(r)]^2}_{\leq d^2 \text{ by Assumption~\ref{ass}}}\notag \\
+&\lesssim d^2 \text{ if }r\asymp \sqrt{d}.
+\end{align}
+%More careful analysis is needed though, %e.g. additive Gaussian vs. Bernoulli models, non-uniqueness of $\tA$ and its singular space, etc. Also, 
+The rank choice $\asymp \sqrt{d}$ is meaningful only in asymptotical sense. In practice, we should choose rank $C\sqrt{d}$ where the constant $C$ may depend on actual $\Theta$, noise, etc. 
+
+\begin{table}[http]
+\centering
+\begin{tabular}{ccccc}
+SBM (HOS+iteration)  & sort-and-smoothing & square spectral & higher-order spectral (HOS)\\
+\hline
+$d^{-6/5}$ & $d^{-6/5}$ (restricted model)& $d^{-2/3}$ & $d^{-1}$ (restricted model)
+\end{tabular}
+\caption{Convergence rate for order-$3$ smooth tensors.}
+\end{table}
+
+\begin{questions}
+Unlike matrices, not every order-3 smooth tensor is $\sqrt{d}$-approximatable. How large is the order-3 tensor family that satisfy~\eqref{eq:decomp}? Does the signal tensor in our simulations satisfy~\eqref{eq:decomp}? How about general order-$m$ tensors?
+\end{questions}
+
+
+
+\begin{rmk} The HOS algorithm is applicable to approximate rank-$\sqrt{d}$ tensor. Unfortunately, the notion of ``approximately'' seems very restricted. We need the stringent assumption 
+\[
+\snormSize{}{\text{Unfold}(\tA^{\perp})}\leq \sqrt{d}
+\]
+to ensure bias is negligible compared to noise. For matrix problem, this term is unavoidable because noise matrix has $\sqrt{d}$ spectral norm. For tensor case, this assumption stems from the following lemma. 
+%In the matrix case, this assumption is fine because $\sqrt{d}$ is the pectral norm of noise matrix. In the tensor case, this assumption seems to rule out many signal tensors. 
+\begin{lem} (Perturbation Bound on Subspaces of Different Dimensions with deterministic bias). Consider the signal plus noise model,
+\[
+Y=X+X_{\perp}+E\in\mathbb{R}^{d_1\times d_2},
+\]
+where $X$ is a signal tensor such that $\text{rank}(X)=r$, $X_{\perp}$ is a (deterministic) perturbation, and $E$ is a noise matrix with i.i.d.\ standard sub-Gaussian entries. 
+Define
+\[
+r'=\max\{r'\in\{0,1,\ldots,r\}: \sigma_{r'}(X)\geq \max(\sqrt{d_1d_2},\ (8+6\sqrt{2})\snormSize{}{X_{\perp}})\}.
+\]
+We denote 
+\[
+\hat U_r=\text{SVD}_r(Y), \quad U_{r'}=\text{SVD}_{r'}(X).
+\]
+Then with probability at least $1-\exp(-cd)$, we have
+\[
+\snormSize{}{\hat U_{r,\perp}U_{r'}}\leq {{\sqrt{d_1}+\snormSize{}{X_{\perp}}}\over \sigma_{r'}(X)}+ {(\sqrt{d_1}+{\color{red}\snormSize{}{X_{\perp}}})(\sqrt{d_2}+\snormSize{}{X_{\perp}}) \over \sigma^2_{r'}(X)}.
+\]
+\end{lem}
+Bad news is that we have to require $\snormSize{}{X_{\perp}}\leq \sqrt{d_1}$ in order to alleviate the error in the left singular space. 
+
+
+\section{Block approximatable}
+Based on the proof of~\cite[Proposition 1]{han2020exact}, Conjecture 1 also applies to the block approximatable tensor. More generally, the following tensor family is the regime for which HOS algorithm works. 
+\begin{defn}[Block-$d^{\beta}$ approximatable tensor] An order-$m$ tensor $\Theta$ is called block approximatable with index $\beta\in[0,1]$ if it admits the decomposition $\Theta=\tA+\tA^{\perp}$ satisfying the following two constraints: \hfill
+\begin{enumerate}
+\item $\tA$ is a $d^{\beta}$-block tensor; 
+\item $\tA^{\perp}$ has controlled spectral complexity in that
+\begin{equation}\label{eq:form}
+\snormSize{}{\text{Unfold}(\tA^{\perp})}\leq \sqrt{d}. 
+\end{equation}
+By definition, every tensor is block approximatable with trivial $\beta=1$. We make the convention that $\beta$ denotes the minimal block complexity in the decomposation for which the residual tensor satisfy~\eqref{eq:form}. 
+\end{enumerate}
+\end{defn}
+
+
+\begin{prop}[Examples]\hfill
+\begin{itemize}
+\item Every Lipschitz smooth matrix is block approximatable with $\beta={1/2}$;
+\item Every low-rank tensor with bounded factors has $\beta=0$ (conjecture). 
+\item Gaussian random tensor has $\beta\to 1$ for every $m\geq 2$ (conjecture). 
+\end{itemize}
+\end{prop}%Not sure which of~\eqref{eq:form} and~\eqref{eq:decomp} has better intuitive interpretation. On one hand, the block assumption on $\tA$ is more restricted than the rank assumption. On the other hand, the spectral constraint on $\tA^{\perp}$ in~\eqref{eq:form} is more relaxed than~\eqref{eq:decomp}, because $\snormSize{}{\tA^{\perp}}\leq \snormSize{}{\text{Unfold}(\tA^{\perp})}$~\cite{wang2017operator}. In both cases, we need the $\snormSize{}{\text{Unfold}(\tA^{\perp})}\leq d^{m/4}$ for convergence guarantee of HOS algorithm~\cite[Proposition 1]{han2020exact}.
+\end{rmk}
+
+\begin{conjecture} Suppose $\Theta$ is a block approximatable tensor with $\beta\leq \beta_*$, where 
+\begin{align}\label{eq:r}
+\beta_*=
+\begin{cases}
+{1\over 3}, \quad \text{when $m=2$};\\
+{1\over 2}, \quad \text{when }m=3;\\
+{m\over m+2}, \quad \text{when }m\geq 4,
+\end{cases}
+\end{align}
+Then the HOS algorithm in~\cite{han2020exact} with rank $r=d^{\beta_*}$ gives the estimator $\hat \Theta$ with error rate
+\begin{align}
+\tR(\Theta, \hat \Theta)&\leq d^{-m}\left\{d^{{m\over 2}+\beta}+d^{\beta m} + \min(d^{m-2\beta}, d^{{m\over 2}+1})\right\}\\
+&\leq 
+\begin{cases}
+d^{-{2\over 3}}, \quad \text{when }m=2;\\
+d^{-1}, \quad \text{when }m=3;\\
+d^{-{2m\over m+2}}, \quad \text{when }m\geq 4.
+\end{cases}
+\end{align}
+\end{conjecture}
+%Seems assuming $f^2(r)={d^{m}\over r^{\beta}$ for $m\geq 4$ suffices to reach the minimax rate $d^{-{2m\over m+2}}$. 
+ 
+ If $\beta\geq \beta_*$, then we should take $r=d^\beta$, so
+ \[
+ \tR(\Theta,\hat \Theta) \leq 
+ \begin{cases}
+ d^{-1+\beta}, \quad \text{when }m=2;\\
+  d^{-3/2+\beta} , \quad \text{when }m= 3;\\
+ d^{-m(1-\beta)}, \quad \text{when }m\geq 4;\\
+ \end{cases}
+ \]
+%\begin{questions}
+%What is the rate when $\beta\geq {m\over m+2}$? Implication in the matrix case. Compare with other methods in theory and in simulation. How large is the order-3 tensor family that satisfy~\eqref{eq:form}? Give two examples of smooth tensors that satisfy and violate this constraint, respectively. How about non-smooth tensors, e.g., single index tensors, glm tensors?
+%\end{questions}
+
+\section{Intuition}
+\begin{itemize}
+\item Oracle risk:
+\[
+\KeepStyleUnderBrace{r^m}_{\text{block mean}} +\KeepStyleUnderBrace{d\log r}_{\text{block position}} \asymp \KeepStyleUnderBrace{d^m\over r^2}_{\text{$m$-way approximation}}
+\]
+Therefore, the best $r\asymp d^{m\over m+2}$. When $m=2$ (matrix), $r=\sqrt{d}$. 
+\item Oracle Spectral risk:
+\[
+\KeepStyleUnderBrace{dr+r^m}_{\text{d.f.\ in spectral method}}\asymp \KeepStyleUnderBrace{d^m\over r^2}_{\text{$m$-way approximation}}. 
+\]
+When $m=2$, the left hand side is computable by matrix SVD. The best $r=d^{1/3}$. 
+
+When $m\geq 3$, no polynomial time algorithm is able to solve exact SVD. The best-so-far polynomial algorithm increases the risk to
+\[
+\KeepStyleUnderBrace{d^{m/2}r+r^m}_{\text{d.f.\ in spectral method}}\asymp \KeepStyleUnderBrace{d^m\over r^2}_{\text{$m$-way approximation}}. 
+\]
+Notice the extra cost one has to pay on $d$ when $m\geq 3$. The best $r$ is solved in~\eqref{eq:r}. 
+%\item NN risk for $m=2$:
+%\[
+%\KeepStyleUnderBrace{dr}_{\text{d.f.\ in row-based NN}}\asymp \KeepStyleUnderBrace{d^2\over r}_{\text{row-based approximation}}. 
+%\]
+%The best $r=\sqrt{d}$, which yields the risk $d^{-1/2}$. Why ${d^2\over r}$ on right hand side? Because row-based NN partitions the rows into $r$ groups, but the keep the $d$ columns as they are. The accuracy is suboptimal even when the true two-way clustering patten is known a prior (check...). 
+\end{itemize}
+
+\bibliography{tensor_wang}
+\bibliographystyle{plain}
+
+
+\end{document}
+
+To adapt~\cite{han2020exact} into our framework, note that there are only two requirements on $\tE$ used in the proof of in~\cite[Proposition 1]{han2020exact}. 
+\begin{itemize}
+\item tensor norm and matrix spectral norm. 
+\[
+\sup_{\mU\in\tO(d,r)}\FnormSize{}{\bar \tE(\mU,\mU,\mU)}\leq r^{3/2}+\sqrt{rd}, \quad \sup_{\mU\in\tO(d,r)}\snormSize{}{\text{Unfold}(\bar \tE(\mU,\mU,\mU))}\leq r+\sqrt{rd}.
+\]
+\end{itemize}
+The above conditions are satisfied based on the following two assumptions + $r\asymp \sqrt{d}$:
+\begin{enumerate}
+\item noise: tensor norm $\snormSize{}{\tE}\leq \sqrt{d}$ and matrix norm $\sup_{U\in\tO(d,r)}\snormSize{}{\text{Unfold}(\tE(\mU,\mU,\mU)}\leq d^{3/4}$. 
+\item bias: tensor norm $\snormSize{}{\tA^{\perp}}\leq \sqrt{d}$ and matrix norm $\snormSize{}{\text{Unfold}(\tA^{\perp})}\leq d^{1/2}\leq d^{3/4}$. 
+\end{enumerate}
+
+\[
+\tY=\KeepStyleUnderBrace{\tA}_{\text{signal }}+\KeepStyleUnderBrace{\tA^{\perp}+\tE}_{\text{noise }\bar \tE}.
+\]
+
+Algorithm:
+\begin{enumerate}
+\item Let $\bar \ell=\sum_{i\in[d]}\mathds{1}\left\{\sigma_i(\tM(\tY))\geq d^{1/2}\right\}$. Choose $\ell=\min(\bar \ell,\sqrt{d})$. 
+\item Perform the higher-order spectral algorithm in~\cite{han2020exact}
+\[
+\bar \tY\leftarrow \text{HOSVD}(\tY;\ \ell).
+\]
+\end{enumerate}
+
+
+\end{document}

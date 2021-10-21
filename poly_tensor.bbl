@@ -1,0 +1,18 @@
+\begin{thebibliography}{2}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Wasserman(2019)]{Wassermantext}
+Larry Wasserman.
+\newblock Minimax theory.
+\newblock \emph{Lecture notes}, 2019.
+
+\bibitem[Stone(1982)]{stone1982optimal}
+Charles~J Stone.
+\newblock Optimal global rates of convergence for nonparametric regression.
+\newblock \emph{The annals of statistics}, pages 1040--1053, 1982.
+
+\end{thebibliography}

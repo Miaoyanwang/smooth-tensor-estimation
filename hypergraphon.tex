@@ -32,13 +32,18 @@
 \usepackage{algorithm}
 %\usepackage{algorithmic}
 \usepackage{appendix}
+\usepackage{xcolor}   
+
+\usepackage{amsthm}
+\theoremstyle{plain}
 \newtheorem{theorem}{Theorem}
 \newtheorem{lemma}{Lemma}
 \newtheorem{prop}{Proposition}
 \newtheorem{ass}{Assumption}
 \newtheorem{defn}{Definition}
+
+\theoremstyle{definition}
 \newtheorem{exam}{Example}
-\newtheorem{proof}{Proof}
 \input macros.tex
 \usepackage{dsfont}
 
@@ -82,40 +87,158 @@ Miaoyan Wang \\
 
 
 \begin{abstract}
-We consider the problem of tensor estimation from noisy observations with possibly missing entries. A nonparametric approach to tensor estimation is developed based on $K$-uniform hypergraphons. The hypergraphon model captures the key features of conditional independence arising in the generative process of multiway tensor data. The nonparametric hypergraphon representation of tensors encompasses many existing tensor models---such as CP models, Tucker models, shape constrained tensor models---as special examples. We develop a rate-optimal nonparametric tensor estimator using the stochastic blockmodel approximation to the underlying hypergraphon. A surprising distinction between the hypergraphon-based tensor estimation and high-dimensional nonparametric regression is revealed. Furthermore, we establish the integrated risk bound for the hypergraphon estimation in specially structured functional classes. The result uncovers the joint contribution of the statistical bias-variance error and the agnostic discretization error. Numerical results demonstrate the robustness of our proposal over previous tensor methods and the attractive performance as the tensor order increases.
+We consider the problem of tensor estimation from noisy observations with possibly missing entries. A nonparametric approach to tensor estimation is developed based on $K$-uniform hypergraphons. The hypergraphon model captures the key features of conditional independence arising in the generative process of multiway tensor data. The nonparametric hypergraphon representation of tensors encompasses many existing tensor models---such as CP models, Tucker models, shape constrained tensor models---as special examples. We develop a rate-optimal nonparametric tensor estimator using the stochastic blockmodel approximation to the underlying hypergraphon. %A surprising distinction between the hypergraphon-based tensor estimation and high-dimensional nonparametric regression is revealed. 
+The integrated risk bound for the hypergraphon estimation is established for specially structured functional classes. The result uncovers the joint contribution of the statistical bias-variance error and the agnostic discretization error. Numerical results demonstrate the robustness of our proposal over previous tensor methods and the attractive performance as the tensor order increases.
 \end{abstract}
 
 \section{Introduction}
-\section{Nonparametric Tensor Model via Hypergraphons}
-Let $\tY=\entry{\tY(\mi)}\in\mathbb{R}^{d_1\times \cdots \times d_K}$ be an order-$K$ $(d_1,\ldots,d_K)$-dimensional data tensor. We propose a two-stage generative process for the tensor entries. Firstly, we draw a collection of i.i.d.\ random variables, $x_k(i) \in \tX$ following the probability measure $(\tX,\mu_{\tX})$, for all $i\in[d_k]$, $k\in[K]$. The Cartesian product of the random variables, denoted $(x_1(i_1),\ldots,x_K(i_K))$, represents the latent features at position $\mi=(i_1,\dots,i_K)$ of the tensor. Second, conditional on the latent features, the tensor entries are independently distributed.
+\section{Nonparametric Tensor Model via Hypergraphons}\label{sec:model}
+Let $\tY=\entry{\tY(\mi)}\in\mathbb{R}^{d_1\times \cdots \times d_K}$ be an order-$K$ $(d_1,\ldots,d_K)$-dimensional data tensor, where $\mi=(i_1,\ldots,i_K)$ is the $K$-way index. We propose a two-stage generative process for the tensor observation. First, we draw a collection of i.i.d.\ random variables, $x_k(i) \in \tX_k$, from some probability measure $(\tX_k,\mu_{\tX_k})$, for all $i\in[d_k]$, $k\in[K]$. The Cartesian product of the random variables, denoted $(x_1(i_1),\ldots,x_K(i_K))$, represents the latent features at position $\mi=(i_1,\dots,i_K)$ of the tensor. Second, conditional on the latent features, the tensor entries are drawn independently with mean $f((x_1(i_1),\ldots,x_K(i_K))$.
 \begin{itemize}[label=\textbullet, leftmargin=*]
-\item Nonparametric mean: there exists a unknown function $f\colon \tX^K\mapsto [0,1]$ such that
+\item Nonparametric mean: there exists a unknown function $f\colon \tX_1\times \cdots \times \tX_K \mapsto [0,1]$ such that
 \begin{equation}\label{eq:model}
-\mathbb{E}[\tY(\mi)] =f(x_1(i_1),\ldots,x_K(i_K)),\quad \text{for all}\ \mi=(i_1,\ldots,i_K)\in[d_1]\times \cdots \times [d_K].
+\mathbb{E}\tY(\mi) =f(x_1(i_1),\ldots,x_K(i_K)),\quad \text{for all}\ \mi=(i_1,\ldots,i_K)\in[d_1]\times \cdots \times [d_K].
 \end{equation}
-Here $x_k(i_k)\in\tX$ denotes the latent feature associated with the $i_k$-th entry along the $k$-th mode of the tensor, for $k\in[K]$. 
-\item Conditionally independence: conditional on the latent features $\{x_k(i_k)\}$, the tensor entries $\tY(\mi)$ are independently distributed, mean-zero, sub-Gaussian random variables; i.e. $\mathbb{E}[e^{t\tY(\mi)}]\leq \exp(t\sigma^2)$ for all $\mi\in[d_1]\times \cdots \times[d_K]$ and $t>0$.
-\item We set $\tX=[0,1]$ and $\mu_{\tX}$ the Lebesgue measure over $[0,1]$. The latent features $x_k(i_k)$ are mutually independent for all $i_k\in[d_k]$ and $k\in[K]$.
+Here $x_k(i_k)\in\tX_k$ denotes the latent feature associated with the $i_k$-th entry along the $k$-th mode of the tensor, where $k\in[K]$.  
+\item Latent features: for each mode $k$, the latent features $\{x_k(i_k)\colon i_k\in[d_k]\}$ are sampled independently and identically from the probability measure $(\tX_k,\mu_{\tX_k})$.
+\item Conditionally independence: conditional on the latent features $x_k(i_k)$, the tensor entries $\tY(\mi)$ are independent, sub-Gaussian random variables; i.e. $\mathbb{E}\exp [t(\tY(\mi)-\mathbb{E}(\tY(\mi))] \leq \exp(t^2\sigma^2/2)$ for all $\mi\in[d_1]\times \cdots \times[d_K]$ and $t\in\mathbb{R}$.
+
+\item For simplicity, we set $\tX_k=[0,1]$ and $\mu_{\tX_k}$ the Lebesgue measure over $[0,1]$ for all $k\in[K]$. Furthermore, we assume the latent features are mutually independent across $K$ modes.
 \item Regularity conditions on $f$. Two possible options: 1. stepwise functions, 2. Holder smooth functions.
 \end{itemize}
+We call the model~\eqref{eq:model} the nonparametric tensor model because the function $f$ is unknown and to be estimated. 
 
-(draw a figure...) We call the model~\eqref{eq:model} the nonparametric tensor model because the mean function $f$ is unknown and thus to be estimated. By specializing the realization of the latent features and the function $f$, model~\eqref{eq:model} incorporates several common previously-studied tensor models as special cases. 
-
-\begin{exam}[CP model] Let $\tX=\mathbb{R}^R$ and $\mx^{(k)}=(x^{(k)}_{1},\ldots,x^{(k)}_{R})^T\in\mathbb{R}^R$ for all $k\in[K]$. Define $f \colon (\mx^{(1)},\ldots,\mx^{(K)})\mapsto \sum_{r} \prod_{k} x^{(k)}_r$. Then model~\eqref{eq:model} can be written as
+In the case of binary tensor observations, our nonparametric model is closely connected to the hypergraphon model in the graphical literature. Specifically, let $\tG=(V, E)$ be a $K$-uniform hypergraph, where $V=[d]$ is the node set and $E\subset V^{\otimes K}$ is the hyperedge set with each hyperedge connecting precisely $K$ nodes, $K\leq d$. The hypergraphon model assumes that the hyperedges are generated through a symmetric, measurable function $f\colon[0,1]^K \to [0,1]$,
 \[
-\mathbb{E}(\tY | \mxi_1,\ldots,\mxi_K)=\sum_r \mxi^{(1)}_r\otimes \cdots\otimes \mxi^{(k)}_r, \ \text{where}\ \mxi^{(k)}_r:=(x^{(k)}_{1},\ldots,x^{(k)}_{d_k})^T \  \text{for }k\in[K].
+\mathds{1}\{\mi\in E\} \sim \text{Bernoulli}(f(x(i_1), \ldots,x(i_K)),\quad \text{ for all }\mi\in[d]^K,
 \]
+where $\{x(i)\colon i\in[d]\}$ is an i.i.d. random sample from $U[0,1]$, and the events $\mathds{1}\{\mi\in E\}$ are mutually independent conditional on $\{x(i)\}$. The function $f$ is referred to as the $K$-uniform hypergraphon. Our nonparametric tensor model~\eqref{eq:model} generalizes the hypergraphon model by allowing more flexible observations with {\color{red}mode-specific latent features??} and asymmetric latent function~$f$. For this reason, we adopt the terminology and call the function $f$ a hypergraphon. 
+
+We use $(\tX_k, \mu_{\tX_k}, f)$ to denote the sampling scheme for the latent features and the hypergraphon associated with our nonparametric tensor model~\eqref{eq:model}. By specializing the latent features in $\tX_k$ and the function $f$, the conditional mean model~\eqref{eq:model} incorporates several common previously-studied tensor models as special cases. 
+
+
+{\bf Low-rank model.} Let $\tX_k\subset\mathbb{R}^{r_k}$ be a bounded close set, and $\mu_{\tX_k}$ a probability measure over $\tX_k$. Consider a multilinear hypergraphon
+\begin{align}\label{eq:linear}
+f\colon \tX_1\times \cdots \times \tX_K &\to \mathbb{R}\\
+(x_1,\ldots,x_K) &\mapsto \tC\times_1 x^T_1\times_2\cdots\times_K x^T_K,
+\end{align}
+where $\tC\in\mathbb{R}^{r_1\times \cdots \times r_K}$ is a fixed coefficient tensor. Let $x_k(i_k)\in \tX_k$ be the realization of the mode-$k$ latent feature at index $i_k\in[d_k]$, and $\mX_k=[x_k(1)|\ldots|x_k(d_k)]\in\mathbb{R}^{r_k\times d_k}$ the corresponding feature matrix. Then, model~\eqref{eq:model} induces a rank-$(r_1,\ldots,r_K)$ Tucker model:
+\begin{equation}\label{eq:Tucker}
+\mathbb{E}\left(\tY|\mX_1,\ldots,\mX_K\right)=\tC\times_1\mX^T_1\times_2\cdots \times_K \mX^T_K.
+\end{equation}
+Similarly, our model incorporates the CP tensor model by setting $r_1=\cdots=r_K=r$ and a super-diagonal core tensor $\tC$.
+
+
+
+{\bf Nonlinear single-index model.} Consider the same setting as in Example 1. Let $f'=g\circ f$, where $f$ is defined as in~\eqref{eq:linear}, $g\colon \mathbb{R}\to\mathbb{R}$ is a nonlinear monotonic function, and $\circ$ denotes the function composition. Then the model~\eqref{eq:model} induces a nonlinear single-index model:
+\[
+\mathbb{E}(\tY|\mX_1,\ldots,\mX_K)=g(\tC\times_1\mX_1^T\times_2\cdots\times_K\mX^T_K).
+\]
+Here the function $g$ could be either parametric such as a logistic function as in Bradly-Terry model, or nonparametric such as a monotonic, Lipschitz function as in~\cite{ganti2015matrix}. Note that, with the nonlinear transformation, the data tensor is likely to have full rank in expectation. 
+
+
+{\bf Stochastic transitivity model.} Let $\tX_k\subset\mathbb{R}$ be a bounded close set, and $\mu_{\tX_k}$ a probability measure over $\tX_k$. Consider a monotonic hypergraphon $f\colon \mathbb{R}^K\to \mathbb{R}$ in that 
+\[
+f(x_1,\ldots,x_K)\leq f(x'_1,\ldots,x'_K)
+\]
+whenever $x_k\leq x'_k$ for all $k\in[K]$. Then, model~\eqref{eq:model} reduces to the strong stochastic transitivity model; i.e., there exist a set of permutations $\sigma_k\colon[d_k]\to[d_k]$ such that the entries are monotonically increasing along the permuted indices:
+\begin{equation}\label{eq:st}
+\mathbb{E}\tY(\sigma_1(i_1),\ldots,\sigma_K(i_K)) \leq \mathbb{E}\tY(\sigma_1(i'_1),\ldots,\sigma_K(i'_K)),
+\end{equation}
+whenever $\sigma_k(i_k)\leq \sigma_k(i'_k)$ for all $k\in[K].$ The strong stochastic transitivity~\eqref{eq:st} is also known as rank-1 permutation model; it was initially proposed for the matrix case $K=2$. Our formulation extends the model to higher-order cases. More generally, by setting $f$ as a mixture of shape-constrained functions over multivariate latent features $\tX_k=\mathbb{R}^r$, our model encompasses the more general low permutation-rank models and statistical seriation models. 
+
+
+{\bf Stochastic block model.} Let $\tX_k=[0,1]$ and $\mu_{\tX_k}$ the Lebesque measure over $[0,1)$. For each $k$, write $\tX_k=[0,1/r_k)\cup [2/r_k, 3/r_k) \cup \cdots \cup [(r_k-1)/r_k, 1)$ as a disjoint union of $r_k$ equal-sized intervals. Define a piecewise constant hypergraphon
+\begin{align}\label{eq:block}
+f\colon [0,1]^K &\to \mathbb{R}\\
+(x_1,\ldots,x_K) &\mapsto \sum_{j_1,\ldots,j_K} c_{j_1,\ldots,j_K} \mathds{1}\left\{x_k\in \left[{j_k-1\over r_k},\ {j_k\over r_k}\right),\ \text{for all }k\in[K]\right\},
+\end{align}
+where $\tC=\entry{c_{j_1,\ldots,j_K}}\in\mathbb{R}^{r_1\times \cdots \times r_k}$ is a fixed tensor specifying the block means. Let $x_k(i_k)\in\tX_k$ be the realization of the mode-$k$ latent feature at index $i_k\in[d_k]$. Then model~\eqref{eq:model} reduces to a stochastic block model,
+\begin{equation}\label{eq:tbm}
+\mathbb{E}\tY(\mi)|\{x_k(i_k)\}=c_{j_1,\ldots,j_K},
+\end{equation}
+where $j_k\in[r_k]$ is the mode-$k$ block index for which $(j_k-1)/r_k \leq x_k(i_k)\leq j_k/ r_k$, $k\in[K]$.
+
+
+\section{Identifiability and problem statements}
+We examine the model identifiability in this section. The nonparametric model~\eqref{eq:model} is determined by the random latent features and the hypergraphon, denoted $(\tX_k, \mu_{\tX_k},f)$. Our goal is to estimate the function $f$ from a noisy tensor observation $\tY$, without knowing the latent features. The function $f$ is nonidentifiable due to two complications, as we describe below. 
+
+The first complication comes from the indeterminacy of the feature space $\tX_k$ and the domain of function $f$. In particular, $(\tX_k,\mu_{\tX_k}, f)$ and $(g_k(\tX_k), \mu_{g_k(\tX_k)}, f\circ g)$ induce the same conditional model, where $g_k$ is a measurable function defined on $\tX_k$ and $f\circ g$ denotes the function $(x_1,\ldots,x_K) \mapsto f(g_1(x_1),\ldots,g_K(x_K))$. As an example, we show a different latent variable representation to construct the model in Example 4. 
+
+\begin{exam}[A different latent feature sampling for stochastic block model] Let $\tX_k=\{0,1\}^{r_k}$ and $\mu_{\tX_k}$ the multinomial distribution with equal probability over $r_k$ categories. The latent feature is encoded as an indicator vector $x_k=(0,\ldots,0,1,0,\ldots,0)^T\in \tX_k$, where the position of the entry 1 follows from the distribution $\mu_{\tX_k}$. Now consider a multilinear hypergraphon $f\colon \tX_1\times \cdots \times \tX_K\to \mathbb{R}$ defined in~\eqref{eq:linear}. The induced conditional mean model~\eqref{eq:Tucker} has the following form:
+\begin{equation}\label{eq:tbm2}
+\mathbb{E}(\tY|\mX_1,\ldots,\mX_K)=\tC\times_1\mX^T_1\times_2\cdots \times_K\mX^T_K,
+\end{equation}
+where $\mX_k\in\{0,1\}^{r_k\times d_k}$ is a membership matrix that collects the sampled latent features along mode $k$. Note that model~\eqref{eq:tbm2} is exactly the same as model~\eqref{eq:tbm} in Example 4. 
 \end{exam}
 
-\begin{defn}[Uniform random design] A uniform random design over the index set $[d]$ is represented by a stochastic process $\{x_i\}$, where $x_i$ are i.i.d.\ sampled from $\textup{Uniform}[0,1]$ for all $i\in[d]$.
-\end{defn}
+In view of the above discussion, we fix $\tX_k=[0,1]$ and set $\mu_{\tX_k}$ the Lebesgue measure over $[0,1]$ in the sequel. The hypergraphon of interest is defined on $[0,1]^K$. The following result ensures that our assumption is general enough to incorporate separable Hilbert latent spaces such as the Examples 1--4 mentioned in Section~\eqref{sec:model}.
+\begin{prop}[Reduction to 1-$d$ uniform sampling] Let $\tX$ be a separable Hilbert space equipped with a probability measure $\mu_{\tX}$.  There exists a transform sampling function $g\colon[0,1]\to \tX$, such that 
+\[
+s\sim \mathrm{Unif}(0,1) \Rightarrow g(s)\sim \mu_{\tX}.
+\]
+\end{prop}
+The transformation relates the sampling from general latent feature space $(\tX, \mu_{\tX})$ to the Lebesque measure on $[0,1]$. If $\tX$ is one-dimensional, then a well known example of $g$ is the inverse cumulative distribution function for $\mu_{\tX}$. For general feature space such as $r$-dimensional Euclidean space, the function $g(\cdot)$ is given in Appendix. 
 
-\begin{defn}[Cartesian product of random designs] An order-$K$ random design over the index set $[d_1]\times \cdots \times [d_K]$ is defined as the Cartesian product of random designs over each marginal index set $[d_k]$ for $k\in[K]$. Specifically, the order-$K$ uniform random design is represented by a collection of random vectors $\{(x^{(1)}_{i_1},\ldots,x^{(K)}_{i_K})\}$, where $x^{(k)}_{i_k}$ are i.i.d.\ sampled from $\textup{Uniform}[0,1]$ for all $i_k\in[d_k]$ and $k\in[K]$.
-\end{defn}
+{\color{red} However, this $f$ may not satisfy the continuity condition. holds under additional assumption $\tX$ has bounded density.. }
 
-\begin{defn}[Hypergraphon] A $K$-uniform hypergraphon is a measureable function $f\colon [0,1]^K\mapsto [0,1]$. 
-\end{defn}
-The function can be seen as a kernel functions for random tensor models. 
+The second complication comes from the invariance of distribution with respect to the measure-preserving mapping. More precisely, two hypergraphons $f$ and $f'$ define the same distribution over $\tY$ if there exist a pair of measure-preserving maps $\phi, \phi' \colon[0,1]^K\to[0,1]^K$ such that
+\begin{equation}\label{eq:weak}
+f(\phi(x_1,\ldots,x_K))\stackrel{a.s.}{=}f'(\phi'(x_1,\ldots,x_K)).
+\end{equation}
+When the equation~\eqref{eq:weak} holds, we say $f$ and $f'$ are {\it weakly isomorphic}, denoted as $f\stackrel{w.i.}{=}f'$. The notion $\stackrel{w.i.}{=}$ defines an equivalence relation in the space of measurable functions from $[0,1]^K$ to $[0,1]$. 
+As a consequence, one can only estimate the equivalence class of $f$, and we refer to hypergraphon estimation as the problem of estimating an equivalence class of $f$.  
+
+In the present paper, we consider the following two problems:
+\begin{itemize}[leftmargin=*]
+\item Q1 [Signal tensor estimation]. Estimate the conditional mean tensor $\Theta$ from a single observation of data tensor $\tY$.
+\item Q2 [Hypergraphon estimation]. Estimate the hypergraphon $f\colon [0,1]^K\to [0,1]$ from a single observation of data tensor $\tY$.
+\end{itemize}
+We allow missing values in the data tensor; the framework therefore also extends to tensor completion. Specifically, we introduce a masking tensor $\tZ\in\{0,1\}^{d_1\times \cdots \times d_K}$ with each entry drawn independently as Bernoulli($p$) for some $p\in(0,1]$. 
+
+The function can be seen as a kernel function for random tensor models. 
+
+\section{Single index model}
+Let $\mS^r=\{\mx\in\mathbb{R}^r\colon \vnormSize{}{\mx}\leq 1\}$ be an $r$-dimensional unit ball. We also write $\mx=(\mx(1),\ldots,\mx(r))^T$, where $\mx(i)\in\mathbb{R}$ denotes $i$-th element in the vector $\mx$. Consider the following generative process: 
+\begin{itemize}
+\item Consider an $m$-variate function
+\begin{align}
+f\colon \mS^{r}\times\cdots\times \mS^{r} &\to [0,1],\\
+(\mx_1,\ldots,\mx_m)&\mapsto f(\mx_1,\ldots,\mx_m)=\sum_{i=1}^r\mx_1(i)\cdots\mx_m(i),
+\end{align}
+By the multilinearlity and boundednss of $\mS^r$, $f$ is a 1-Lipschitz function. 
+\item Draw i.i.d.\ samples $\mx_1,\ldots,\mx_d$ from $\mS^r$. 
+\item Define the signal tensor 
+\[
+\Theta(i_1,\ldots,i_m)=f(\mx_{i_1},\ldots,\mx_{i_m}), \quad \text{for all }(i_1,\ldots,i_m)\in[d]^m.
+\]
+By construction, $\Theta$ is a rank-$r$ tensor. 
+\end{enumerate}
+
+\begin{theorem} Let $\Theta\in[0,1]^m$ be an order-$m$ tensor generated from steps 1-3. Then, for every $k\in\mathbb{N}_{+}$, there exists a block-$k$ tensor such that
+\[
+\FnormSize{}{\Theta-\text{Block}(\Theta; K)}^2 \leq {d^m\over K^{2/r}}. 
+\]
+\end{theorem}
+\begin{proof}
+Because $\mS^r$ is a compact set, $\mS^r$ can be covered by $K$ Euclidean balls with radius $K^{-1/r}$. Let $\my_1,\ldots,\my_{K}$ be the center of these balls. Then, for every $i\in[d]$, there exists $k=k(i)\in\{1,\ldots,K\}$ such that
+\[
+\vnormSize{}{\mx_i-\my_{k(i)}}\leq {1\over K^{1/r}}. 
+\]
+Therefore,
+\[
+|f(\mx_{i_1},\ldots,\mx_{i_m})-f(\my_{k(i_1)},\ldots,\my_{k(i_m)})|^2 \leq {L^2\over K^{2/r}}.
+\]
+Notice that there are in total $K$ center points, so the 
+\[
+\bar \Theta(i_1,\ldots,i_m):=f(\my_{k(i_1)},\ldots,\my_{k(i_m)})
+\]
+defines a block tensor $\bar \Theta$ with $K$ blocks on each model. 
+We claim, for every $k\in\mathbb{N}$, there exists a block tensor
+\[
+\FnormSize{}{\Theta-\text{Block}(\Theta; K)}^2 \leq {d^m\over K^{2/r}}. 
+\]
+\end{proof}
 \section*{Acknowledgements}
 
 \bibliographystyle{unsrt}

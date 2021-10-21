@@ -1,0 +1,15 @@
+\BOOKMARK [1][-]{section.0.1}{Introduction}{}% 1
+\BOOKMARK [1][-]{section.0.2}{Model}{}% 2
+\BOOKMARK [1][-]{section.0.3}{Identifiability}{}% 3
+\BOOKMARK [1][-]{section.0.4}{Smooth single index models are of log-rank}{}% 4
+\BOOKMARK [1][-]{section.0.5}{Single index model estimation for matrices}{}% 5
+\BOOKMARK [2][-]{subsection.0.5.1}{Spectral method and matrix lasso are both nearly minimax}{section.0.5}% 6
+\BOOKMARK [2][-]{subsection.0.5.2}{Nonconvex }{section.0.5}% 7
+\BOOKMARK [1][-]{section.0.6}{Tensor estimation }{}% 8
+\BOOKMARK [2][-]{subsection.0.6.1}{Non-convex double spectral algorithm}{section.0.6}% 9
+\BOOKMARK [2][-]{subsection.0.6.2}{Statistical and Computational Trade-offs}{section.0.6}% 10
+\BOOKMARK [1][-]{section.0.7}{Nice tensor model has logd rank}{}% 11
+\BOOKMARK [1][-]{section.0.A}{Proof of Proposition 1}{}% 12
+\BOOKMARK [1][-]{section.0.B}{Proof of Lemma 2}{}% 13
+\BOOKMARK [1][-]{section.0.C}{My Proof of Proposition 1}{}% 14
+\BOOKMARK [1][-]{section.0.D}{My Proof of Theorem 2}{}% 15

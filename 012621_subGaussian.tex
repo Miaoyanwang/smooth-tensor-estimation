@@ -1,0 +1,155 @@
+\documentclass[11pt]{article}
+\usepackage{lscape}
+\usepackage{amsmath,amssymb}
+\usepackage{amsthm}
+\usepackage{float}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{comment}
+\usepackage{bm}
+\usepackage{gensymb}
+\allowdisplaybreaks[4]
+\usepackage{geometry}
+\geometry{margin=1in}
+\usepackage{setspace}
+\usepackage{siunitx}
+\usepackage{enumitem}
+\usepackage{dsfont}
+\usepackage{arydshln}
+\usepackage{natbib}
+
+\newcommand*{\vertbar}{\rule[-1ex]{0.5pt}{2.5ex}}
+\newcommand*{\horzbar}{\rule[.5ex]{2.5ex}{0.5pt}}
+
+
+\usepackage{graphics}
+\allowdisplaybreaks
+
+\usepackage[utf8x]{inputenc}
+\usepackage{bm}
+
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    citecolor = blue,
+    linkcolor=blue,
+    filecolor=magenta,           
+    urlcolor=cyan,
+}
+
+
+\theoremstyle{plain}
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{lem}{Lemma}
+\newtheorem{pro}{Property}
+\newtheorem{cor}{Corollary}
+
+\theoremstyle{definition}
+\newtheorem{assumption}{Assumption}
+\newtheorem{prob}{Problem}
+\newtheorem{prop}{Proposition}
+\newtheorem{defn}{Definition}
+\newtheorem{exmp}{Example}
+\newtheorem{rmk}{Remark}
+\newtheorem{con}{Conjecture}
+
+\usepackage{algpseudocode,algorithm}
+\algnewcommand\algorithmicinput{\textbf{Input:}}
+\algnewcommand\algorithmicoutput{\textbf{Output:}}
+\algnewcommand\INPUT{\item[\algorithmicinput]}
+\algnewcommand\OUTPUT{\item[\algorithmicoutput]}
+
+\def\marginest{\hat \Theta^{\textup{margin}}}
+\def\MLEest{\hat \Theta^{\textup{MLE}}}
+\def\sign{\textup{sign }}
+
+\usepackage[labelfont=bf]{caption}
+
+\setcounter{table}{1}
+\usepackage{multirow}
+\usepackage{tabularx}
+
+\def\fixme#1#2{\textbf{[FIXME (#1): #2]}}
+
+\def\Holder{\text{H\"{o}lder }}
+
+\newcommand*{\KeepStyleUnderBrace}[1]{%f
+  \mathop{%
+    \mathchoice
+    {\underbrace{\displaystyle#1}}%
+    {\underbrace{\textstyle#1}}%
+    {\underbrace{\scriptstyle#1}}%
+    {\underbrace{\scriptscriptstyle#1}}%
+  }\limits
+}
+\usepackage{mathtools}
+\mathtoolsset{showonlyrefs=true}
+
+\begingroup
+\makeatletter
+\@for\theoremstyle:=definition,remark,plain\do{%
+\expandafter\g@addto@macro\csname th@\theoremstyle\endcsname{%
+\addtolength\thm@preskip\parskip
+}%
+}
+\endgroup
+
+
+\usepackage{hyperref}
+\hypersetup{colorlinks=true}
+\usepackage[parfill]{parskip}
+\usepackage{bm}
+\onehalfspacing
+
+\newcommand{\maxnorm}[1]{\left\lVert#1\right\rVert_{\infty}}
+\newcommand{\Hnorm}[1]{\left\lVert#1\right\rVert_{\tH_\alpha}}
+\newcommand{\nullnorm}[1]{\left\lVert#1\right\rVert}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%             Math Symbols
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%               Bold Math
+\input macros.tex
+\def\refer#1{\emph{\color{blue}#1}}
+\begin{document}
+
+\begin{center}
+{\bf \Large Sub-Gaussianity of GLM tensor with bounded variance}\\
+Miaoyan Wang, Jan 26, 2021\\
+\end{center}
+
+
+\begin{assumption}[GLM tensor]\label{def:GLM}
+We call the tensor $\tY=\entry{y_\omega}$ is exponential family tensor with bounded variance, if the following two assumptions are met. 
+\begin{enumerate}[leftmargin=-1pt,topsep=0pt,itemsep=0ex,partopsep=0ex,parsep=0ex]
+\item []1. [GLM density] Conditional on canonical parameter tensor $\Theta=\entry{\theta_\omega}$, the tensor entries $y_\omega$'s are independent of each other, and $y_\omega|\theta_\omega$ follows a generalized linear model (GLM) with density
+\begin{equation}\label{eq:density}
+p(y_\omega|\theta_\omega)=c(y_\omega,\phi)\exp\left(\frac{y_\omega \theta_\omega- b(\theta_\omega)}{\phi}\right),
+\end{equation}
+where $b(\cdot)$ is a known function depending on the distribution family of $y_\omega$, $\phi>0$ is the dispersion parameter, and $c(\cdot)$ is a known normalizing function.
+\item []2. [Boundedness] The parameter tensor $\Theta$ is bounded, i.e, $\mnormSize{}{\Theta}\leq \alpha$ for some constant $\alpha>0$. 
+\end{enumerate}
+\end{assumption}
+
+\noindent {\bf Proposition 1} (sub-Gaussian residuals under bounded variance).\label{prop}
+Let $\tY$ be a GLM data tensor, and $\tE=\tY-b'(\Theta)$ be the residual tensor, where $b'(\cdot)$ denotes the first-order derivative. Under Assumption~\ref{def:GLM}, the entries of $\tE$ are independent sub-Gaussian entries with parameter $(\phi U)$, where $U=\max_{|\theta|\leq \alpha}b''(\theta)<\infty$ and $\phi>0$ is the dispersion parameter in the GLM density.
+
+
+\begin{proof} It is easy to see that the entries of $\tE=\entry{\varepsilon_\omega}$ are independent conditional on $\Theta=\entry{\theta_\omega}$. Furthermore, we show that $\varepsilon_\omega$ is a sub-Gaussian random variable under the boundedness condition on $\theta_\omega$. For notational convinene, we drop the subscript $\omega$, and simply write $\varepsilon$ and $\theta$. By the definition of sub-Gaussian random variable, it suffices to show 
+\[
+\mathbb{E}\left[\exp(t\varepsilon|\theta)\right]\leq \exp\left(\phi U t^2\over 2 \right), \quad \text{for all }t\in\mathbb{R}.
+\]
+By the definition of GLM density, we have
+\begin{align}
+\mathbb{E}[\exp(t\varepsilon|\theta)]&=\int c(y,\phi) \exp\left({y\theta  - b(\theta)\over \phi}   \right)\exp \left[t(y-b'(\theta))\right]dy\\
+&=\int c(y,\phi)\exp \left( {y(\theta + \phi t) - b (\theta+\phi t)+b(\theta+\phi t)-b(\theta)-\phi t b'(\theta) \over \phi}\right)dy\\
+&=\exp\left( {b(\theta+\phi t)-b(\theta)-\phi t b'(\theta) \over \phi} \right)\\
+&\leq \exp\left(\phi U t^2\over 2 \right),
+\end{align}
+where the last inequality follows from Taylor expansion and the definition of $U$. Therefore, $\varepsilon$ is sub-Gaussian-$(\phi U)$. 
+\end{proof}
+
+
+\bibliographystyle{plainnat}
+\bibliography{tensor_wang}
+\end{document}

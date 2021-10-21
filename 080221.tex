@@ -1,0 +1,192 @@
+\documentclass[11pt]{article}
+\usepackage{lscape}
+\usepackage{amsmath,amssymb}
+\usepackage{amsthm}
+\usepackage{float}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{comment}
+\usepackage{bm}
+\usepackage{gensymb}
+\allowdisplaybreaks[4]
+\usepackage{geometry}
+\geometry{margin=1in}
+\usepackage{setspace}
+\usepackage{siunitx}
+\usepackage{enumitem}
+\usepackage{dsfont}
+\usepackage{arydshln}
+\usepackage{algorithm}
+
+\newcommand*{\vertbar}{\rule[-1ex]{0.5pt}{2.5ex}}
+\newcommand*{\horzbar}{\rule[.5ex]{2.5ex}{0.5pt}}
+
+
+\usepackage{graphics}
+\allowdisplaybreaks
+
+\usepackage[utf8x]{inputenc}
+\usepackage{bm}
+
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    citecolor = blue,
+    linkcolor=blue,
+    filecolor=magenta,           
+    urlcolor=cyan,
+}
+
+
+\usepackage{amsthm}
+\theoremstyle{definition}
+\newtheorem{thm}{Theorem}
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{pro}[thm]{Property}
+\newtheorem{cor}[thm]{Corollary}
+\newtheorem{ass}{Assumption}
+\newtheorem{prob}{Problem}
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem{defn}{Definition}
+\newtheorem{exmp}{Example}
+\newtheorem{rmk}{Remark}
+
+
+
+\usepackage{algpseudocode}
+
+\newcommand\Algphase[1]{%
+\vspace*{-.7\baselineskip}\Statex\hspace*{\dimexpr-\algorithmicindent-2pt\relax}\rule{\textwidth}{0.4pt}%
+\Statex\hspace*{-\algorithmicindent}\textbf{#1}%
+\vspace*{-.7\baselineskip}\Statex\hspace*{\dimexpr-\algorithmicindent-2pt\relax}\rule{\textwidth}{0.4pt}%
+}
+\algnewcommand\algorithmicinput{\textbf{Input:}}
+\algnewcommand\algorithmicoutput{\textbf{Output:}}
+\algnewcommand\INPUT{\item[\algorithmicinput]}
+\algnewcommand\OUTPUT{\item[\algorithmicoutput]}
+
+\def\sign{\textup{sgn}}
+\def\srank{\textup{srank}}
+\def\rank{\textup{rank}}
+\def\caliP{\mathscr{P}_{\textup{sgn}}}
+\def\risk{\textup{Risk}}
+
+\usepackage[labelfont=bf]{caption}
+
+\setcounter{table}{1}
+\usepackage{multirow}
+\usepackage{tabularx}
+
+\def\fixme#1#2{\textbf{[FIXME (#1): #2]}}
+
+\def\Holder{\text{H\"{o}lder }}
+
+\newcommand*{\KeepStyleUnderBrace}[1]{%f
+  \mathop{%
+    \mathchoice
+    {\underbrace{\displaystyle#1}}%
+    {\underbrace{\textstyle#1}}%
+    {\underbrace{\scriptstyle#1}}%
+    {\underbrace{\scriptscriptstyle#1}}%
+  }\limits
+}
+\usepackage{mathtools}
+\mathtoolsset{showonlyrefs=true}
+
+\begingroup
+\makeatletter
+\@for\theoremstyle:=definition,remark,plain\do{%
+\expandafter\g@addto@macro\csname th@\theoremstyle\endcsname{%
+\addtolength\thm@preskip\parskip
+}%
+}
+\endgroup
+
+
+\usepackage{hyperref}
+\hypersetup{colorlinks=true}
+\usepackage[parfill]{parskip}
+\usepackage{bm}
+\onehalfspacing
+
+\newcommand{\maxnorm}[1]{\left\lVert#1\right\rVert_{\infty}}
+\newcommand{\Hnorm}[1]{\left\lVert#1\right\rVert_{\tH_\alpha}}
+\newcommand{\nullnorm}[1]{\left\lVert#1\right\rVert}
+\def\trueB{\mB^{\text{true}}}
+\def\newX{\mX_{\textup{new}}}
+\def\newy{y_{\textup{new}}}
+\def\sign{\textup{sign}}
+\def\bayesf{f_{\textup{bayes}}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%             Math Symbols
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%               Bold Math
+\input macros.tex
+\def\refer#1{\emph{\color{blue}#1}}
+\begin{document}
+
+\begin{center}
+{\bf \Large Summary of Theory}\\
+Miaoyan Wang, Oct 4, 2020\\
+\end{center}
+\begin{ass}[Lipschitz]
+\[
+|\Theta(\omega)-\Theta(\omega')|\leq {|\omega-\omega'|\over d},\quad \text{for all }\omega, \omega'\in[d]^m.
+ \]
+\end{ass}
+
+\begin{ass}[Inverse Lipschitz in indices]
+\[
+{|i-j|\over d}\leq \text{deg}(i)-\text{deg}(j),\quad\text{for all }i>j \in[d].
+\]
+\end{ass}
+
+\begin{ass}[Inverse Lipschitz in tensors]
+\[
+{\FnormSize{}{\Theta(i,\colon)-\Theta(j,\colon)} \over d^{(m-1)/2}} \leq |\text{deg}(i)-\text{deg}(j)|,\quad\text{for all }i, j \in[d].
+\]
+\end{ass}
+
+Algorithm:
+\begin{itemize}
+\item Step 1: compute empirical degree $ \widehat{\text{deg}(i)}={1\over d^{m-1}}\tY(i,\mathbf{1},\ldots,\mathbf{1})$.
+%\item Step 2: find partition with radius $r:=d^{(m-1)/2$ \\
+%Set $\tS=[d]$.\\
+%while $\tS\neq \emptyset$
+%define neighborhood $\tN_i=\{i'\colon |\widehat{\text{deg}}(i')-\widehat{\text{deg}}(i)|\leq r} \}$.
+%$\pi(i')=i$ for all $i'\in\tN_i$
+%$\tN\leftarrow \tN/\tN_i$
+\item Step 3: define estimate
+\[
+\hat \Theta(i,\colon)={1\over |\tN_i|}\sum_{i'\in\tN_i}\tY(i',\colon).
+\]
+\end{itemize}
+
+
+\begin{algorithm}[h!]
+  \caption{Partition of $[d]$ based on critical radius $r$}\label{alg:tensorT}
+ \begin{algorithmic}[1] 
+ \INPUT a length-$d$ vector $\mv$, and critical radius $r$.
+ \OUTPUT a partition $\sigma$ over $[d]$. 
+ \State Set $\tS=[d]$ and $r=1$
+ \While {$\tS\neq \emptyset$}
+ \State Randomly select $i\in\tS$
+ \State Find a neighborhood of $i$ based on critical radius $\tN_i:=\{i'\colon |\mv(i)-\mv(i')|\leq r \}$
+ \State label $\sigma(i')=r$ for all $i'\in\tN_i$
+ \State Update $\tS\leftarrow \tS/\tN_i$ and $r\leftarrow r+1$.
+ \EndWhile
+ \end{algorithmic}
+\end{algorithm}
+
+ 
+\begin{ass} Define neighborhood 
+\[
+{1\over d^m}\FnormSize{}{\hat \tP - \tP} \leq  {1\over d^m}\FnormSize{}{\sum_{\omega\in \tN}{\tA(\omega)-\tP(\omega)\over |\tN_i|}
+\]
+\end{ass}
+
+\bibliographystyle{unsrt}
+\bibliography{tensor_wang}
+
+\end{document}

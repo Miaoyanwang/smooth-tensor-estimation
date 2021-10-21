@@ -1,0 +1,395 @@
+% LaTeX Curriculum Vitae Template
+%
+% Copyright (C) 2004-2009 Jason Blevins <jrblevin@sdf.lonestar.org>
+% http://jblevins.org/projects/cv-template/
+%
+% You may use use this document as a template to create your own CV
+% and you may redistribute the source code freely. No attribution is
+% required in any resulting documents. I do ask that you please leave
+% this notice and the above URL in the source code if you choose to
+% redistribute this file.
+
+\documentclass[letterpaper]{article}
+\usepackage{etaremune}
+
+\usepackage{geometry}
+\usepackage[colorlinks=true,urlcolor=blue]{hyperref}
+% Comment the following lines to use the default Computer Modern font
+% instead of the Palatino font provided by the mathpazo package.
+% Remove the 'osf' bit if you don't like the old style figures.
+\usepackage[T1]{fontenc}
+\usepackage[sc,osf]{mathpazo}
+
+% Set your name here
+\def\name{Miaoyan Wang}
+
+% Replace this with a link to your CV if you like, or set it empty
+% (as in \def\footerlink{}) to remove the link in the footer:
+
+
+% The following metadata will show up in the PDF properties
+\hypersetup{
+  colorlinks = true,
+  urlcolor = black,
+  pdfauthor = {\name},
+  pdfkeywords = {economics, statistics, mathematics},
+  pdftitle = {\name: Curriculum Vitae},
+  pdfsubject = {Curriculum Vitae},
+  pdfpagemode = UseNone
+}
+
+\geometry{
+  body={6.5in, 9in},
+  left=1.0in,
+  top=1.2in
+}
+
+% Customize page headers
+\pagestyle{myheadings}
+\markright{\name}
+\thispagestyle{empty}
+
+% Custom section fonts
+\usepackage{sectsty}
+\sectionfont{\rmfamily\mdseries\Large}
+\subsectionfont{\rmfamily\mdseries\itshape\large}
+
+% Other possible font commands include:
+% \ttfamily for teletype,
+% \sffamily for sans serif,
+% \bfseries for bold,
+% \scshape for small caps,
+% \normalsize, \large, \Large, \LARGE sizes.
+
+% Don't indent paragraphs.
+\setlength\parindent{0em}
+
+% Make lists without bullets
+\renewenvironment{itemize}{
+  \begin{list}{}{
+    \setlength{\leftmargin}{1.5em}
+  }
+}{
+  \end{list}
+}
+
+\begin{document}
+
+% Place name at left
+{\huge \name}
+
+% Alternatively, print name centered and bold:
+%\centerline{\huge \bf \name}
+
+\vspace{0.25in}
+
+\begin{minipage}{0.45\linewidth}
+Assistant Professor of Statistics\\
+  \href{}{University of Wisconsin - Madison} \\
+1250B MSC, 1300 University Ave.\\
+Wisconsin, WI 53703\\
+
+\end{minipage}
+\begin{minipage}{0.45\linewidth}
+  \begin{tabular}{ll}
+    Phone: & 608-265-3990 \\
+    Email: & \href{miaoyan.wang@wisc.edu}{miaoyan.wang@wisc.edu}\\
+    %Website:&\href{http://www.stat.wisc.edu/~miaoyan/} {http://www.stat.wisc.edu/$\sim$miaoyan/}\\
+  \end{tabular}
+\end{minipage}
+
+\section*{Research Interests}
+\begin{itemize}
+\item Statistical machine learning, high-dimensional statistics, spectral methods for matrices and tensors 
+\item Applications to population genetics, gene expression, and brain imaging analysis
+\end{itemize}
+
+
+\section*{Employment}
+\begin{itemize}
+\item {\bf Assistant Professor of Statistics}, 2018 - current\\
+Department of Statistics, UW-Madison\\
+Affiliated in Institute for Foundations of Data Science (IFDS), UW-Madison.
+
+\item {\bf Postdoc at UC Berkeley (Statistics + Computer Science) and at University of Pennsylvania (Math+Biology)}, 2016-2018.\\
+Supervisor: Yun S. Song
+
+\end{itemize}
+\section*{Education}
+\begin{itemize}
+\item {\bf Ph.D., Statistics, The University of Chicago}, 2015\\
+Advisor: Mary Sara McPeek. \\
+Committee: Peter McCullagh, Dan Nicolae 
+%\item {\bf M.S., Statistics, The University of Chicago, 2012}
+\item {\bf B.S., Mathematics, Fudan University}, 2010\\
+2007 - 2010: switched to Math major (Rank:\ 1/172) after admitted into the China national program for talented students in fundamental sciences\\
+2006 - 2007: majored in Computer Science (Rank:\ 1/105)
+\end{itemize}
+
+
+
+%\item {\bf Statistician Intern, Summer 2014}\\
+%Analytical Science Department, Takeda Pharmaceuticals Inc., Deerfield, IL. 
+%\item {\bf Lecturer, The University of Chicago, Fall 2013}
+
+%STAT 23400: Statistical Models and Methods (Core Undergraduate Course for Economics Major)
+
+\section*{Selected Awards}
+
+\begin{itemize}
+%\item Long-term visiting fellow, Institute for Pure and Applied Mathematics (IPAM), UCLA. 03/2021-06/2021 (forthcoming). 
+%\item UW-Madison nominee for Johnson and Johnson WiSTEM$^2$D scholar award in math discipline. Each University can nominate ONE candidate per discipline, 2019. 
+\item Diversity and Inclusion Fellowship, International Conference of Machine Learning (ICML), 2020.
+\item Institute of Mathematical Statistics (IMS) New Researcher Travel Award, 2020.
+\item NeurIPS Junior Researcher Travel Award, 2019.
+\item Google Cloud Platform Education Grant. Free computing credit to students in class. 2019-2020. 
+\item Vice Chancellor for Research and Graduate Education (VCRGE) Travel Fund, UW-Madison, 2018. 
+\item  Simons Math+X Postdoc Fellowship. Simons Foundation, 2015-2017. 
+\item Runner-up for Department of Statistics Consulting Award (ranked as \#2 among all PhD students in the departmental vote of 2014). Department of Statistics, The University of Chicago, 2014. 
+\item American Society of Human Genetics (ASHG) Charles J. Epstein Trainee Award for Excellence in Human Genetics Research -- semifinalist (27 predoctoral recipients out of $\sim$ 550 candidates), 2014. 
+\item International Genetic Epidemiology Society (IGES) Williams Award for Best Platform Presentation by A Graduate Student -- finalist (3 predoctoral recipients out of 156 candidates), 2013. 
+\item  Paul Meier Fellowship, Department of Statistics, The University of Chicago. 2010 - 2013.
+\item National Merit Scholarship $\times$3 ($\sim$ top 1-2 per department per year), Ministry of Education of China. 2006 - 2007, 2007 - 2008, 2008 - 2009.
+\item Honors Fellowship in Mathematics $\times$ 3, Fudan University, China. 2007 - 2008, 2008 - 2009, 2009 - 2010.
+\item President's list, Top 10 role models out of $\sim 3,300$ freshmen, Fudan University, China, 2006 - 2007. 
+\end{itemize}
+
+\section*{Publications}
+
+\underline{Graduate students under my supervision are underlined.}\\
+
+Under review:
+\begin{itemize}
+
+\item$\bullet$  \underline{Z. Xu}, \underline{J. Hu}, and {\bf M. Wang}. Exponential tensor regression with covariates on multiple modes. Under review. (2020). 
+
+\item$\bullet$  \underline{R. Han}, \underline{Y. Luo}, {\bf M. Wang}, and A. R. Zhang. High-order Loyld algorithm and the statistical optimality. Under review. (2020). 
+\end{itemize}
+
+
+Published:
+\begin{itemize}
+\item$\bullet$ \underline{C. Lee} and {\bf M. Wang}. Optimal tensor denoising and completion based on ordinal observation. International Conference on Machine Learning (ICML), to appear in Proceedings of Machine Learning Research, in press (2020). 
+
+\item$\bullet$ {\bf M. Wang} and L. Li. Learning from Binary Multiway Data: Probabilistic Tensor Decomposition and Its Statistical Optimality. To appear in Journal of Machine Learning Research, in press, (2020).
+
+\item$\bullet$  {\bf M. Wang} and \underline{Y. Zeng}. Multiway clustering via tensor block models. Neural Information Processing Systems 33 (NeurlPS 2019), 715-725, (2019).
+
+\item$\bullet$ {\bf M. Wang}, J. Fischer, and Y. S. Song. Three-way Clustering of Multi-tissue Gene Expression Data Using Semi-Nonnegative Tensor Decomposition. {\it Annals of Applied Statistics}. Vol. 13, No. 2, 1103-1127, (2019). 
+
+\item$\bullet$ {\bf M. Wang,} F. Roux, C. Bartoli, C. H.-Chauveau, C. Meyer, H. Lee, D. Roby,  M. S. McPeek, and J. Bergelson. Two-Way Mixed-Effects Methods for Joint Association Analyses Using Both Host and Pathogen Genomes. {\it Proc. Natl. Acad. Sci. (direct submission)}. Vol. 115 (24), E5440-E5449, (2018).
+
+{\it Attention score in the \underline{top 5\%} of all research articles ever tracked by Altmetric; Higher than 89\% of the research articles published in PNAS.}
+
+{\it For this work, I was selected to present a \emph{\bf platform talk} (21/156 submissions) at the 2nd Meeting for Probabilistic Modeling in Genomics, Cold Spring Harbor Laboratory, NY.}
+
+\item$\bullet$ D. Jiang and {\bf M. Wang}. Recent Developments in Statistical Methods for GWAS and High-throughput Sequencing Studies of Complex Traits. {\it Biostatistics and Epidemiology.} Vol. 2 (1), 132-159, (2018).
+
+\item$\bullet$  {\bf M. Wang} and Y. S. Song. Tensor Decomposition via Two-Mode Higher-Order SVD (HOSVD). {\it Journal of Machine Learning Research W\&CP (AISTATS track)}, Vol 54, 614-622, (2017).
+
+\item$\bullet$ {\bf M. Wang,} K. Dao Duc, J. Fischer, and Y. S. Song. Operator Norm Inequalities Between Tensor Unfoldings on the Partition Lattice. {\it Linear Algebra and its Applications}, Vol. 520, 44-66, (2017).
+
+\item$\bullet$  {\bf M. Wang,} J. Jakobsdottir, A. V. Smith, and M. S. McPeek. G-STRATEGY: Optimal Selection of Individuals for Sequencing in Genetic Association Studies. {\it Genetic Epidemiology}, Vol. 40, No. 6, 446-60, (2016).
+
+\vspace{.1cm}
+{\it Highlighted as {\bf Editor's Pick Paper} of this issue}.
+\vspace{.1cm}
+
+{\it For part of this work, I was named a {\bf semifinalist for the 2014 ASHG Charles J. Epstein Trainee
+Award} (27 predoctoral recipients out of 550 candidates) for Excellence in Human Genetics Research at the Annual Meeting of American Society of Human Genetics; Also invited to give a \underline{platform talk (top 8\%)} in 2014 ASHG.}
+
+
+{\it For a different part of this work, I was named a {\bf finalist for the 2013 IGES Williams Award} (3 out of 156) for
+Best Platform Presentation by a Graduate Student at the Annual Meeting of the International Genetic Epidemiology Society; Also invited to give \underline{one of the six talks in Neels and Williams Awards Session} in 2013 IGES.}
+
+
+\item$\bullet$  B. W. Engelmann, Y. Kim, {\bf M. Wang,} B. Peters, R. S. Rock, and P. D. Nash. The Development and Application of A Quantitative Peptide Microarray Platform to Protein Interaction Domain Specificity Space. {\it Molecular and Cellular Proteomics}, Vol. 13, No. 12,  3647-62, (2014).
+\end{itemize}
+
+
+\section*{Current Funding}
+{\bf As sole PI}:
+\begin{itemize}
+\item National Science Foundation DMS-1915978, ``Spectral methods for high-dimensional tensors'', \$179k, 2019-2022. 
+\item Wisconsin Alumni Research Foundation, Fall Research Competition, ``Tensor theory and methods in Data Science'', \$39k, 2020-2021.
+\end{itemize}
+{\bf As co-PI or senior personal}:
+\begin{itemize}
+%\item Johnson and Johnson WiSTEM$^2$D scholar (math discipline), ``Tensor methods and applications in Biomedical Science'', \$150k. Role: sole PI. 2020-2022. 
+\item National Science Foundation. TRIPODS: Collaborative: Institute for Foundations of Data Science, Role: senior personal (PI: Stephen J Wright). 2020-2025. 
+\item U.S. Department of Defense, ARMY. ``Resolving the enigma of Factor Analysis'', Role: co-I (PI: Karl Rohe). 2020-2023. 
+\end{itemize}
+
+
+\section*{Mentoring}
+{\bf PhD students}
+\begin{itemize}
+\item Chanwoo Lee (2019 - ), Jiaxin Hu (2019 - )
+\end{itemize}
+{\bf Masters students:} 
+\begin{itemize}
+\item Yuchen Zeng (2018 - 2020). On to CS PhD student in UW-Madison
+\item  Zhuoyan Xu (2018 - 2020). On to Statistics PhD student in UW-Madison.
+\end{itemize}
+{\bf PhD thesis committee}
+\begin{itemize}
+\item Luxi Cao (Statistics), Ruosi Guo (Statistics), Lili Zheng (Statistics), Praewa Wongburi (Civil and Environmental Engineering), Rungang Han (Statistics)
+\end{itemize}
+\section*{Selected Invited Talks}
+
+{\bf Department Seminars}:
+\begin{itemize}
+\item Columbia University, Department of Biostatistics, School of Public Health, 02/2020. 
+\item UW-Madison, Institute of Foundation of Data Science (IFDS), Brown Bag talk, 12/2019.
+\item Fudan University, School of Data Science, Shanghai, China, 07/2019.
+\item East China Normal University, Faculty of Economics and Management, Shanghai, China, 07/2019.
+\item The University of Chicago, Department of Statistics, IL, 11/2018.
+\item UW-Madison, Computation and Informatics in Biology and Medicine (CIBM) seminar, 11/2018.
+\item UW-Madison, Systems, Information, Learning and Optimization (SILO) Seminar, 10/2018.
+\item Stanford University, Department of Statistics, 08/2018.
+\item UC Berkeley, Department of Biostatistics, 04/2018.
+\item CMU, Department of Statistics and Data Science, 02/2018.
+\item Columbia University, Department of Statistics, 02/2018.
+\item University of Toronto, Department of Statistics, Canada, 02/2018.
+\item UW-Madison, Department of Statistics, 01/2018.
+\item Duke University, Department of Statistics, 01/2018.
+\item Johns Hopkins University, Department of Biostatistics, 01/2018.
+\item Queen's University, Department of Mathematics and Statistics, Canada, 01/2018.
+\item University of Massachusetts Amherst, Department of Mathematics and Statistics,12/2017.
+\item University of Pennsylvania, Song's Group, 09/2016.
+\item Boston University, Department of Mathematics and Statistics, 08/2016. 
+%\item The University of Chicago, Pizza talk, Department of Statistics, IL, 09/2014.
+\end{itemize}
+
+{\bf Conference Talks}:
+\begin{itemize}
+%\item American Mathematical Society (AMS) Special Session on Theory and Algorithms for Data Science, West Lafayette, IN, forthcoming.
+\item Eastern North American Region (ENAR), International Biometric Society, 03/2020.
+\item International Conference on Frontiers of Data Science, Hangzhou, China, 05/2019.
+\item European Society for Evolutionary Biology - Coevolution Workshop, Munich, Germany, 03/2019.
+\item International Conference on Data Science, Shanghai, China, 12/2018.
+\item Institute of Mathematical Statistics (IMS) China Meeting, Dalian, China, 07/2019.
+\item Society for Industrial and Applied Mathematics (SIAM) Annual Meeting, Portland, OR, 08/2018.
+\item Joint Statistical Meetings, Chicago, IL. 08/2016. 
+\item Platform talk ({\bf top 13\% of all submissions)}, the 2nd Meeting for Probabilistic Modeling in Genomics, Cold Spring Harbor Laboratory, NY. 10/2015. 
+\item Platform talk {\bf (top 8\% of all submissions)}, American Society of Human Genetics (ASHG) Annual Meeting, San Diego, CA. 11/2014.
+\item {\bf Neel and Williams Awards Talk}, International Genetic Epidemiology Society (IGES) Annual Meeting, Chicago, IL. 09/2013.
+\end{itemize}
+
+{\bf Industry Research Lab Talks}:
+\begin{itemize}
+\item Bosch Center for Artificial Intelligence in North America, Sunnyvale, CA, 06/2018.
+\item Global Analytic Group. Takeda Pharmaceuticals Inc., Deerfield, IL. 08/2014.
+\end{itemize}
+
+{\bf Poster Presentations} ($^*$presented by students I mentored):
+\begin{itemize}
+\item $^*$The 33rd Advances in Neural Information Processing Systems (NeurlPS), Vancouver, British Columbia, Canada, 12/2019. 
+\item $^*$Computation and Informatics in Biology and Medicine (CIBM) Training Program and the Bio-Data Science (BDS) Program, Madison, 11/2019. 
+\item $^*$2018 Berkeley Statistics Annual Research Symposium (BSTARS), Berkeley, CA, 03/2018. 
+\item The 20th International Conference on Artificial intelligence and Statistics (AISTATS), Florida, Fort Lauderdale, 04/2017. 
+\item The 7th Midwest Statistics Research Colloquium, Chicago, IL, 03/2014.
+\end{itemize}
+\section*{Teaching}
+{\bf Madison Teaching and Learning Excellence (MTLE) Fellow, 2019 -2020.} \\
+
+{\bf Lecturer, 2018 - current}
+\begin{itemize}
+\item Spring 2020. STAT 850: Theory and Application of Regression and Analysis of Variance-II (PhD core)
+\item Fall 2019. STAT 849: Theory and Application of Regression and Analysis of Variance-I (PhD core)
+\item Spring 2019. STAT 602: Statistical Methods--II (senior undergraduate)
+\item Fall 2018. STAT 601: Statistical Methods--I (senior undergraduate)
+\item Fall 2013. STAT 23400: Statistical Models and Methods (junior students in economics major)
+\end{itemize}
+%{\it Took full responsibility of the course. Gave 20 lectures, each of 90 minute length. Held office hours. Wrote exams, problem sets, and solutions, etc.}\\
+
+{\bf Teaching Assistant at UChicago, 2011 - 2015}
+\begin{itemize}
+\item STAT 22000: Statistical Methods and Applications. Professor: Peter McCullagh
+\item STAT 24400: Statistical Theory and Methods 1. Professor: Stephen Stigler and Debashis Mondal 
+\item STAT 24500: Statistical Theory and Methods 2. Professor: Debashis Mondal and Weibiao Wu
+ \end{itemize}
+ {\bf College Tutor at UChicago, Summer 2013}: ECON 21000: Econometrics
+
+
+\section*{Software}
+\begin{itemize}
+\item  $\bullet$ {\bf Tensor\_ordinal}: A set of R tools for noise reduction and completion from ordinal tensor data with possibly missing values. 
+
+\url{https://cran.r-project.org/web/packages/tensorordinal/index.html}
+
+\item $\bullet$ {\bf Tensor\_regress:} R program for generalized tensor regression with covariates on multiple modes. 
+
+\url{https://cran.r-project.org/web/packages/tensorregress/index.html}
+
+\item $\bullet$ {\bf Tensor\_sparse}: R program for multiway clustering via tensor block models. 
+
+\url{https://cran.r-project.org/web/packages/tensorsparse/index.html}
+
+\item $\bullet$ {\bf Binary-Tensor}: R program for low-rank tensor estimation from binary observations.
+
+\url{https://github.com/Miaoyanwang/Binary-Tensor}
+
+\item $\bullet$ {\bf Multi-Cluster}: Matlab/R programs for three-way clustering of gene expression tensorial data. 
+
+\url{https://github.com/Miaoyanwang/Multi-Cluster}
+
+\item $\bullet$ {\bf TM-HOSVD}: Matlab program for efficient decomposition of higher-order tensors.
+
+\url{https://github.com/Miaoyanwang/Two-mode-HOSVD}
+
+\item $\bullet$ {\bf ATOMM}: C program for association {\bf a}nalysis with a {\bf t}wo-{\bf o}rganism {\bf m}ixed-effects {\bf m}odel.
+
+\url{https://github.com/Miaoyanwang/Two-way-MMA}
+
+\item $\bullet$ {\bf G-STRATEGY}: C program for optimal selection strategy of individuals for genotyping based on phenotypes and pedigrees. {\url https://github.com/Miaoyanwang/G-STRATEGY}
+\end{itemize}
+
+
+
+\section*{Services}
+
+{\bf Seminar Organizer:} 
+\begin{itemize}
+\item European Society for Evolution Biology - Coevolution workshop, Munich, Germany, 2019
+\item International Conference on Frontiers of Data Science, Hangzhou, China, 2019
+\item Department Weekly Seminar Committee, Madison, WI, 2018 - 2019.
+\end{itemize}
+
+{\bf Grant Review Panel:} 
+\begin{itemize}
+\item Research Grants Council (RGC) of Hong Kong, Physical Science Panel, 2020. 
+\item Natural Sciences \& Engineering Research Council (NSERC, NSF equivalent in Canada), Discovery Grant Competition Panel, 2020.
+%\item NSF-DMS panel, 2019 (declined due to time conflict with 2019 NeurIPS).
+\item University of Wisconsin Madison, Institute for Clinical and Translational Research (ICTR), Pilot Program, 2019.
+\end{itemize}
+
+{\bf Department Committee} for PhD admission, PhD qualification exam, MS exam. 2018 - now. \\
+
+
+{\bf Reviewer for} Journal of the American Statistical Association (JASA), Journal of the Royal Statistical Society: Series B, Journal of Machine Learning Research (JMLR), NIPS Comp Bio, Linear Algebra and Applications, Linear and Multilinear Algebra, Statistics and Probability Letters.\\
+
+{\bf Member} in IMS (Institute of Mathematical Statistics), SIAM (Society for Industrial and Applied Mathematics), ASHG (American Society of Human Genetics), IGES (International Genetic Epidemiology Society), Gooey Chocolate Cake Lunch (women faculty in the physical science in UW-Madison), Women in Probability (an NSF-funded organization for women active in probability research in North America). \\
+
+{\bf Statistical Consultant, The University of Chicago, 2011 - 2015}. Led consulting projects and supervised Masters and junior PhD students to provide statistical support for the larger university community.  
+
+%Some short-term ($\sim$ 6 - 12 months) projects include:\\
+
+%$\bullet$ Spatial pattern recognition of risk/protective factors in parenting outcomes from urban neighborhoods in Chicago (with researchers from School of Social Service Administration)\\
+
+%$\bullet$ Robust affine normalization for correcting systematic errors in peptide microarray platform (with researchers from the Department of Biophysics)\\
+
+%$\bullet$ Longitudinal analysis of medicated diets on physiology developments of mouse offsprings (with researchers from the Department of Surgery)\\
+
+
+%\bigskip
+
+% Footer
+%\begin{center}
+ % \begin{footnotesize}
+  %  Last updated: \today \\
+
+ % \end{footnotesize}
+%\end{center}
+
+\end{document}

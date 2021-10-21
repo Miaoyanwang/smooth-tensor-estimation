@@ -1,0 +1,228 @@
+\documentclass[11pt]{article}
+\usepackage{lscape}
+\usepackage{amsmath,amssymb}
+\usepackage{amsthm}
+\usepackage{float}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{comment}
+\usepackage{bm}
+\usepackage{gensymb}
+\allowdisplaybreaks[4]
+\usepackage{geometry}
+\geometry{margin=1in}
+\usepackage{setspace}
+\usepackage{siunitx}
+\usepackage{enumitem}
+\usepackage{dsfont}
+
+\usepackage{graphics}
+
+
+\usepackage[utf8x]{inputenc}
+\usepackage{bm}
+
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    citecolor = blue,
+    linkcolor=blue,
+    filecolor=magenta,           
+    urlcolor=cyan,
+}
+
+
+\theoremstyle{plain}
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{lem}{Lemma}
+\newtheorem{prop}{Proposition}
+\newtheorem{pro}{Property}
+\newtheorem{cor}{Corollary}
+\newtheorem{ass}{Assumption}
+
+\theoremstyle{definition}
+\newtheorem{defn}{Definition}
+\newtheorem{exmp}{Example}
+\newtheorem{rmk}{Remark}
+
+\usepackage{algpseudocode,algorithm}
+\algnewcommand\algorithmicinput{\textbf{Input:}}
+\algnewcommand\algorithmicoutput{\textbf{Output:}}
+\algnewcommand\INPUT{\item[\algorithmicinput]}
+\algnewcommand\OUTPUT{\item[\algorithmicoutput]}
+
+
+
+\usepackage[labelfont=bf]{caption}
+
+\setcounter{table}{1}
+\usepackage{multirow}
+\usepackage{tabularx}
+
+\def\fixme#1#2{\textbf{[FIXME (#1): #2]}}
+
+ 
+
+\newcommand*{\KeepStyleUnderBrace}[1]{%f
+  \mathop{%
+    \mathchoice
+    {\underbrace{\displaystyle#1}}%
+    {\underbrace{\textstyle#1}}%
+    {\underbrace{\scriptstyle#1}}%
+    {\underbrace{\scriptscriptstyle#1}}%
+  }\limits
+}
+\usepackage{mathtools}
+\mathtoolsset{showonlyrefs=true}
+
+
+\usepackage{hyperref}
+\hypersetup{colorlinks=true}
+\usepackage[parfill]{parskip}
+\usepackage{bm}
+\onehalfspacing
+
+\newcommand{\Hnorm}[1]{\left\lVert#1\right\rVert_{\tH_\alpha}}
+\newcommand{\onenormSize}[1]{\left\lVert#1\right\rVert_{_1}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%             Math Symbols
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%               Bold Math
+\input macros.tex
+\def\refer#1{\emph{\color{blue}#1}}
+\begin{document}
+\begin{center}
+{\Large \bf Connection between classification and probability estimation}
+
+Miaoyan Wang, July 16, 2020
+\end{center}
+
+Since the hinge loss $L(t)=(1-t)_{+}$ is 1-Lipschitz function,
+\[
+|L(yf(\mX))- L(y\bar f_\pi(\mX))| \leq |yf(\mX)-y\bar f_\pi(\mX)|=|f(\mX)-\bar f_\pi(\mX)|,
+\]
+holds for any $(\mX,y)\in \tX\times \{-1,1\}$. Let $S(y)=(1-\pi)\mathds{1}\{y=1\}+\pi\mathds{1}\{y=-1\}$ be a positive function. Then
+\[
+\mathbb{E}[S(y)L(yf(\mX))- L(y\bar f_\pi(\mX))]\leq \mathbb{E}S(y)|f(\mX)-\bar f_\pi(\mX)|.
+\]
+The left hand side is $e_V(f, \bar f_\pi)$ by definition, and the right hand side is upper bounded by $\mathbb{E}|f(\mX)-\bar f_\pi(\mX)|$. Therefore,
+\[
+e_V(f,\bar f_\pi)\leq \onenormSize{f-\bar f_\pi}.
+\]
+Suppose $f$ is 
+\begin{prop}[]Let $\bar f_\pi\colon \tX\to\{0,1\}$ be the Bayes rule. For any sufficiently small $\delta>0$,
+\[
+\sup_{\{f\in \tF\colon e_V(f, \bar f_\pi) \leq \delta\}}\onenormSize{\mathrm{sign}(f)-\mathrm{sign}(\bar f_\pi)}\geq \delta.
+\]
+\end{prop}
+\begin{proof}
+We proof by construction. Define $\text{sign}(f)=-\text{sign}(\bar f_\pi)$ at a interval with measure $\delta$, and $\text{sign}(f)=\text{sign}(\bar f_\pi)$ otherwise. We aim to find $f\in\tF$ such that
+\[
+\begin{cases}
+e_V(f,\bar f_\pi) = \mathbb{E}\left[(1-yf(\mX))_{+}-(1-y\bar f_\pi(\mX))_{+}\right]\leq \delta,\\
+\mu\{\mX\colon \text{sign}[f(\mX)] \neq \text{sign}[\bar f_\pi(\mX)]\}\geq \delta.
+\end{cases}
+\]
+
+\begin{align}
+e_V(f,\bar f_\pi) &= \mathbb{P}(y=1)\mathbb{E}[(1-f(\mX))_{+}-(1-\bar f_\pi(\mX))_{+} | y=1]+ \mathbb{P}(y=-1)\mathbb{E}[(1+f(\mX))_{+}-(1+\bar f_\pi(\mX))_{+} | y=-1]\\
+\end{align}
+\begin{align}
+\text{True Positive (TP)}&=\{ (\mX,y)\colon \bar f_\pi(\mX)=y=1 \},\\
+\text{True Negative (TN)}&=\{ (\mX,y)\colon \bar f_\pi(\mX)=y=-1 \},\\
+\text{False Positive (FP)}&=\{ (\mX,y)\colon \bar f_\pi(\mX)=1,y=-1 \},\\
+\text{False Negative (FN)}&=\{ (\mX,y)\colon \bar f_\pi(\mX)=-1,y=1 \}.
+\end{align}
+Then $\bar f_\pi$
+\begin{align}
+e_V(f,\bar f_\pi) 
+%&=\mathbb{E}[(1-f(\mX))_{+} - (1-\bar f_\pi(\mX))_{+} |y=1] \mathbb{P}[y=1]+\mathbb{E}[(1-f(\mX))_{+} - (1-\bar f_\pi(\mX))_{+}|y=-1] \mathbb{P}[y=-1]  \\
+&= \mathbb{E}[(1-f(\mX))_{+}|\text{TP}] \mathbb{P}[(\mX,y)\in \text{TP}]+ \mathbb{E}[(1+f(\mX))_{+}|\text{TN}]\mathbb{P}[(\mX,y)\in \text{TN}]\\
+&\quad +\mathbb{E}[(1+f(\mX))_{+}-2|\text{FP}]\mathbb{P}[(\mX,y)\in \text{FP}]+\mathbb{E}[(1-f(\mX))_{+}-2|\text{FN}]\mathbb{P}[(\mX,y)\in \text{FN}]\\
+&= \mathbb{E}[(1-f(\mX))_{+}|\text{TP}] \mathbb{P}[(\mX,y)\in \text{TP}]+ \mathbb{E}[(1+f(\mX))_{+}|\text{TN}]\mathbb{P}[(\mX,y)\in \text{TN}]\\
+&\quad +\mathbb{E}[(1+f(\mX))_{+}|\text{FP}]\mathbb{P}[(\mX,y)\in \text{FP}]+\mathbb{E}[(1-f(\mX))_{+}|\text{FN}]\mathbb{P}[(\mX,y)\in \text{FN}] \\
+&\quad - 2\mathbb{P}[(\mX,y)\in \text{FP}]-2\mathbb{P}[(\mX,y)\in\text{FN}]
+\end{align}
+
+The Bayes rule $\bar f_\pi(\mX)\in\{-1,1,0\}$ divides the input space into three disjoint regions (but possibly with 0 measure). Without loss of generality, assume $\mathbb{P}[\mX: \bar f_\pi(\mX) = -1]=c>0$. For any sufficiently small $\delta \in (0,c)$, define
+\[
+f(\mX)=\begin{cases}
+0& \mX \in \tA\subset \{\mX\colon \bar f_\pi(\mX)=-1\}, \\
+ \bar f_\pi(\mX) & \text{otherwise}.
+\end{cases}
+\]
+Choose set $\tA$ such that $\mathbb{P}(\mX\in\tA)=\delta$. Then $f(\mX)$ incurs error at most
+\[
+e_V(f,\bar f_\pi)\leq\mathbb{E}[1 |TN\cap \tA]\mathbb{P}(\mX\in \tA)\mathbb{P}(\mX,y)\leq \delta.
+\]
+Assume changing a measurable set $$
+\end{proof}
+\begin{prop} Let $\bar f_\pi\colon \tX\to\{0,1\}$ be the Bayes rule. Define weighted 0-1 excess risk
+\[
+\mathrm{Risk}(f,\bar f_\pi):=\mathbb{E}\left[|\mathbb{P}(y=1|\mX)-\pi)| |\mathrm{sign}(f)-\mathrm{sign}(\bar f_\pi)} |\right].
+\]
+By proof below Remake 3, we have
+\[
+\mathrm{Risk}(f,\bar f_\pi)\leq e_V(f,\bar f_\pi) \Rightarrow \{f\in \tF\colon e_V(f,\bar f_\pi)\leq \delta\}\subset \{f\in \tF\colon \mathrm{Risk}(f, \bar f_\pi)\leq \delta\}
+\] Therefore,
+\[
+\sup_{\{f\in \tF\colon e_V(f, \bar f_\pi) \leq \delta\}}\onenormSize{\mathrm{sign}(f)-\mathrm{sign}(\bar f_\pi)}}\leq \sup_{\{f\in \tF\colon \mathrm{Risk}(f, \bar f_\pi) \leq \delta\}}\onenormSize{\mathrm{sign}(f)-\mathrm{sign}(\bar f_\pi)}}.
+\]
+\end{prop}
+\begin{proof}
+\begin{align}
+e_V(f,\bar f_\pi)&=\mathbb{E}\left\{ S(y)L(yf(\mX))-S(y)L(y\bar f_\pi(\mX))\right\}\\
+&\geq \mathbb{E}\{ S(y)\mathds{1}\{y\neq \text{sign}f(\mX)\}-S(y)\mathds{1}\{y\neq \text{sign}(\bar f(\mX)-\pi)\}\\
+&=\mathbb{E}\{S(y)y(\text{sign}(f(\mX))-\text{sign}(\bar f(\mX)-\pi)\}\\
+&\geq \text{01Risk}(f) - \text{01Risk}(\bar f_\pi) 
+\end{align}
+\end{proof}
+
+\[
+\text{01Risk}(\bar f_\pi)  = \mathbb{E}|\bar f(\mX)-\pi|
+\]
+
+
+\begin{align}
+\text{01Risk}(f) - \text{01Risk}(\bar f_\pi) &= \mathbb{E}\left\{|\bar f(\mX)-\pi| \mathds{1}\{f(\mX)\stackrel{\text{sign}}{\neq} (\bar f(\mX)-\pi)\}\right\}
+\end{align}
+
+\begin{defn}[Weighted Risk]
+\begin{align}
+\text{01Risk}(f)&:=(1-\pi)\times \text{False negative}(f)+\pi \times \text{False positive}(f)\\
+&=(1-\pi)P\{(\mX,y)\colon \mathrm{sign}(f(\mX))=-1,\ y=1\}+\pi P\{(\mX,y)\colon \mathrm{sign}(f(\mX))=1, y=-1\}\\
+&=\mathbb{E}\left\{S(y)\mathds{1}\{\mathrm{sign}(f(\mX))\neq y\}\right\}
+\end{align}
+\end{defn}
+
+\[
+e_V(f,\bar f_\pi) \geq R(yf(\mX)) - R(yf_\pi(\mX))
+\]
+\section{Previous results}\label{sec:1}
+\begin{itemize}
+\item Convergence result from probability estimation:
+\[
+\mathbb{P}\{e_V(\hat f_\pi,f^*_\pi)\geq \delta_n\}\leq C\exp\left\{ -an(\lambda J^*_\pi)^{2-\beta}\right\},
+\]
+where 
+\[
+e_V(f_1, f_2) := \mathbb{E}\{V(f_1,\mZ)-V(f_2,\mZ)\}
+\]
+is the excess risk, and 
+\[
+V(f,\mZ)=V(f,(\mX,y))=
+\begin{cases}
+(1-\pi)(1-f(\mX))_{+},& \text{if $y=1$},\\
+\pi(1+f(\mX))_{+},& \text{if $y=-1$}.
+\end{cases}
+\]
+is the weighted margin loss. 
+\item Convergence result from classification:
+
+With probability at least $1-\delta$, we have
+\[
+\KeepStyleUnderBrace{\mathbb{P}[Y\neq \text{sign }{\color{blue}f^*}(\mX)] - \mathbb{P}[Y\neq \text{sign } {\color{red}\hat f}(\mX)]}_{\text{statistical error for estimating $f$}}\leq 4MG\sqrt{r\over n}+\sqrt{\log({1\over \delta})\over 2n}.
+\]
+\end{itemize}
+\end{document}

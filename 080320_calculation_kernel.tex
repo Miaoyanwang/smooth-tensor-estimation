@@ -1,0 +1,204 @@
+\documentclass[11pt]{article}
+\usepackage{lscape}
+\usepackage{amsmath,amssymb}
+\usepackage{amsthm}
+\usepackage{float}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{comment}
+\usepackage{bm}
+\usepackage{gensymb}
+\allowdisplaybreaks[4]
+\usepackage{geometry}
+\geometry{margin=1in}
+\usepackage{setspace}
+\usepackage{siunitx}
+\usepackage{enumitem}
+\usepackage{dsfont}
+\usepackage{arydshln}
+
+\newcommand*{\vertbar}{\rule[-1ex]{0.5pt}{2.5ex}}
+\newcommand*{\horzbar}{\rule[.5ex]{2.5ex}{0.5pt}}
+
+
+\usepackage{graphics}
+\allowdisplaybreaks
+
+\usepackage[utf8x]{inputenc}
+\usepackage{bm}
+
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    citecolor = blue,
+    linkcolor=blue,
+    filecolor=magenta,           
+    urlcolor=cyan,
+}
+
+
+\theoremstyle{plain}
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{lem}{Lemma}
+\newtheorem{pro}{Property}
+\newtheorem{cor}{Corollary}
+\newtheorem{ass}{Assumption}
+
+\theoremstyle{definition}
+\newtheorem{prob}{Problem}
+\newtheorem{prop}{Proposition}
+\newtheorem{defn}{Definition}
+\newtheorem{exmp}{Example}
+\newtheorem{rmk}{Remark}
+\newtheorem{con}{Conjecture}
+
+\usepackage{algpseudocode,algorithm}
+\algnewcommand\algorithmicinput{\textbf{Input:}}
+\algnewcommand\algorithmicoutput{\textbf{Output:}}
+\algnewcommand\INPUT{\item[\algorithmicinput]}
+\algnewcommand\OUTPUT{\item[\algorithmicoutput]}
+
+
+
+\usepackage[labelfont=bf]{caption}
+
+\setcounter{table}{1}
+\usepackage{multirow}
+\usepackage{tabularx}
+
+\def\fixme#1#2{\textbf{[FIXME (#1): #2]}}
+
+\def\Holder{\text{H\"{o}lder }}
+
+\newcommand*{\KeepStyleUnderBrace}[1]{%f
+  \mathop{%
+    \mathchoice
+    {\underbrace{\displaystyle#1}}%
+    {\underbrace{\textstyle#1}}%
+    {\underbrace{\scriptstyle#1}}%
+    {\underbrace{\scriptscriptstyle#1}}%
+  }\limits
+}
+\usepackage{mathtools}
+\mathtoolsset{showonlyrefs=true}
+
+\begingroup
+\makeatletter
+\@for\theoremstyle:=definition,remark,plain\do{%
+\expandafter\g@addto@macro\csname th@\theoremstyle\endcsname{%
+\addtolength\thm@preskip\parskip
+}%
+}
+\endgroup
+
+
+\usepackage{hyperref}
+\hypersetup{colorlinks=true}
+\usepackage[parfill]{parskip}
+\usepackage{bm}
+\onehalfspacing
+
+\newcommand{\maxnorm}[1]{\left\lVert#1\right\rVert_{\infty}}
+\newcommand{\Hnorm}[1]{\left\lVert#1\right\rVert_{\tH_\alpha}}
+\newcommand{\nullnorm}[1]{\left\lVert#1\right\rVert}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%             Math Symbols
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%               Bold Math
+\input macros.tex
+\def\refer#1{\emph{\color{blue}#1}}
+\begin{document}
+
+\begin{center}
+{\bf \Large An equivalent formulation of matrix kernels (II)}\\
+Miaoyan Wang, Aug 3, 2020\\
+\end{center}
+
+\section{Corrections to your section 1}
+Let $K(\cdot,\cdot)$ denote a usual kernel defined over vector pairs in $\mathbb{R}^d$. We use the shorthand $K(i,j)\stackrel{\text{def}}{=}K(\mX_{i:}, \mX'_{j:})$ to denote the kernel value evaluated on the vector pair $(\mX_{i:}, \mX'_{j:})$. 
+
+(Note: my projection matrix $\mP$ is the transpose of your $\mP$. )
+\begin{prop}[Rank-1 weights in Kernel]\label{pro:kernel}
+Define a kernel over matrix pairs, $\tK(\mX,\mX')\stackrel{\text{def}}{=}\langle \mP^T\Phi(\mX)\mP,\ \mP^T\Phi(\mX')\mP\rangle$ for some rank-1 projection matrix $\mP\in\mathbb{R}^{2\times 1}$. Then, $\tK$ has an equivalent representation,
+\begin{equation}\label{eq:rank1}
+\tK(\mX,\mX') = 2C \sum_{i,j}w_{ij}K(i, j),
+\end{equation}
+where $\mW=\mP\mP^T=\entry{w_{ij}}$ is a rank-1 weight matrix, and $C>0$ is a normalizing constant. 
+\end{prop}
+
+\begin{proof} By definition,
+\begin{align}\label{eq:kernel}
+\tK(\mX, \mX')&=\langle \mP^T\Phi(\mX)\mP,\ \mP^T\Phi(\mX')\mP\rangle \notag\\
+&= \langle \KeepStyleUnderBrace{\mP\mP^T}_{=:\mW},\ \Phi^T(\mX)\KeepStyleUnderBrace{\mP\mP^T}_{=:\mW}\Phi(\mX')\rangle
+\end{align}
+Both $\mW$ and $\Phi^T(\mX)\mW\Phi(\mX')$ are $d$-by-$d$ matrices. The $(i,j)$-th entry of $\Phi^T(\mX)\mW\Phi(\mX')$ is
+\begin{align}\label{eq:entry}
+[\Phi^T(\mX)\mW\Phi(\mX')]_{ij}&=\sum_{s,s'} [\mPhi^T(\mX)]_{is}[\mW]_{ss'}[\Phi(\mX')]_{s'j}\notag\\
+&=\sum_{s,s'}w_{ss'}\big\langle ( \phi(\mX_{s:}),  \phi(\mX_{i:})  ),\  (\phi(\mX'_{s':}),  \phi(\mX'_{j:})  )\big\rangle\notag\\
+&=\sum_{s,s'}w_{ss'}\left(K(s,s')+K(i,j)\right)\notag\\
+&=CK(i,j)+\sum_{s,s'}w_{ss'}K(s,s'),
+\end{align}
+where we have denoted the constant $C=\sum_{s,s'}w_{ss'}>0$. Plugging~\eqref{eq:entry} into~\eqref{eq:kernel} gives
+\begin{align}
+\tK(\mX, \mX') &=\sum_{i,j}w_{ij}  [\Phi^T(\mX)\mW\Phi(\mX')]_{ij}\\
+&=C \sum_{i,j}w_{ij}K(i,j)+\left(\sum_{i,j}w_{ij}\right)\left(\sum_{s,s'}w_{ss'}K(s,s')\right)\\
+&=2C\sum_{i,j}w_{ij}K(i,j).
+\end{align} 
+\end{proof}
+
+\begin{prop}[Compatibility with row-wise-only mapping]
+Based on your Section 2, the row-wise-only mapping induces the following kernel,
+\[
+\langle \Phi(\mX)\mP,\ \Phi(\mX')\mP\rangle = \sum_{i,j}w_{ij}K(i,j), \text{ where }\mW=\entry{w_{ij}}=\mP^T\mP \text{ is a low-rank p.s.d.\ matrix.}
+\]
+This kernel is proportional to that in~\eqref{eq:rank1}.
+\end{prop}
+
+\section{Commentary to your section 3}
+\begin{prop}[Isomorphic Mappings; From Mapping to Kernel]
+The following two mappings are isomorphic, in the sense that they induce the same kernel $\tK$ over matrix pairs. 
+\begin{itemize}
+\item Mapping 1
+\begin{align}
+\Phi_1: \mathbb{R}^{d_1\times d_2}& \to \tH_r^{d_1}\times \tH_c^{d_2} \\
+\mX& \mapsto (\Phi_r(\mX),\Phi_c(\mX))\stackrel{\text{def}}{= }(\phi_r(\mX_{1:}),\ldots,\phi_r(\mX_{d_1:}), \phi_c(\mX_{:1}),\ldots,\phi_c(\mX_{:d_2}))
+\end{align}
+\item Mapping 2
+\begin{align}
+\Phi_2: \mathbb{R}^{d_1\times d_2}& \to (\tH_r\times \tH_c)^{d_1\times d_2}\\
+\mX& \mapsto [\Phi_2(\mX)_{ij}],\quad \text{where}\ \Phi_2(\mX)_{ij}\stackrel{\text{def}}{=}(\phi_c(\mX_{i:}),\ \phi_r(\mX_{:j}))
+\end{align}
+\end{itemize}
+\end{prop}
+\begin{proof}
+Using the similar argument in Proposition~\ref{pro:kernel}, we show that the kernel induced by (mapping 2 + low-rank coefficients) is
+\begin{align}\label{eq:kernelnew}
+\tK\colon \mathbb{R}^{d_1\times d_2}\times\mathbb{R}^{d_1\times d_2} &\to \mathbb{R}\notag \\
+\tK(\mX,\mX')&\mapsto  \sum_{i,j \in[d_1]} w^{\text{row}}_{ij}K_r(i,j) + \sum_{i,j\in[d_2]}w^{\text{col}}_{ij}K_c(i,j),
+\end{align}
+where $\mW^{\text{row}}=\entry{w^{\text{row}}_{ij}}={1\over c_1}\mP_r\mP^T_r$, $\mW^{\text{col}}=\entry{w^{\text{col}}_{ij}}={1\over c_2}\mP_c\mP^T_c$ are some low-rank p.s.d.\ matrices, and $c_1=\vnormSize{}{\mathbf{1}^T_{d_1}\mP_r}^2>0$, $c_2=\vnormSize{}{\mathbf{1}^T_{d_2}\mP_c}^2>0$ are two normalizing constants. 
+
+Now, we consider the  kernel induced by (mapping 1 + low-rank coefficients),
+\begin{align}\label{eq:kernelnew2}
+\tK(\mX,\mX')&=\langle \Phi_r(\mX) \mP_r ,\  \Phi_r(\mX')\mP_r\rangle+\langle \Phi_c(\mX)\mP_c ,\ \Phi_c(\mX')\mP_c \rangle\\
+&=\sum_{i,j\in[d_1]} w^{\text{row}}_{ij}K_r(i,j) + \sum_{i,j\in[d_2]} w^{\text{col}}_{ij}K_c(i,j), 
+\end{align}
+where $\mW^{\text{row}}=\entry{w^{\text{row}}_{ij}}$, $\mW^{\text{col}}=\entry{w^{\text{col}}_{ij}}$ are some low-rank p.s.d.\ matrices.
+\end{proof}
+
+Two important properties in the induced kernels~\eqref{eq:kernelnew} and \eqref{eq:kernelnew2}:
+\begin{enumerate}
+\item[] 1. [Additivity] The new kernel is a linear combination of regular row and column kernels; 
+\item[] 2. [Low-rank p.s.d.] The weight matrices $\mW^{\text{row}}$, $\mW^{\text{col}}$ are low-rank + p.s.d. 
+\end{enumerate}
+
+\begin{con}[From Kernel to Mapping]
+Let $\tK(\cdot,\cdot)$ be a function that maps a pair of matrices to a real-value. Suppose $\tK(\cdot,\cdot)$ satisfies the above two properties. Then, the kernel $\tK$ induces a decomposable feature mapping in that $\Phi(\mX)=\Phi_r(\mX)+\Phi_c(\mX)$, where, informally speaking, $\Phi_r(\cdot)$, $\Phi_c(\cdot)$ are the row- and column-wise mappings, respectively. 
+
+The decomposable mapping means the effects from rows and columns are additive/separable. Similar to an ANOVA model $Y_{ij}=\mu_i+\mu_j$ with marginal effects only. Additivity has useful implications for matrix-based network analysis; see~\cite{hoff2018additive}. 
+\end{con}
+
+\bibliographystyle{plain}
+\bibliography{tensor_wang}
+\end{document}

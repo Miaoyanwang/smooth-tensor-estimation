@@ -1,0 +1,17 @@
+% \bib, bibdiv, biblist are defined by the amsrefs package.
+\begin{bibdiv}
+\begin{biblist}
+
+\bib{han2020exact}{article}{
+      author={Han, Rungang},
+      author={Luo, Yuetian},
+      author={Wang, Miaoyan},
+      author={Zhang, Anru~R},
+       title={Exact clustering in tensor block model: Statistical optimality
+  and computational limit},
+        date={2020},
+     journal={arXiv preprint arXiv:2012.09996},
+}
+
+\end{biblist}
+\end{bibdiv}

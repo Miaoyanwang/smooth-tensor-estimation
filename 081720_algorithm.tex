@@ -1,0 +1,303 @@
+\documentclass[11pt]{article}
+\usepackage{lscape}
+\usepackage{amsmath,amssymb}
+\usepackage{amsthm}
+\usepackage{float}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{comment}
+\usepackage{bm}
+\usepackage{gensymb}
+\allowdisplaybreaks[4]
+\usepackage{geometry}
+\geometry{margin=1in}
+\usepackage{setspace}
+\usepackage{siunitx}
+\usepackage{enumitem}
+\usepackage{dsfont}
+\usepackage{arydshln}
+
+\newcommand*{\vertbar}{\rule[-1ex]{0.5pt}{2.5ex}}
+\newcommand*{\horzbar}{\rule[.5ex]{2.5ex}{0.5pt}}
+
+
+\usepackage{graphics}
+\allowdisplaybreaks
+
+\usepackage[utf8x]{inputenc}
+\usepackage{bm}
+
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    citecolor = blue,
+    linkcolor=blue,
+    filecolor=magenta,           
+    urlcolor=cyan,
+}
+
+
+\theoremstyle{plain}
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{lem}{Lemma}
+\newtheorem{pro}{Property}
+\newtheorem{cor}{Corollary}
+\newtheorem{ass}{Assumption}
+
+\theoremstyle{definition}
+\newtheorem{prob}{Problem}
+\newtheorem{prop}{Proposition}
+\newtheorem{defn}{Definition}
+\newtheorem{exmp}{Example}
+\newtheorem{rmk}{Remark}
+\newtheorem{con}{Conjecture}
+
+\usepackage{algpseudocode,algorithm}
+\algnewcommand\algorithmicinput{\textbf{Input:}}
+\algnewcommand\algorithmicoutput{\textbf{Output:}}
+\algnewcommand\INPUT{\item[\algorithmicinput]}
+\algnewcommand\OUTPUT{\item[\algorithmicoutput]}
+
+
+
+\usepackage[labelfont=bf]{caption}
+
+\setcounter{table}{1}
+\usepackage{multirow}
+\usepackage{tabularx}
+
+\def\fixme#1#2{\textbf{[FIXME (#1): #2]}}
+
+\def\Holder{\text{H\"{o}lder }}
+
+\newcommand*{\KeepStyleUnderBrace}[1]{%f
+  \mathop{%
+    \mathchoice
+    {\underbrace{\displaystyle#1}}%
+    {\underbrace{\textstyle#1}}%
+    {\underbrace{\scriptstyle#1}}%
+    {\underbrace{\scriptscriptstyle#1}}%
+  }\limits
+}
+\usepackage{mathtools}
+\mathtoolsset{showonlyrefs=true}
+
+\begingroup
+\makeatletter
+\@for\theoremstyle:=definition,remark,plain\do{%
+\expandafter\g@addto@macro\csname th@\theoremstyle\endcsname{%
+\addtolength\thm@preskip\parskip
+}%
+}
+\endgroup
+
+
+\usepackage{hyperref}
+\hypersetup{colorlinks=true}
+\usepackage[parfill]{parskip}
+\usepackage{bm}
+\onehalfspacing
+
+\newcommand{\maxnorm}[1]{\left\lVert#1\right\rVert_{\infty}}
+\newcommand{\Hnorm}[1]{\left\lVert#1\right\rVert_{\tH_\alpha}}
+\newcommand{\nullnorm}[1]{\left\lVert#1\right\rVert}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%             Math Symbols
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%               Bold Math
+\input macros.tex
+\def\refer#1{\emph{\color{blue}#1}}
+\begin{document}
+
+\begin{center}
+{\bf \Large Classification algorithm with matrix kernels}\\
+Miaoyan Wang, Aug 17, 2020\\
+\end{center}
+Notation: 
+\begin{enumerate}
+\item $\mathbb{O}(d,r):=\{\mP\in\mathbb{R}^{d\times r}\colon \mP^T\mP=\mI_r\}$, the collection of $d$-by-$r$ matrices whose columns are orthonormal. When no confusion arises, I use the term ``projection matrix'' to denote either the matrix $\mP\mP^T\in\mathbb{R}^{d\times d}$ or the matrix $\mP\in\mathbb{R}^{d\times r}$.
+\item $\tK^{\text{row}}(i,j,\mX,\mX') : =\langle \Phi(\mX_{i:}),\ \Phi(\mX'_{j:}) \rangle $ denotes the value of row kernel evaluated at the vector pair, ($i$-th row of matrix $\mX$, $j$-th row of matrix $\mX'$). 
+\item I sometimes use the shorthand $\tK^{\text{row}}(i,j)$ to denote $\tK^{\text{row}}(i,j,\mX,\mX')$, when the feature pair $(\mX, \mX')$ is clear given the contexts. Note that $\tK^{\text{row}}(i,j)$ can be calcualted without explicit feature mapping. 
+
+\item Similar convention for $\tK^{\text{col}}(i,j,\mX,\mX')$.
+\end{enumerate}
+
+\section{Optimization formulation with bilinear mapping}
+Consider the bilinear mapping,
+\begin{align}
+\Phi\colon \mathbb{R}^{d_1\times d_2}& \to (\tH_r\times \tH_c)^{d_1\times d_2}\\
+\mX& \mapsto [\Phi(\mX)_{ij}],\quad \text{where}\ \Phi(\mX)_{ij}\stackrel{\text{def}}{=}(\phi_c(\mX_{i:}),\ \phi_r(\mX_{:j})).
+\end{align}
+
+Primal problem:
+\begin{align}\label{eq:opt}
+\min_{\mP_r, \mP_c}\min_{\mC}&\quad {1\over 2}\FnormSize{}{\mC}^2 + c\sum_{i=1}^ n \xi_i,\\
+\text{subject to }&\quad y_i\langle \mP_r\mC\mP_c^T,\ \Phi(\mX_i)\rangle \leq 1-\xi_i \text{ and}\ \xi_i\geq 0,\ i=1,\ldots,n.
+\end{align}
+Parameters in the primal problem: $(\mP_r, \mP_c, \mC)$, where $\mP_r\in\mathbb{O}(d_1,r_1)$, $\mP_c\in\mathbb{O}(d_2,r_2)$, and $\mC=\entry{(\mc^{\text{row}}_i,\ \mc^{\text{col}}_j)} \in (\tH_r\times \tH_c)^{r_1\times r_2}$ is the low-rank ``core matrix'' consisting of linear coefficients. 
+
+
+The equivalent dual problem for~\eqref{eq:opt} is
+\begin{align}\label{eq:dual}
+\min_{\mP_r, \mP_c} \max_{\boldsymbol{\alpha}=(\alpha_1,\ldots,\alpha_n)} &\quad  \sum_{i=1}^n \alpha_i- {1\over 2} \sum_{i,j}\alpha_i\alpha_jy_iy_j\langle 
+\mP^T_r\Phi(\mX_i)\mP_c,\ \mP^T_r\Phi(\mX_j)\mP_c
+\rangle, \notag\\
+\text{subject to} &\quad \sum_i y_i\alpha_i=0, \text{ and }0\leq \alpha_i\leq c,\ i=1,\ldots,n.
+\end{align}
+
+The optimization~\eqref{eq:dual} is also equivalent to
+\begin{equation}
+\boxed{
+\begin{aligned}\label{eq:dual2}
+\max_{\mP_r, \mP_c} \min_{\boldsymbol{\alpha}} &\quad  -\sum_{i=1}^n \alpha_i +{1\over 2} \sum_{i,j}\alpha_i\alpha_jy_iy_j\langle 
+\mP^T_r\Phi(\mX_i)\mP_c,\ \mP^T_r\Phi(\mX_j)\mP_c
+\rangle,\\
+\text{subject to} &\quad \sum_i y_i\alpha_i=0, \text{ and }0\leq \alpha_i\leq c,\ i=1,\ldots,n,\\
+&\quad \mP_r\in\mathbb{O}(d_1,r_1),\ \mP_c\in\mathbb{O}(d_2,r_2).
+\end{aligned}
+}
+\end{equation}
+
+Our goal is to solve~\eqref{eq:dual2}. The unknown parameters are $(\mP_r, \mP_c, \boldsymbol{\alpha})$.
+
+\section{Algorithm for problem (3)}
+\begin{enumerate}
+\item Update $\boldsymbol{\alpha}$, while holding $(\mP_r, \mP_c)$ fixed. 
+
+
+Prepration: Let $\mW^{\text{row}}=\mP_r\mP^T_r=\entry{w^{\text{row}}_{ij}}\in\mathbb{R}^{d_1\times d_1}$ and $\mW^{\text{col}}=\mP_c\mP^T_c=\entry{w^{\text{col}}_{ij}}\in\mathbb{R}^{d_2\times d_2}$ denote the row- and column-wise projection matrices, respectively.
+
+We use kernel trick to solve for $\boldsymbol{\alpha}$ without explicit feature mapping. Given the projections $(\mP_r, \mP_c)$, the optimization~\eqref{eq:dual2} is a stanard SVM with kernel $\tK(\mX,\mX')$ defined as follows,
+\begin{align}\label{eq:kernel}
+\tK(\mX,\mX')&=\langle \mP^T_r\Phi(\mX)\mP_c,\ \mP^T_r\Phi(\mX')\mP_c\rangle\notag\\
+&= (\sum_{i,j}w^{\text{col}}_{ij})( \sum_{i,j} w^{\text{row}}_{ij}K^{\text{row}}(i,j))+(\sum_{i,j}w^{\text{row}}_{ij})( \sum_{i,j} w^{\text{col}}_{ij}K^{\text{col}}(i,j)).
+\end{align}
+Here I have used the shorthand $K^{\text{row}}(i,j)$ to denote the value of row kernel evaluated on the $i$-th row of $\mX$ and $j$-th row of $\mX'$. 
+
+\begin{rmk}[Computational consideration]
+We can compute the summations in~\eqref{eq:kernel} without explicit loop. In particular, both identities hold: $\sum_{i,j}w^{\text{col}}_{ij}=\vnormSize{}{\mathbf{1}^T\mP_c}^2$ and $\sum_{i,j} w^{\text{row}}_{ij}K^{\text{row}}(i,j)=\text{trace}(\mW^T\mK)$, where $\mK\leftarrow \entry{K^{\text{row}}(i,j,\mX,\mX')}$ is a pre-stored matrix (or array, if we go through all possible feature pairs $(\mX,\mX')$).
+\end{rmk}
+\item Update $\mP_r$, while holding $(\boldsymbol{\alpha}, \mP_c)$ fixed.
+
+Denote the matrix $\mM=\sum_i\alpha_iy_i\Phi(\mX_i)\mP_c \in (\tH_1\times \tH_2)^{d_1\times r_2}$. The problem~\eqref{eq:dual2} reduces to
+\begin{align}\label{eq:identity}
+&\quad \max_{\mP_r\in \mathbb{O}(d_1,r_1)}\sum_{i,j}\alpha_i\alpha_jy_iy_j\langle 
+\mP^T_r\Phi(\mX_i)\mP_c,\ \mP^T_r\Phi(\mX_j)\mP_c
+\rangle\notag \\
+&= \max_{\mP_r\in \mathbb{O}(d_1,r_1)}\langle \mP^T_r\mM,\ \mP_r^T\mM \rangle \notag \\
+&=\max_{\mP_r\in \mathbb{O}(d_1,r_1)}\langle \KeepStyleUnderBrace{\mP_r\mP_r^T}_{\text{rank-$r_1$ projection}}, \ \KeepStyleUnderBrace{\mM\mM^T}_{\text{$d_1$-by-$d_1$ p.s.d.\ matrix over $\mathbb{R}$}} \rangle. 
+\end{align}
+By the property of low-rank projection (c.f.\ Lemma 1), the optimization in the last line has a closed-form solution,
+\[
+\mP_r\leftarrow \text{top $r_1$ eigenvectors of the matrix } \mM\mM^T.
+\]
+It remains to compute the matrix $\mM\mM^T$ without explicit feature mapping. Write
+\begin{align}\label{eq:element}
+\mM\mM^T &= \left(\sum_i\alpha_iy_i\Phi(\mX_i)\mP_c\right)\left(\sum_i\alpha_iy_i\Phi(\mX_i)\mP_c\right)^T\notag\\
+&=\sum_{i,j}\alpha_i\alpha_jy_iy_j\KeepStyleUnderBrace{\Phi(\mX_i)\mP_c\mP^T_c\Phi^T(\mX_j)}_{\text{$d_1$-by-$d_1$ matrix over $\mathbb{R}$}}.
+\end{align}
+The summand~\eqref{eq:element} involves the matrix of the type $\Phi(\mX_i)\mP_c\mP^T_c\Phi^T(\mX_j)$, for all feature pairs $(i,j)\in[n]^2$. Each of these matrices can be obtained without explicit feature mapping, 
+\begin{align}\label{eq:final}
+&\quad \Phi(\mX_i)\mP_c\mP^T_c\Phi^T(\mX_j)\\
+&=( \sum_{s,s'}w^{\text{col}}_{ss'}) 
+\begin{bmatrix}
+K^{\text{row}}(1,1,\mX_i,\mX_j)&\cdots&K^{\text{row}}(1,d_1,\mX_i,\mX_j)\\
+\vdots&\vdots&\vdots\\
+K^{\text{row}}(d_1,1,\mX_i,\mX_j)&\cdots&K^{\text{row}}(d_1,d_1,\mX_i,\mX_j)
+\end{bmatrix}
++\\
+& \quad \quad \left(\sum_{s,s'}w^{\text{col}}_{ss'}K^{\text{col}}(s,s',\mX_i,\mX_j)\right)
+\begin{bmatrix}
+1&1&\cdots&1\\
+\vdots&\vdots&\vdots&\vdots\\
+1&1&\cdots&1
+\end{bmatrix},
+\end{align}
+where $K^{\text{row}}(s,s',\mX_i,\mX_j)$ denotes the value of row kernel value evaluated on the $s$-th row  of $\mX_i$ and $s'$-th row of $\mX_j$, and likewise for $K^{\text{col}}(s,s',\mX_i,\mX_j)$.
+
+
+\item Update $\mP_c$, while holding $(\boldsymbol{\alpha}, \mP_r)$ fixed. Similar as step 2 but switching the role of rows and columns. 
+
+\end{enumerate}
+
+\begin{lem} [Best rank-$r$ projection] \label{lem}
+Let $\mA\in\mathbb{R}^{d\times d}$ be a positive semi-definite matrix. Let $(\lambda_i,\mp_i)\in\mathbb{R}\times \mathbb{R}^d$ denote the $i$-th singular-value-singularvector pair of $\mA$, and assume that eigenvalues $\lambda_1\geq \cdots \geq \lambda_d\geq 0$ are sorted in non-increasing order. Consider an optimization problem specified as
+\[
+\max_{\mP\in\mathbb{O}(d,r)}f(\mP),\quad \text{where}\quad f(\mP)=\langle \mP\mP^T,\ \mA\rangle.
+\]
+Then, the leading rank-$r$ singular space of $\mA$, denoted $\mP^*=\text{Span}(\mp_1,\ldots,\mp_r)$, optimizes the objective $f(\mP)$. In particular, $f(\mP^*)=\sum^r_{i=1}\lambda_i(\mA)$.
+\end{lem}
+\begin{proof}
+The positive semi-definiteness of $\mA$ implies the existence of a symmetric matrix $\mB\in\mathbb{R}^{d\times d}$ such that $\mA=\mB^2$. Furthermore, the singular values satisfy $\lambda^2_i(\mB)=\lambda_i(\mA)$ for all $i\in[d]$. Notice that
+\begin{equation}
+f(\mP)=\langle \mP\mP^T,\ \mB^2\rangle = \FnormSize{}{\mB}^2 - \FnormSize{}{\KeepStyleUnderBrace{\mB(\mI-\mP\mP^T)}_{\text{rank-$(d-r)$ approximation of $\mB$}}}^2 \leq \sum^r_{i=1} \lambda_i^2(\mB)
+\end{equation}
+holds for all matrices $\mP\in\mathbb{O}(d,r)$. Therefore, 
+\[
+\max_{\mP\in\mathbb{O}(d,r)} f(\mP) \leq \sum_{i=1}^r \lambda_i(\mA),
+\]
+where equality is attained if $\mP=\text{Span}(\mp_1,\ldots,\mp_r)$. 
+\end{proof}
+
+
+\section{Outputs}
+{\bf How to read off the decision function from the algorithm outputs?} 
+\begin{align}\label{eq:function}
+f(\mX_{\text{new}}) &=\langle  \mP^T_r\Phi(\mX_{\text{new}})\mP_c, \ \sum_i\alpha_iy_i\mP^T_r\Phi(\mX_i)\mP_c\rangle \notag \\
+&=\langle \Phi(\mX_{\text{new}}),\  \mP_r\KeepStyleUnderBrace{\mP^T_r \left(\sum_i \alpha_iy_i\Phi(\mX_i)\right) \mP_c}_{\text{core tensor $\mC$ in the primal problem}}\mP^T_c  \rangle\notag \\
+&=\sum_i \alpha_i y_i \left\{ \left(\sum_{s,s'}w^{\text{col}}_{ss'}\right)\left(\sum_{s,s'}w^{\text{row}}_{ss'}K^{\text{row}}(s,s',\mX_i,\mX_{\text{new}})\right)+\right.\notag \\
+&\quad\quad\quad\quad\quad\ \left. \left(\sum_{s,s'}w^{\text{row}}_{ss'}\right)\left(\sum_{s,s'}w^{\text{col}}_{ss'}K^{\text{col}}(s,s',\mX_i,\mX_{\text{new}})\right)\right\}.
+\end{align}
+
+{\bf How to estimate the intercept in the primal problem?}\\
+\[
+\hat b_0=\argmin_{b_0\in\mathbb{R}}\left\{ {1\over 2}\FnormSize{}{\mC}^2+c\sum_{i=1}^n(1-y_if(\mX_i)-y_ib_0)_{+}\right\},
+\]
+where $\FnormSize{}{\mC}^2=\sum_{i,j}\alpha_i\alpha_jy_iy_j\langle \mP^T_r\Phi(\mX_i)\mP_c,\ \mP^T_r\Phi(\mX_j)\mP_c\rangle = \sum_{i=1}^r\lambda_i(\mM\mM^T)$,  and $\lambda_i(\cdot)$ denotes the $i$-th eigenvalue of the matrix. The formula for $\FnormSize{}{\mC}^2$ follows from the second line of~\eqref{eq:function} and the optimization~\eqref{eq:identity}.
+
+\section{Further thoughts}
+The dual optimization~\eqref{eq:dual2} yields a neater algorithm than previous approaches. Recall that, in the notes *0423.pdf and *0620.pdf, we have derived an coordinate update scheme for the primal optimization. Here we give a different perspective on the algorithm derivation. For notational convenience, I will focus on the formulation in 0423*.pdf which assumes one-way projection only. 
+
+Primal problem:
+\begin{equation}
+\boxed{
+\begin{aligned}\label{eq:primal}
+\min_{\mP\in \mathbb{O}(d_1,r)}\min_{\mC} &\quad {1\over 2}\FnormSize{}{\mC\mP^T}^2+c\sum_{i=1}^n\xi_i,\\
+\text{subject to} &\quad y_i\langle \mC\mP^T, \Phi(\mX_i) \rangle \leq 1-\xi_i \ \text{and}\ \xi_i\geq 0, i=1,\ldots,n.
+\end{aligned}
+}
+\end{equation}
+The block variable $\mP$ is explicitly updated, whereas the other block $\mC$ is implicitly updated. Notice that the primal problem~\eqref{eq:primal} is equivalent to the dual problem,
+\begin{equation}
+\boxed{
+\begin{aligned}\label{eq:dual3}
+\max_{\mP\in \mathbb{O}(d_1,r)} \min_{\boldsymbol{\alpha}} &\quad  -\sum_{i=1}^n \alpha_i +{1\over 2} \sum_{i,j}\alpha_i\alpha_jy_iy_j\langle \Phi(\mX_i)\mP,\ \Phi(\mX_j)\mP
+\rangle,\\
+\text{subject to} &\quad \sum_i y_i\alpha_i=0, \text{ and }0\leq \alpha_i\leq c,\ i=1,\ldots,n.
+\end{aligned}
+}
+\end{equation}
+
+
+Algorithm for optimization~\eqref{eq:dual3} over parameters $(\mP,\boldsymbol{\alpha})$.
+\begin{enumerate}
+\item Update $\boldsymbol{\alpha}$ holding $\mP$ fixed. $\Longrightarrow$  same as in the note *0620.pdf.
+
+\item Update $\mP$ holding $\boldsymbol{\alpha}$ fixed. 
+\begin{align}
+\mP&\leftarrow\argmax_{\mP\in\mathbb{O}(d,r)} \sum_{i,j}\alpha_i\alpha_jy_iy_j\langle \Phi(\mX_i)\mP,\ \Phi(\mX_j)\mP\rangle \\
+&\stackrel{\text{c.f.\ Lemma~\ref{lem}}}{=}\text{top $r$ singular vectors of matrix }\mB\mB^T,\quad \text{where}\ \mB=\KeepStyleUnderBrace{\sum_{i=1}^n\alpha_iy_i\Phi(\mX_i)}_{\tH^{d_1}}.
+\end{align}
+Notice that $\mB\mB^T$ can be obtained without explicit feature mapping,
+\begin{equation}
+\mB\mB^T = \left(\sum_{i=1}^n\alpha_iy_i\Phi(\mX_i)\right)\left(\sum_{i=1}^n\alpha_iy_i\Phi(\mX_i)\right)^T=\sum_{i,j}\alpha_i\alpha_jy_iy_j\Phi(\mX_i)\Phi^T(\mX_j).
+\end{equation}
+\end{enumerate}
+
+As a by-product, the dual formulation~\eqref{eq:dual3} also justifies the same treatment to coefficients $\boldsymbol{\alpha}$, $\boldsymbol{\beta}$ in the previous algorithm. 
+
+\begin{rmk}
+In theory, alternating optimization may not solve the general minmax problem~\eqref{eq:dual3}. In practice perhaps okay? Does the objective converge over iterations? Need to check. 
+\end{rmk}
+\end{document}
